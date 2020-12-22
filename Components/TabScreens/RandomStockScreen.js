@@ -1,15 +1,18 @@
-import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import React, {useRef} from 'react';
+import {View, StyleSheet, Button} from 'react-native';
 import ReelGroup from '../Slots/ReelGroup';
 
+// Implement SPIN Function using ReelGroup Spin within Functional Component
 export default function RandomStockScreen(props) {
+  const reelGroup = useRef();
+
   return (
     <View style={styles.container}>
       <View style={styles.slotsContainer}>
-        <ReelGroup />
+        <ReelGroup ref={reelGroup} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="New Stock" />
+        <Button title="New Stock" onPress={() => reelGroup.current.spin()} />
       </View>
     </View>
   );

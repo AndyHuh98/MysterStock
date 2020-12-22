@@ -6,7 +6,7 @@ const Constants = {
   REEL_COUNT: 4,
   SYMBOLS: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ ',
   SYMBOLS_ON_REEL: 3,
-  REELS_REPEAT: 10,
+  REELS_REPEAT: 4,
 };
 
 export default Constants;

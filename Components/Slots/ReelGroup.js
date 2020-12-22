@@ -16,16 +16,33 @@ export default class ReelGroup extends Component {
     });
 
     this.reelList = [Constants.REEL_COUNT];
+    this.reelObjectList = [Constants.REEL_COUNT];
     this.reelHeight = Constants.MAX_HEIGHT * 0.85;
+    this.reels = [Constants.REEL_COUNT];
   }
 
   getReels = () => {
     for (let i = 0; i < Constants.REEL_COUNT; i++) {
-      const reel = <Reel height={this.reelHeight} index={i} key={i} />;
+      const reel = (
+        <Reel
+          height={this.reelHeight}
+          index={i}
+          key={i}
+          ref={(ref) => {
+            this.reels[i] = ref;
+          }}
+        />
+      );
       this.reelList[i] = reel;
     }
 
-    return this.reelList;
+    return <>{this.reelList}</>;
+  };
+
+  spin = () => {
+    for (let i = 0; i < this.reels.length; i++) {
+      this.reels[i].scrollByOffset(10 + i);
+    }
   };
 
   render() {
