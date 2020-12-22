@@ -1,43 +1,34 @@
-import React, {useState} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, View} from 'react-native';
 
 import Reel from './Reel';
-
 import Constants from '../Utils/Constants';
 
-export default function ReelGroup(props) {
-  const [width, setWidth] = useState(props.width);
-  const [height, setHeight] = useState(props.height);
+export default class ReelGroup extends Component {
+  constructor(props) {
+    super(props);
 
-  const onLayout = (e) => {
-    setWidth(e.nativeEvent.layout.width);
-    setHeight(e.nativeEvent.layout.height);
-  };
-
-  const renderReels = () => {
-    const reelWidth = width / Constants.REEL_COUNT;
-    const reelList = Array.apply(null, Array(Constants.REEL_COUNT)).map(
-      (reel, index) => {
-        return (
-          <Reel width={reelWidth} height={height} key={index} index={index} />
-        );
+    this.styles = StyleSheet.create({
+      reelGroup: {
+        flex: 1,
+        flexDirection: 'row',
       },
-    );
+    });
 
-    return <>{reelList}</>;
+    this.reelList = [Constants.REEL_COUNT];
+    this.reelHeight = Constants.MAX_HEIGHT * 0.85;
+  }
+
+  getReels = () => {
+    for (let i = 0; i < Constants.REEL_COUNT; i++) {
+      const reel = <Reel height={this.reelHeight} index={i} key={i} />;
+      this.reelList[i] = reel;
+    }
+
+    return this.reelList;
   };
 
-  return (
-    <View style={styles.reelGroup} onLayout={onLayout}>
-      {renderReels()}
-    </View>
-  );
+  render() {
+    return <View style={this.styles.reelGroup}>{this.getReels()}</View>;
+  }
 }
-
-const styles = StyleSheet.create({
-  reelGroup: {
-    flex: 1,
-    backgroundColor: 'orange',
-    flexDirection: 'row',
-  },
-});

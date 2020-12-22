@@ -1,19 +1,15 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import ReelGroup from '../Slots/ReelGroup';
-import Constants from '../Utils/Constants';
 
 export default function RandomStockScreen(props) {
   return (
     <View style={styles.container}>
-      <View style={styles.playContainer}>
-        <ReelGroup
-          width={styles.playContainer.width}
-          height={styles.playContainer.height}
-        />
+      <View style={styles.slotsContainer}>
+        <ReelGroup />
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="New Stock" onPress={() => {}} />
+        <Button title="New Stock" />
       </View>
     </View>
   );
@@ -21,19 +17,21 @@ export default function RandomStockScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
+    backgroundColor: 'green',
+  },
+  slotsContainer: {
+    flex: 0.85,
+    marginTop: '10%',
+    marginHorizontal: '3%',
+    backgroundColor: 'black',
   },
   buttonContainer: {
-    flex: 0.5,
-    height: 60,
-    width: Constants.MAX_WIDTH,
-    backgroundColor: 'purple',
-    marginBottom: 60,
-  },
-  playContainer: {
-    flex: 9.5,
-    height: Constants.MAX_HEIGHT,
-    width: Constants.MAX_WIDTH,
+    flex: 0.1,
     backgroundColor: 'blue',
+    marginTop: '1%',
+    marginHorizontal: '3%',
+    textAlign: 'center',
+    justifyContent: 'center',
   },
 });
