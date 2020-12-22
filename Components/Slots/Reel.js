@@ -13,6 +13,7 @@ export default class Reel extends Component {
 
     this.state = {
       scrollPos: new Animated.Value(this.currentScrollPos),
+      currentSymbol: 'a',
     };
 
     this.styles = StyleSheet.create({
@@ -27,18 +28,41 @@ export default class Reel extends Component {
         transform: [{translateY: this.state.scrollPos}],
       },
     });
+
+    this.isInitialSpin = true;
   }
+
+  scrollToSymbol = (desiredSymbol) => {
+    const desiredSymbolValue = Constants.SYMBOLS.split('').findIndex(
+      (symbol) => desiredSymbol === symbol,
+    );
+    const currentSymbolValue = Constants.SYMBOLS.split('').findIndex(
+      (symbol) => this.state.currentSymbol === symbol,
+    );
+    const difference = desiredSymbolValue - currentSymbolValue;
+
+    // Since tape starts with 'A' at the very top. Not sure why we need the 2 instead of 1 though.
+    if (this.isInitialSpin) {
+      this.scrollByOffset(difference - 2);
+    } else {
+      this.scrollByOffset(difference);
+    }
+
+    this.setState({
+      currentSymbol: Constants.SYMBOLS.split('')[desiredSymbolValue],
+    });
+
+    this.isInitialSpin = false;
+  };
 
   scrollByOffset = (offset) => {
     this.currentScrollPos =
       this.currentScrollPos + -1 * this.panelHeight * offset;
     Animated.timing(this.state.scrollPos, {
       toValue: this.currentScrollPos,
-      duration: 750,
+      duration: 1500,
       useNativeDriver: true,
-    }).start(() => {
-      console.log('scrollByOffset()');
-    });
+    }).start(() => {});
   };
 
   getReelPanels = () => {

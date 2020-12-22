@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 
 import Reel from './Reel';
 import Constants from '../Utils/Constants';
+import {HARDCODED_COMPANY_SYMBOLS_ARRAY} from '../Utils/Constants';
 
 export default class ReelGroup extends Component {
   constructor(props) {
@@ -19,7 +20,14 @@ export default class ReelGroup extends Component {
     this.reelObjectList = [Constants.REEL_COUNT];
     this.reelHeight = Constants.MAX_HEIGHT * 0.85;
     this.reels = [Constants.REEL_COUNT];
+
+    this.companySymbolsArray = HARDCODED_COMPANY_SYMBOLS_ARRAY;
+    this.companySymbolArray = [4];
   }
+
+  randomBetween = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  };
 
   getReels = () => {
     for (let i = 0; i < Constants.REEL_COUNT; i++) {
@@ -40,8 +48,18 @@ export default class ReelGroup extends Component {
   };
 
   spin = () => {
+    const randomNum = this.randomBetween(
+      0,
+      this.companySymbolsArray.length - 1,
+    );
+    console.log(randomNum);
+    this.companySymbolArray = this.companySymbolsArray[randomNum].split('');
     for (let i = 0; i < this.reels.length; i++) {
-      this.reels[i].scrollByOffset(10 + i);
+      if (this.companySymbolArray[i] === undefined) {
+        this.reels[i].scrollToSymbol(' ');
+      } else {
+        this.reels[i].scrollToSymbol(this.companySymbolArray[i]);
+      }
     }
   };
 

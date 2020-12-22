@@ -10,3 +10,17 @@ const Constants = {
 };
 
 export default Constants;
+
+export const HARDCODED_COMPANY_SYMBOLS_ARRAY = [
+  'AAPL',
+  'TSLA',
+  'IBM',
+  'MSFT',
+  'NET',
+  'GE',
+  'BA',
+  'AMZN',
+  'GOOGL',
+  'FSLY',
+  'PLTR',
+];
