@@ -9,13 +9,15 @@ import {
   VictoryLabel,
 } from 'victory-native';
 
-const chartHeight = Dimensions.get('screen').height * .3;
+const chartHeight = Dimensions.get('screen').height * 0.3;
 
 // Lightweight, single day stock price chart meant for the main page display.
 export default function LightWeightIntradayStockChart(props) {
   const companySymbol = props.companySymbol;
   const api_key = props.api_key;
   const [companyIntradayData, setCompanyIntradayData] = useState([]);
+
+  // <a href="https://www.freepik.com/vectors/gold">Gold vector created by vilmosvarga - www.freepik.com</a>
 
   const fetchCompanyIntradayData = async (key) => {
     const companyIntradayURL = `https://cloud.iexapis.com/stable/stock/${companySymbol}/intraday-prices?token=${key}&chartLast=390`;

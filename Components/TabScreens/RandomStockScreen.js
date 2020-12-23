@@ -7,9 +7,11 @@ import {
   Animated,
   TouchableOpacity,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
+import images from '../../assets/images';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 
@@ -58,7 +60,11 @@ export default function RandomStockScreen(props) {
           styles.companyDisplayContainer,
           {opacity: companyDisplayFadeAnim},
         ]}>
-        <PartialCompanyDisplay width={screenWidth} companySymbol={companySymbol} />
+        <PartialCompanyDisplay
+          navigation={props.navigation}
+          width={screenWidth}
+          companySymbol={companySymbol}
+        />
       </Animated.View>
     );
 
@@ -66,21 +72,27 @@ export default function RandomStockScreen(props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.slotsContainer}>
-        <ReelGroup ref={reelGroup} />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          disabled={stockBtnDisable}
-          onPress={(e) => newStockBtnClicked(e)}>
-          <Text style={styles.titleText}>
-            {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      {renderCompanyDisplay()}
-    </SafeAreaView>
+    <View style={styles.container}>
+      <ImageBackground
+        source={images.slotsBackground}
+        style={styles.slotsBackground}>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.slotsContainer}>
+            <ReelGroup ref={reelGroup} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              disabled={stockBtnDisable}
+              onPress={(e) => newStockBtnClicked(e)}>
+              <Text style={styles.titleText}>
+                {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {renderCompanyDisplay()}
+        </SafeAreaView>
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -93,15 +105,19 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   slotsContainer: {
-    flex: 0.2,
+    flex: 0.15,
     marginHorizontal: '2%',
     justifyContent: 'center',
     borderColor: 'black',
     borderWidth: 5,
     borderRadius: 10,
+  },
+  slotsBackground: {
+    flex: 1,
+    resizeMode: 'contain',
+    justifyContent: 'center',
   },
   buttonContainer: {
     flex: 0.1,
@@ -112,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   companyDisplayContainer: {
-    flex: 0.7,
+    flex: 0.75,
     marginHorizontal: '3%',
     marginVertical: '2%',
   },

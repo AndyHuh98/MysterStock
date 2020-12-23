@@ -13,8 +13,9 @@ export default class ReelPanel extends Component {
         justifyContent: 'center',
       },
       image: {
+        alignSelf: 'center',
         width: '85%',
-        height: this.props.height * 0.75,
+        height: this.props.height,
       },
     });
 

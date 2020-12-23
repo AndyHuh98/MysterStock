@@ -10,7 +10,8 @@ export default class Reel extends Component {
     this.symbols = Constants.SYMBOLS.repeat(Constants.REELS_REPEAT).split('');
     this.panelHeight = this.props.height / Constants.PANELS_PER_REEL;
     this.position =
-      Constants.SYMBOLS.length * Math.floor(Constants.REELS_REPEAT / 2);
+      // -13 is because the position is weird due to flex and other things.
+      Constants.SYMBOLS.length * Math.floor(Constants.REELS_REPEAT / 2) - 13;
     this.currentScrollPos = this.position * this.panelHeight * -1;
 
     this.state = {
@@ -22,6 +23,7 @@ export default class Reel extends Component {
       reel: {
         flex: 0.25,
         overflow: 'hidden',
+        justifyContent: 'center',
       },
       scrollingReel: {
         height: this.symbols.length * this.panelHeight,

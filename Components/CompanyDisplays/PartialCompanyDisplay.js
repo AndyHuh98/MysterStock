@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 import LightWeightCompanyStatsTable from './LightWeightStatsTable';
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
@@ -59,16 +59,34 @@ export default function PartialCompanyDisplay(props) {
     setInitialPageRender(false);
   }, [props.companySymbol]);
 
+  const navigateToCompanyDisplay = (company) => {
+    console.log(`Navigating to ${company} page.`);
+    const navigation = props.navigation;
+    navigation.navigate('CompanyDisplay', {
+      companySymbol: props.companySymbol,
+      companyName: companyName,
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>
-        {props.companySymbol} : {companyName}
-      </Text>
+      <TouchableHighlight
+        style={styles.companyNameContainer}
+        onPress={() => navigateToCompanyDisplay(props.companySymbol)}>
+        <Text style={styles.titleText}>
+          {props.companySymbol} : {companyName}
+        </Text>
+      </TouchableHighlight>
       <View style={styles.advStatsContainer}>
         <LightWeightCompanyStatsTable advStats={companyAdvStats} />
       </View>
       <View style={styles.chartContainer}>
-        <LightWeightIntradayStockChart width={props.width} initialPageRender={initialPageRender} companySymbol={props.companySymbol} api_key={cloud_api_key}/>
+        <LightWeightIntradayStockChart
+          width={props.width}
+          initialPageRender={initialPageRender}
+          companySymbol={props.companySymbol}
+          api_key={cloud_api_key}
+        />
       </View>
     </View>
   );
@@ -88,6 +106,10 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderRadius: 10,
     flexDirection: 'column',
+  },
+  companyNameContainer: {
+    flex: 0.2,
+    justifyContent: 'center',
   },
   advStatsContainer: {
     backgroundColor: 'cadetblue',
