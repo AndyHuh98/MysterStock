@@ -9,9 +9,7 @@ export default class ReelPanel extends Component {
 
     this.styles = StyleSheet.create({
       panelContainer: {
-        backgroundColor: 'red',
         flex: 1,
-        marginVertical: '1%',
         justifyContent: 'center',
       },
       image: {
