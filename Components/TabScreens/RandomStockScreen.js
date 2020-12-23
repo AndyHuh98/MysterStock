@@ -8,18 +8,19 @@ import {
   Animated,
 } from 'react-native';
 import ReelGroup from '../Slots/ReelGroup';
+import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 
 // Implement SPIN Function using ReelGroup Spin within Functional Component
 export default function RandomStockScreen(props) {
   const [companyDisplayFadeAnim] = useState(new Animated.Value(0));
-  const [company, setCompany] = useState('');
+  const [companySymbol, setCompanySymbol] = useState('');
 
   const reelGroup = useRef();
 
   const newStockBtnClicked = () => {
     fadeOutCompanyDisplay();
-    reelGroup.current.spin((_company) => {
-      setCompany(_company);
+    reelGroup.current.spin((_companySymbol) => {
+      setCompanySymbol(_companySymbol);
       fadeInCompanyDisplay();
     });
   };
@@ -47,7 +48,7 @@ export default function RandomStockScreen(props) {
           styles.companyDisplayContainer,
           {opacity: companyDisplayFadeAnim},
         ]}>
-        <Text style={styles.titleText}>{company}</Text>
+        <PartialCompanyDisplay companySymbol={companySymbol} />
       </Animated.View>
     );
 
