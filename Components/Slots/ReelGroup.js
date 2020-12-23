@@ -18,7 +18,7 @@ export default class ReelGroup extends Component {
 
     this.reelList = [Constants.REEL_COUNT];
     this.reelObjectList = [Constants.REEL_COUNT];
-    this.reelHeight = Constants.MAX_HEIGHT * 0.75;
+    this.reelHeight = Constants.MAX_HEIGHT * 0.55;
     this.reels = [Constants.REEL_COUNT];
 
     // TODO: remove hardcoding and do API call here, or in a central location and pass it into here.

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import {StyleSheet, View, Text} from 'react-native';
 import LightWeightCompanyStatsTable from './LightWeightStatsTable';
+import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 // This is the display used in RandomStockScreen. Should be a 'lightweight' version of the main stock page for the stock.
 export default function PartialCompanyDisplay(props) {
@@ -66,6 +67,9 @@ export default function PartialCompanyDisplay(props) {
       <View style={styles.advStatsContainer}>
         <LightWeightCompanyStatsTable advStats={companyAdvStats} />
       </View>
+      <View style={styles.chartContainer}>
+        <LightWeightIntradayStockChart width={props.width} initialPageRender={initialPageRender} companySymbol={props.companySymbol} api_key={cloud_api_key}/>
+      </View>
     </View>
   );
 }
@@ -83,9 +87,13 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 5,
     borderRadius: 10,
+    flexDirection: 'column',
   },
   advStatsContainer: {
-    flex: 0.7,
+    backgroundColor: 'cadetblue',
+  },
+  chartContainer: {
+    flex: 1,
   },
   statsTitle: {
     fontWeight: 'bold',

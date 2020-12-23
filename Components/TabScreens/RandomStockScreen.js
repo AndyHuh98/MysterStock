@@ -6,9 +6,12 @@ import {
   SafeAreaView,
   Animated,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
+
+const screenWidth = Dimensions.get('screen').width * 0.96;
 
 // Implement SPIN Function using ReelGroup Spin within Functional Component
 export default function RandomStockScreen(props) {
@@ -55,7 +58,7 @@ export default function RandomStockScreen(props) {
           styles.companyDisplayContainer,
           {opacity: companyDisplayFadeAnim},
         ]}>
-        <PartialCompanyDisplay companySymbol={companySymbol} />
+        <PartialCompanyDisplay width={screenWidth} companySymbol={companySymbol} />
       </Animated.View>
     );
 
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   slotsContainer: {
-    flex: 0.3,
+    flex: 0.2,
     marginHorizontal: '2%',
     justifyContent: 'center',
     borderColor: 'black',
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   companyDisplayContainer: {
-    flex: 0.6,
+    flex: 0.7,
     marginHorizontal: '3%',
     marginVertical: '2%',
   },
