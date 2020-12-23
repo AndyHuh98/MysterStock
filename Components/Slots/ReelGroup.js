@@ -52,7 +52,10 @@ export default class ReelGroup extends Component {
 
   spin = (callback) => {
     this.reelsInMotion = Constants.REEL_COUNT;
-    const randomNum = this.randomBetween(0, this.companySymbolsArray.length - 1); 
+    const randomNum = this.randomBetween(
+      0,
+      this.companySymbolsArray.length - 1,
+    );
     const company = this.companySymbolsArray[randomNum];
     this.companySymbolArray = this.companySymbolsArray[randomNum].split('');
     for (let i = 0; i < this.reels.length; i++) {
