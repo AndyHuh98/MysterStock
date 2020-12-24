@@ -2,25 +2,38 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import compactFormat from 'cldr-compact-number';
 import {DataTable} from 'react-native-paper';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  TouchableHighlight,
+} from 'react-native-gesture-handler';
+import Collapsible from 'react-native-collapsible';
 
 // Props passed in: advStats
 export default function StatsTable(props) {
   const companyAdvStats = props.advStats;
-  const [showMoreStats, setShowMoreStats] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
-  function toggleShowMoreStats() {
-    setShowMoreStats((previousState) => !previousState);
-  }
+  const toggleTableCollapsed = () => {
+    console.log('clicked');
+    setIsCollapsed(!isCollapsed);
+  };
 
   const dataTableDisplay = () => {
     return (
       <DataTable style={{shadowColor: 'yellow'}}>
-        <DataTable.Header>
-          <DataTable.Title>
-            <Text style={styles.statsTitle}>Stats: (Scroll for More)</Text>
-          </DataTable.Title>
-        </DataTable.Header>
+        <TouchableHighlight
+          style={styles.touchableTest}
+          onPress={() => toggleTableCollapsed()}>
+          <DataTable.Header>
+            <DataTable.Title>
+              <Text style={styles.statsTitle}>
+                Stats:{' '}
+                {isCollapsed ? '(Click to Show More)' : '(Click to Show Less)'}
+              </Text>
+            </DataTable.Title>
+          </DataTable.Header>
+        </TouchableHighlight>
 
         <DataTable.Row>
           <DataTable.Cell>
@@ -38,13 +51,13 @@ export default function StatsTable(props) {
           </DataTable.Cell>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Avg Vol: </Text>
+              <Text style={styles.statsTitle}>Employees:</Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.avg30Volume / 30, 'en', null, {
+                {compactFormat(companyAdvStats.employees, 'en', null, {
                   significantDigits: 3,
-                  maximumFractionDigits: 4,
+                  maximumFractionDigits: 2,
                 })}
               </Text>
             </DataTable.Cell>
@@ -77,25 +90,108 @@ export default function StatsTable(props) {
         <DataTable.Row>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Div/Yield: </Text>
+              <Text style={styles.statsTitle}>Revenue: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.dividendYield == null
-                  ? 'N/A'
-                  : parseFloat(companyAdvStats.dividendYield).toFixed(3)}
+                {compactFormat(companyAdvStats.revenue, 'en', null, {
+                  significantDigits: 3,
+                  maximumFractionDigits: 4,
+                })}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Nxt Div: </Text>
+              <Text style={styles.statsTitle}>Rev. Per Share: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.nextDividendDate == null
-                  ? 'N/A'
-                  : companyAdvStats.nextDividendDate}
+                {parseFloat(companyAdvStats.revenuePerShare).toFixed(3)}
+              </Text>
+            </DataTable.Cell>
+          </DataTable.Cell>
+        </DataTable.Row>
+
+        <DataTable.Row>
+          <DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsTitle}>Gross Profit: </Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsValue}>
+                {compactFormat(companyAdvStats.grossProfit, 'en', null, {
+                  significantDigits: 3,
+                  maximumFractionDigits: 4,
+                })}
+              </Text>
+            </DataTable.Cell>
+          </DataTable.Cell>
+          <DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsTitle}>Profit Margin: </Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsValue}>
+                {parseFloat(companyAdvStats.profitMargin).toFixed(3)}
+              </Text>
+            </DataTable.Cell>
+          </DataTable.Cell>
+        </DataTable.Row>
+
+        <DataTable.Row>
+          <DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsTitle}>Avg Vol: </Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsValue}>
+                {compactFormat(companyAdvStats.avg30Volume, 'en', null, {
+                  significantDigits: 3,
+                  maximumFractionDigits: 4,
+                })}
+              </Text>
+            </DataTable.Cell>
+          </DataTable.Cell>
+          <DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsTitle}>Out. Shares:</Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsValue}>
+                {compactFormat(companyAdvStats.sharesOutstanding, 'en', null, {
+                  significantDigits: 3,
+                  maximumFractionDigits: 4,
+                })}
+              </Text>
+            </DataTable.Cell>
+          </DataTable.Cell>
+        </DataTable.Row>
+
+        <DataTable.Row>
+          <DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsTitle}>Tot. Cash: </Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsValue}>
+                {compactFormat(companyAdvStats.totalCash, 'en', null, {
+                  significantDigits: 3,
+                  maximumFractionDigits: 4,
+                })}{' '}
+              </Text>
+            </DataTable.Cell>
+          </DataTable.Cell>
+          <DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsTitle}>Current Debt: </Text>
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text style={styles.statsValue}>
+                {compactFormat(companyAdvStats.currentDebt, 'en', null, {
+                  significantDigits: 3,
+                  maximumFractionDigits: 4,
+                })}{' '}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -127,32 +223,6 @@ export default function StatsTable(props) {
         <DataTable.Row>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Current Debt: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.currentDebt, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 4,
-                })}{' '}
-              </Text>
-            </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Debt to Equity: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.debtToEquity).toFixed(3)}
-              </Text>
-            </DataTable.Cell>
-          </DataTable.Cell>
-        </DataTable.Row>
-
-        <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
               <Text style={styles.statsTitle}>Fwd P/E Ratio: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
@@ -176,32 +246,6 @@ export default function StatsTable(props) {
         <DataTable.Row>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Revenue: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.revenue, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 4,
-                })}
-              </Text>
-            </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Profit Margin: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.profitMargin).toFixed(3)}
-              </Text>
-            </DataTable.Cell>
-          </DataTable.Cell>
-        </DataTable.Row>
-
-        <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
               <Text style={styles.statsTitle}>Put/Call Ratio: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
@@ -212,13 +256,13 @@ export default function StatsTable(props) {
           </DataTable.Cell>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Out. Shares:</Text>
+              <Text style={styles.statsTitle}>EBITDA: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.sharesOutstanding, 'en', null, {
+                {compactFormat(companyAdvStats.EBITDA, 'en', null, {
                   significantDigits: 3,
-                  maximumFractionDigits: 2,
+                  maximumFractionDigits: 4,
                 })}
               </Text>
             </DataTable.Cell>
@@ -228,26 +272,25 @@ export default function StatsTable(props) {
         <DataTable.Row>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Tot. Cash: </Text>
+              <Text style={styles.statsTitle}>Div/Yield: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-              {compactFormat(companyAdvStats.totalCash, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 4,
-                })}              </Text>
+                {companyAdvStats.dividendYield == null
+                  ? 'N/A'
+                  : parseFloat(companyAdvStats.dividendYield).toFixed(3)}
+              </Text>
             </DataTable.Cell>
           </DataTable.Cell>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Employees:</Text>
+              <Text style={styles.statsTitle}>Nxt Div: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.employees, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 2,
-                })}
+                {companyAdvStats.nextDividendDate == null
+                  ? 'N/A'
+                  : companyAdvStats.nextDividendDate}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -257,14 +300,23 @@ export default function StatsTable(props) {
   };
 
   // Change from ScrollView to <Collapsible> and see if it works.
-  return <ScrollView style={styles.container}>{dataTableDisplay()}</ScrollView>;
+  return (
+    <Collapsible
+      style={styles.container}
+      collapsed={isCollapsed}
+      collapsedHeight={props.height}
+      enablePointerEvents={true}>
+      {dataTableDisplay()}
+    </Collapsible>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: 'white',
-    overflow: 'hidden',
+    borderColor: 'yellow',
+    borderWidth: 3,
   },
   statsTitle: {
     fontWeight: 'bold',

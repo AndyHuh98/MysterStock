@@ -14,6 +14,7 @@ import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import images from '../../assets/images';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
+const image = { uri: "https://reactjs.org/logo-og.png" };
 
 // props passed: navigation
 export default function RandomStockScreen(props) {
@@ -74,8 +75,8 @@ export default function RandomStockScreen(props) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={images.slotsBackground}
-        style={styles.slotsBackground}>
+        source={images.background}
+        style={styles.background}>
         <SafeAreaView style={styles.container}>
           <View style={styles.slotsContainer}>
             <ReelGroup ref={reelGroup} />
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    flexDirection: 'column',
   },
   slotsContainer: {
     flex: 0.15,
@@ -114,9 +116,9 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderRadius: 10,
   },
-  slotsBackground: {
+  background: {
     flex: 1,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     justifyContent: 'center',
   },
   buttonContainer: {

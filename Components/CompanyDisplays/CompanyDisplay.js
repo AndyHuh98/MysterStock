@@ -1,18 +1,23 @@
 import React from 'react';
 
-import {View, SafeAreaView, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, SafeAreaView, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import Collapsible from 'react-native-collapsible';
 import StatsTable from './StatsTable';
+
+const height = Dimensions.get('screen').height * 0.25;
 
 // Props thru route => props.route.params.____ passed: companySymbol, companyName, advStats
 export default function CompanyDisplay(props) {
   return (
-    <SafeAreaView style={styles.container}>
-        <View style={styles.chartContainer}></View>
+    <ScrollView style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.chartContainer} />
         <View style={styles.statsContainer}>
-          <StatsTable advStats={props.route.params.advStats}/> 
+          <StatsTable height={height} advStats={props.route.params.advStats} />
         </View>
-        <View style={styles.descriptionContainer}></View>
-    </SafeAreaView>
+        <View style={styles.descriptionContainer} />
+      </SafeAreaView>
+    </ScrollView>
   );
 }
 
@@ -37,5 +42,5 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     alignItems: 'center',
     flex: 0.2,
-  }
+  },
 });
