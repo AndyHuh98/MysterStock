@@ -14,7 +14,6 @@ import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import images from '../../assets/images';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
-const image = { uri: "https://reactjs.org/logo-og.png" };
 
 // props passed: navigation
 export default function RandomStockScreen(props) {
@@ -74,9 +73,7 @@ export default function RandomStockScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.background}>
+      <ImageBackground source={images.background} style={styles.background}>
         <SafeAreaView style={styles.container}>
           <View style={styles.slotsContainer}>
             <ReelGroup ref={reelGroup} />

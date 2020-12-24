@@ -1,12 +1,10 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import CompanyDisplay from './Components/CompanyDisplays/CompanyDisplay';
 import MainTabNavigator from './Components/Navigation/MainTabNavigator';
 
-const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 /*

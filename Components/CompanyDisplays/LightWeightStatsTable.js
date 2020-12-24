@@ -21,7 +21,7 @@ export default function LightWeightCompanyStatsTable(props) {
 
   const dataTableDisplay = () => {
     return (
-      <DataTable style={{shadowColor: 'yellow'}}>
+      <DataTable>
         <DataTable.Header>
           <DataTable.Title>
             <Text style={styles.statsTitle}>Stats</Text>

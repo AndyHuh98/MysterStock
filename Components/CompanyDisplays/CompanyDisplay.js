@@ -1,7 +1,12 @@
 import React from 'react';
 
-import {View, SafeAreaView, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
-import Collapsible from 'react-native-collapsible';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import StatsTable from './StatsTable';
 
 const height = Dimensions.get('screen').height * 0.25;

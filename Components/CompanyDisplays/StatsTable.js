@@ -1,12 +1,8 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import compactFormat from 'cldr-compact-number';
 import {DataTable} from 'react-native-paper';
-import {
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  TouchableHighlight,
-} from 'react-native-gesture-handler';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
 
 // Props passed in: advStats
@@ -21,8 +17,10 @@ export default function StatsTable(props) {
 
   const dataTableDisplay = () => {
     return (
-      <DataTable style={{shadowColor: 'yellow'}}>
+      <DataTable>
         <TouchableHighlight
+          underlayColor="grey"
+          activeOpacity={0.5}
           style={styles.touchableTest}
           onPress={() => toggleTableCollapsed()}>
           <DataTable.Header>
@@ -55,10 +53,12 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.employees, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 2,
-                })}
+                {companyAdvStats.employees === null
+                  ? ' N/A'
+                  : compactFormat(companyAdvStats.employees, 'en', null, {
+                      significantDigits: 3,
+                      maximumFractionDigits: 2,
+                    })}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
