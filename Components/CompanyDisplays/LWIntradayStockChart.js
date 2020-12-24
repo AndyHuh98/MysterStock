@@ -12,6 +12,7 @@ import {
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
 // Lightweight, single day stock price chart meant for the main page display.
+// Props passed: width, initialPageRender, companySymbol, api_key
 export default function LightWeightIntradayStockChart(props) {
   const companySymbol = props.companySymbol;
   const api_key = props.api_key;
@@ -72,7 +73,7 @@ export default function LightWeightIntradayStockChart(props) {
             <VictoryLine
               data={companyIntradayData.filter((dataPoint) => {
                 let minutes = dataPoint.minute.split(':')[1];
-                return minutes % 5 === 0;
+                return minutes % 3 === 0 && dataPoint.average !== null;
               })}
               y={(datum) => datum.average}
               x={(datum) => datum.minute}

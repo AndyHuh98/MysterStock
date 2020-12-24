@@ -15,7 +15,7 @@ import images from '../../assets/images';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 
-// Implement SPIN Function using ReelGroup Spin within Functional Component
+// props passed: navigation
 export default function RandomStockScreen(props) {
   const [companyDisplayFadeAnim] = useState(new Animated.Value(0));
   const [companySymbol, setCompanySymbol] = useState('');

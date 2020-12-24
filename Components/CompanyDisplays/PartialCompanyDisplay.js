@@ -5,12 +5,12 @@ import LightWeightCompanyStatsTable from './LightWeightStatsTable';
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 // This is the display used in RandomStockScreen. Should be a 'lightweight' version of the main stock page for the stock.
+// props passed: navigation, width, companySymbol
 export default function PartialCompanyDisplay(props) {
   console.log('PartialCompanyDisplay() Rendering...');
 
   const cloud_api_key = 'pk_765c2f02d9af4fd28f01fea090e2f544';
   const sandbox_api_key = 'Tpk_77a598a1fa804de592413ba39f6b137a';
-  const companySymbol = props.companySymbol;
 
   const [companyName, setCompanyName] = useState('');
   const [companyAdvStats, setCompanyAdvStats] = useState([]);
@@ -65,6 +65,7 @@ export default function PartialCompanyDisplay(props) {
     navigation.navigate('CompanyDisplay', {
       companySymbol: props.companySymbol,
       companyName: companyName,
+      advStats: companyAdvStats,
     });
   };
 
