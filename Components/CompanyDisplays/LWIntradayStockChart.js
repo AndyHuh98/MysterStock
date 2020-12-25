@@ -61,8 +61,8 @@ export default function LightWeightIntradayStockChart(props) {
             minDomain={{y: getDomain()[0]}}
             height={chartHeight}
             width={props.width}
-            domain={companyIntradayData.length > 0 ? null : {y: getDomain()}}
             theme={VictoryTheme.material}
+            domain={companyIntradayData.length > 0 ? null : {y: getDomain()}}
             containerComponent={
               <VictoryVoronoiContainer
                 labels={({datum}) => `${datum.average}`}
@@ -73,7 +73,8 @@ export default function LightWeightIntradayStockChart(props) {
             <VictoryLine
               data={companyIntradayData.filter((dataPoint) => {
                 let minutes = dataPoint.minute.split(':')[1];
-                return minutes % 3 === 0 && dataPoint.average !== null;
+                // can make graph more detailed by changing the modulo here
+                return minutes % 5 === 0 && dataPoint.average !== null;
               })}
               y={(datum) => datum.average}
               x={(datum) => datum.minute}

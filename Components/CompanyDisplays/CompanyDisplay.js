@@ -7,18 +7,28 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
+import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
 
 const height = Dimensions.get('screen').height * 0.25;
 
-// Props thru route => props.route.params.____ passed: companySymbol, companyName, advStats
+// Props thru route => props.route.params.____ passed: companySymbol, companyName, advStats, width, cloud_api_key, sandbox_api_key
 export default function CompanyDisplay(props) {
+  const propsParams = props.route.params;
+
   return (
     <ScrollView style={styles.container}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.chartContainer} />
+        <View style={styles.chartContainer}>
+          <CompanyStockChart
+            width={propsParams.width}
+            companySymbol={propsParams.companySymbol}
+            cloud_api_key={propsParams.cloud_api_key}
+            sandbox_api_key={propsParams.sandbox_api_key}
+          />
+        </View>
         <View style={styles.statsContainer}>
-          <StatsTable height={height} advStats={props.route.params.advStats} />
+          <StatsTable height={height} advStats={propsParams.advStats} />
         </View>
         <View style={styles.descriptionContainer} />
       </SafeAreaView>
@@ -32,15 +42,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   statsContainer: {
-    borderColor: 'pink',
-    borderWidth: 3,
     flex: 0.3,
   },
   chartContainer: {
-    borderColor: 'blue',
-    borderWidth: 3,
     flex: 0.5,
-    alignItems: 'center',
   },
   descriptionContainer: {
     borderColor: 'red',

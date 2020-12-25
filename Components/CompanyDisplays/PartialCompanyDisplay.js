@@ -66,6 +66,10 @@ export default function PartialCompanyDisplay(props) {
       companySymbol: props.companySymbol,
       companyName: companyName,
       advStats: companyAdvStats,
+      width: props.width,
+      initialPageRender: initialPageRender,
+      cloud_api_key: cloud_api_key,
+      sandbox_api_key: sandbox_api_key,
     });
   };
 
@@ -84,7 +88,6 @@ export default function PartialCompanyDisplay(props) {
       <View style={styles.chartContainer}>
         <LightWeightIntradayStockChart
           width={props.width}
-          initialPageRender={initialPageRender}
           companySymbol={props.companySymbol}
           api_key={cloud_api_key}
         />

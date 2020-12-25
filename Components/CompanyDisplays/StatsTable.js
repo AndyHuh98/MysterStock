@@ -8,7 +8,7 @@ import Collapsible from 'react-native-collapsible';
 // Props passed in: advStats
 export default function StatsTable(props) {
   const companyAdvStats = props.advStats;
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleTableCollapsed = () => {
     console.log('clicked');
