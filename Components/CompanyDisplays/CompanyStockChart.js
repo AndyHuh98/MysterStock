@@ -1,5 +1,6 @@
 import React from 'react';
 import {useEffect} from 'react';
+import {useMemo} from 'react';
 import {useState} from 'react';
 
 import {View, StyleSheet, Button, Dimensions} from 'react-native';
@@ -73,25 +74,35 @@ export default function CompanyStockChart(props) {
       let earliestDateReturned = companyHistoricalData[0].date.split('-')[2];
       console.log(earliestDateReturned);
       if (chartHistoryWindow === '5d') {
-        return companyHistoricalData.filter((dataPoint) => {
-          dataPoint.average !== null;
+        console.log('hello');
+        let historicalData = companyHistoricalData.filter((dataPoint) => {
+          return (
+            parseInt(dataPoint.label.split(':')[1], 10) % 20 === 0 &&
+            dataPoint.average !== null
+          );
         });
+        // map historical data into a label utilizing date and minute
+        historicalData.map((dataPoint) => {
+          let newLabel = dataPoint.date + ' ' + dataPoint.minute;
+          dataPoint.label = newLabel;
+        });
+        return historicalData;
       } else {
         if (chartHistoryWindow === '5y') {
-          let moduloSeven = parseInt(earliestDateReturned, 10) % 7;
-          console.log('moduloSeven: ' + moduloSeven);
+          let modulo = parseInt(earliestDateReturned, 10) % 4;
+          console.log('modulo: ' + modulo);
           return companyHistoricalData.filter((dataPoint) => {
             return (
-              parseInt(dataPoint.date.split('-')[2], 10) % 7 === moduloSeven &&
+              parseInt(dataPoint.date.split('-')[2], 10) % 4 === modulo &&
               dataPoint.high !== null
             );
           });
         } else if (chartHistoryWindow === '1y') {
-          let moduloThree = parseInt(earliestDateReturned, 10) % 3;
-          console.log('moduloThree: ' + moduloThree);
+          let modulo = parseInt(earliestDateReturned, 10) % 2;
+          console.log('modulo: ' + modulo);
           return companyHistoricalData.filter((dataPoint) => {
             return (
-              parseInt(dataPoint.date.split('-')[2], 10) % 3 === moduloThree &&
+              parseInt(dataPoint.date.split('-')[2], 10) % 2 === modulo &&
               dataPoint.high !== null
             );
           });
@@ -148,13 +159,30 @@ export default function CompanyStockChart(props) {
             height={chartHeight}
             width={props.width}
             minDomain={{y: getDomain()[0]}}
-            domain={companyHistoricalData.length > 0 ? null : {y: getDomain()}}>
+            domain={companyHistoricalData.length > 0 ? null : {y: getDomain()}}
+            containerComponent={
+              <VictoryVoronoiContainer
+                labels={
+                  chartHistoryWindow === '5d'
+                    ? ({datum}) => `${datum.average} @ ${datum.label}`
+                    : ({datum}) => `${datum.high} @ ${datum.date}`
+                }
+              />
+            }>
             <VictoryAxis fixLabelOverlap={true} tickFormat={(x) => ''} />
             <VictoryAxis dependentAxis />
             <VictoryLine
               data={getHistoricalData()}
-              y={(datum) => datum.high}
-              x={(datum) => datum.date}
+              y={
+                chartHistoryWindow === '5d'
+                  ? (datum) => datum.average
+                  : (datum) => datum.high
+              }
+              x={
+                chartHistoryWindow === '5d'
+                  ? (datum) => datum.label
+                  : (datum) => datum.date
+              }
               style={{
                 data: {stroke: '#c43a31'},
                 parent: {border: '1px solid #ccc'},
@@ -168,48 +196,48 @@ export default function CompanyStockChart(props) {
   };
 
   useEffect(() => {
-    if (chartHistoryWindow !== '1d') {
-      fetchNewHistoricalData(chartHistoryWindow);
-    }
+    fetchNewHistoricalData(chartHistoryWindow);
   }, [chartHistoryWindow]);
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.chartContainer}>{renderChart()}</View>
-      <View style={styles.historyButtonsContainer}>
-        <Button
-          onPress={() => adjustHistoryWindow('1d')}
-          style={styles.historyWindowBtn}
-          title="1d"
-        />
-        <Button
-          onPress={() => adjustHistoryWindow('5d')}
-          style={styles.historyWindowBtn}
-          title="5d"
-        />
-        <Button
-          onPress={() => adjustHistoryWindow('1m')}
-          style={styles.historyWindowBtn}
-          title="1m"
-        />
-        <Button
-          onPress={() => adjustHistoryWindow('3m')}
-          style={styles.historyWindowBtn}
-          title="3m"
-        />
-        <Button
-          onPress={() => adjustHistoryWindow('1y')}
-          style={styles.historyWindowBtn}
-          title="1y"
-        />
-        <Button
-          onPress={() => adjustHistoryWindow('5y')}
-          style={styles.historyWindowBtn}
-          title="5y"
-        />
+  return useMemo(() => {
+    return (
+      <View style={styles.container}>
+        <View style={styles.chartContainer}>{renderChart()}</View>
+        <View style={styles.historyButtonsContainer}>
+          <Button
+            onPress={() => adjustHistoryWindow('1d')}
+            style={styles.historyWindowBtn}
+            title="1d"
+          />
+          <Button
+            onPress={() => adjustHistoryWindow('5d')}
+            style={styles.historyWindowBtn}
+            title="5d"
+          />
+          <Button
+            onPress={() => adjustHistoryWindow('1m')}
+            style={styles.historyWindowBtn}
+            title="1m"
+          />
+          <Button
+            onPress={() => adjustHistoryWindow('3m')}
+            style={styles.historyWindowBtn}
+            title="3m"
+          />
+          <Button
+            onPress={() => adjustHistoryWindow('1y')}
+            style={styles.historyWindowBtn}
+            title="1y"
+          />
+          <Button
+            onPress={() => adjustHistoryWindow('5y')}
+            style={styles.historyWindowBtn}
+            title="5y"
+          />
+        </View>
       </View>
-    </View>
-  );
+    );
+  }, [companyHistoricalData]);
 }
 
 const styles = StyleSheet.create({

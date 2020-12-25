@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useMemo} from 'react';
 
 import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 import LightWeightCompanyStatsTable from './LightWeightStatsTable';
@@ -14,7 +15,6 @@ export default function PartialCompanyDisplay(props) {
 
   const [companyName, setCompanyName] = useState('');
   const [companyAdvStats, setCompanyAdvStats] = useState([]);
-  const [initialPageRender, setInitialPageRender] = useState(true);
 
   const fetchCompanyInfo = async (api_key, compSymbol) => {
     const companyInfoURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/company?token=${api_key}`;
@@ -52,11 +52,7 @@ export default function PartialCompanyDisplay(props) {
 
   // Will re-render the display each time a new company is obtained from slots
   useEffect(() => {
-    if (!initialPageRender) {
-      fetchCompanyAdvStats(sandbox_api_key, props.companySymbol);
-    }
-
-    setInitialPageRender(false);
+    fetchCompanyAdvStats(sandbox_api_key, props.companySymbol);
   }, [props.companySymbol]);
 
   const navigateToCompanyDisplay = (company) => {
@@ -67,33 +63,34 @@ export default function PartialCompanyDisplay(props) {
       companyName: companyName,
       advStats: companyAdvStats,
       width: props.width,
-      initialPageRender: initialPageRender,
       cloud_api_key: cloud_api_key,
       sandbox_api_key: sandbox_api_key,
     });
   };
 
-  return (
-    <View style={styles.container}>
-      <TouchableHighlight
-        style={styles.companyNameContainer}
-        onPress={() => navigateToCompanyDisplay(props.companySymbol)}>
-        <Text style={styles.titleText}>
-          {props.companySymbol} : {companyName}
-        </Text>
-      </TouchableHighlight>
-      <View style={styles.advStatsContainer}>
-        <LightWeightCompanyStatsTable advStats={companyAdvStats} />
+  return useMemo(() => {
+    return (
+      <View style={styles.container}>
+        <TouchableHighlight
+          style={styles.companyNameContainer}
+          onPress={() => navigateToCompanyDisplay(props.companySymbol)}>
+          <Text style={styles.titleText}>
+            {props.companySymbol} : {companyName}
+          </Text>
+        </TouchableHighlight>
+        <View style={styles.advStatsContainer}>
+          <LightWeightCompanyStatsTable advStats={companyAdvStats} />
+        </View>
+        <View style={styles.chartContainer}>
+          <LightWeightIntradayStockChart
+            width={props.width}
+            companySymbol={props.companySymbol}
+            api_key={cloud_api_key}
+          />
+        </View>
       </View>
-      <View style={styles.chartContainer}>
-        <LightWeightIntradayStockChart
-          width={props.width}
-          companySymbol={props.companySymbol}
-          api_key={cloud_api_key}
-        />
-      </View>
-    </View>
-  );
+    );
+  }, [companyName, props.companySymbol]);
 }
 
 const styles = StyleSheet.create({

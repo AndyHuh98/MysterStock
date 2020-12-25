@@ -65,7 +65,7 @@ export default function LightWeightIntradayStockChart(props) {
             domain={companyIntradayData.length > 0 ? null : {y: getDomain()}}
             containerComponent={
               <VictoryVoronoiContainer
-                labels={({datum}) => `${datum.average}`}
+                labels={({datum}) => `${datum.average} @ ${datum.minute}`}
               />
             }>
             <VictoryAxis fixLabelOverlap={true} />

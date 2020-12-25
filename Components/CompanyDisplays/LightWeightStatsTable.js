@@ -48,7 +48,7 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.avg30Volume / 30, 'en', null, {
+                {compactFormat(companyAdvStats.avg30Volume, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}

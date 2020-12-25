@@ -60,11 +60,13 @@ export default function RandomStockScreen(props) {
           styles.companyDisplayContainer,
           {opacity: companyDisplayFadeAnim},
         ]}>
-        <PartialCompanyDisplay
-          navigation={props.navigation}
-          width={screenWidth}
-          companySymbol={companySymbol}
-        />
+        {companySymbol !== '' ? (
+          <PartialCompanyDisplay
+            navigation={props.navigation}
+            width={screenWidth}
+            companySymbol={companySymbol}
+          />
+        ) : null}
       </Animated.View>
     );
 
