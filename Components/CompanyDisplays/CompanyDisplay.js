@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import {
   View,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
+import IEXContext from '../../Contexts/IEXContext';
 import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
 
@@ -17,6 +18,7 @@ const height = Dimensions.get('screen').height * 0.25;
 //        this is allegedly an "Anti-pattern" and should pull this array in from
 //        some centralized global store
 export default function CompanyDisplay(props) {
+  const iexContext = useContext(IEXContext);
   const propsParams = props.route.params;
 
   return (
@@ -31,7 +33,7 @@ export default function CompanyDisplay(props) {
           />
         </View>
         <View style={styles.statsContainer}>
-          <StatsTable height={height} advStats={propsParams.advStats} />
+          <StatsTable height={height} advStats={iexContext.advStats} />
         </View>
         <View style={styles.descriptionContainer} />
       </SafeAreaView>

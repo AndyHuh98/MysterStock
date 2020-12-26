@@ -4,9 +4,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import CompanyDisplay from './Components/CompanyDisplays/CompanyDisplay';
 import MainTabNavigator from './Components/Navigation/MainTabNavigator';
-import {useState} from 'react';
-import {useEffect} from 'react';
 import {useMemo} from 'react';
+import IEXProvider from './Contexts/IEXProvider';
 
 const Stack = createStackNavigator();
 
@@ -54,19 +53,18 @@ const App = () => {
   return useMemo(() => {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MysterStock">
-          <Stack.Screen
-            name="Myster Stock"
-            component={MainTabNavigator}
-          />
-          <Stack.Screen
-            name="CompanyDisplay"
-            component={CompanyDisplay}
-            options={({route}) => ({
-              headerTitle: `${route.params.companySymbol}`,
-            })}
-          />
-        </Stack.Navigator>
+        <IEXProvider>
+          <Stack.Navigator initialRouteName="MysterStock">
+            <Stack.Screen name="Myster Stock" component={MainTabNavigator} />
+            <Stack.Screen
+              name="CompanyDisplay"
+              component={CompanyDisplay}
+              options={({route}) => ({
+                headerTitle: `${route.params.companySymbol}`,
+              })}
+            />
+          </Stack.Navigator>
+        </IEXProvider>
       </NavigationContainer>
     );
   }, []);

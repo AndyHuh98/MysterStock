@@ -9,7 +9,6 @@ import Collapsible from 'react-native-collapsible';
 
 // Props passed in: advStats
 export default function StatsTable(props) {
-  const companyAdvStats = props.advStats;
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleTableCollapsed = () => {
@@ -42,7 +41,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.marketcap, 'en', null, {
+                {compactFormat(props.advStats.marketcap, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -51,16 +50,13 @@ export default function StatsTable(props) {
           </DataTable.Cell>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Employees:</Text>
+              <Text style={styles.statsTitle}>Employees: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.employees === null
+                {props.advStats.employees === null
                   ? ' N/A'
-                  : compactFormat(companyAdvStats.employees, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 2,
-                    })}
+                  : props.advStats.employees}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -73,7 +69,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.week52low).toFixed(2)}
+                {parseFloat(props.advStats.week52low).toFixed(2)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -83,7 +79,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.week52high).toFixed(2)}
+                {parseFloat(props.advStats.week52high).toFixed(2)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -96,7 +92,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.revenue, 'en', null, {
+                {compactFormat(props.advStats.revenue, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -109,7 +105,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.revenuePerShare).toFixed(3)}
+                {parseFloat(props.advStats.revenuePerShare).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -122,7 +118,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.grossProfit, 'en', null, {
+                {compactFormat(props.advStats.grossProfit, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -135,7 +131,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.profitMargin).toFixed(3)}
+                {parseFloat(props.advStats.profitMargin).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -148,7 +144,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.avg30Volume, 'en', null, {
+                {compactFormat(props.advStats.avg30Volume, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -157,11 +153,11 @@ export default function StatsTable(props) {
           </DataTable.Cell>
           <DataTable.Cell>
             <DataTable.Cell>
-              <Text style={styles.statsTitle}>Out. Shares:</Text>
+              <Text style={styles.statsTitle}>Out. Shares: </Text>
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.sharesOutstanding, 'en', null, {
+                {compactFormat(props.advStats.sharesOutstanding, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -177,7 +173,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.totalCash, 'en', null, {
+                {compactFormat(props.advStats.totalCash, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}{' '}
@@ -190,7 +186,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.currentDebt, 'en', null, {
+                {compactFormat(props.advStats.currentDebt, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}{' '}
@@ -206,7 +202,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.peRatio).toFixed(2)}
+                {parseFloat(props.advStats.peRatio).toFixed(2)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -216,7 +212,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.ttmEPS).toFixed(3)}
+                {parseFloat(props.advStats.ttmEPS).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -229,7 +225,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.forwardPERatio).toFixed(3)}
+                {parseFloat(props.advStats.forwardPERatio).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -239,7 +235,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.pegRatio).toFixed(3)}
+                {parseFloat(props.advStats.pegRatio).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -252,7 +248,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.putCallRatio).toFixed(3)}
+                {parseFloat(props.advStats.putCallRatio).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -262,7 +258,7 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.EBITDA, 'en', null, {
+                {compactFormat(props.advStats.EBITDA, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -278,9 +274,9 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.dividendYield == null
+                {props.advStats.dividendYield == null
                   ? 'N/A'
-                  : parseFloat(companyAdvStats.dividendYield).toFixed(3)}
+                  : parseFloat(props.advStats.dividendYield).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -290,9 +286,9 @@ export default function StatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.nextDividendDate == null
+                {props.advStats.nextDividendDate == null
                   ? 'N/A'
-                  : companyAdvStats.nextDividendDate}
+                  : props.advStats.nextDividendDate}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>

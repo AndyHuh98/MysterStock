@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useContext, useMemo} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,7 +12,7 @@ import {
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import images from '../../assets/images';
-import {useMemo} from 'react';
+import IEXContext from '../../Contexts/IEXContext';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 
@@ -21,115 +21,118 @@ export default function RandomStockScreen(props) {
   const [companyDisplayFadeAnim] = useState(new Animated.Value(0));
   const [companySymbol, setCompanySymbol] = useState('');
   const [stockBtnDisable, setStockBtnDisable] = useState(false);
-  // TODO: pass to children through context provider instead of prop drilling
-  const [allIEXStocks, setAllIEXStocks] = useState([]);
-
-  // TODO: use these and pass them to all children, perhaps use Context Provider
-  const cloud_api_key = 'pk_765c2f02d9af4fd28f01fea090e2f544';
-  const sandbox_api_key = 'Tpk_77a598a1fa804de592413ba39f6b137a';
+  const iexContext = useContext(IEXContext);
 
   async function fetchAllIEXStocks() {
-    const allIEXStocksURL = `https://sandbox.iexapis.com/beta/ref-data/symbols?token=${sandbox_api_key}`;
-    console.log(allIEXStocksURL);
-
-    let allIEXStox = [];
     try {
-      await fetch(allIEXStocksURL)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          allIEXStox = responseJson;
-          setAllIEXStocks(allIEXStox);
-        });
+      if (iexContext.stocksSupported !== undefined) {
+        await setAllIEXStocks(iexContext.stocksSupported);
+      }
     } catch (error) {
       console.error(error);
     }
   }
 
-  useEffect(() => {
-    fetchAllIEXStocks();
-  }, []);
+  useEffect(() => {}, [iexContext.stocksSupported, companySymbol]);
 
   const reelGroup = useRef();
 
-  const newStockBtnClicked = (event) => {
-    fadeOutCompanyDisplay();
-
-    event.preventDefault();
-    setStockBtnDisable(true);
-
-    setTimeout(() => setStockBtnDisable(false), 5000);
-
-    reelGroup.current.spin((_companySymbol) => {
-      setCompanySymbol(_companySymbol);
-      fadeInCompanyDisplay();
-    });
-  };
-
-  const fadeInCompanyDisplay = () => {
-    Animated.timing(companyDisplayFadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const fadeOutCompanyDisplay = () => {
-    Animated.timing(companyDisplayFadeAnim, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const renderCompanyDisplay = () => {
-    const display = (
-      <Animated.View
-        style={[
-          styles.companyDisplayContainer,
-          {opacity: companyDisplayFadeAnim},
-        ]}>
-        {companySymbol !== '' ? (
-          <PartialCompanyDisplay
-            navigation={props.navigation}
-            width={screenWidth}
-            companySymbol={companySymbol}
-          />
-        ) : null}
-      </Animated.View>
-    );
-
-    return display;
-  };
-
   // TODO: In one of these, place a LoadingScreen Component
-  return (
-    <View style={styles.container}>
-      <ImageBackground source={images.background} style={styles.background}>
-        <SafeAreaView style={styles.container}>
-          {allIEXStocks.length > 0 ? (
-            <View style={styles.slotsContainer}>
-              <ReelGroup
-                companySymbolsArray={allIEXStocks.map((stock) => stock.symbol)}
-                ref={reelGroup}
-              />
-            </View>
-          ) : null}
-          {allIEXStocks.length > 0 ? (
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                disabled={stockBtnDisable}
-                onPress={(e) => newStockBtnClicked(e)}>
-                <Text style={styles.titleText}>
-                  {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : null}
-          {renderCompanyDisplay()}
-        </SafeAreaView>
-      </ImageBackground>
-    </View>
-  );
+  return useMemo(() => {
+    // Methods to fade in and fade out animations
+    const fadeInCompanyDisplay = () => {
+      Animated.timing(companyDisplayFadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    };
+
+    const fadeOutCompanyDisplay = () => {
+      Animated.timing(companyDisplayFadeAnim, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    };
+
+    // On press method for stock button
+    const newStockBtnClicked = (event) => {
+      fadeOutCompanyDisplay();
+
+      event.preventDefault();
+      setStockBtnDisable(true);
+
+      setTimeout(() => setStockBtnDisable(false), 4000);
+
+      reelGroup.current.spin((_companySymbol) => {
+        setCompanySymbol(_companySymbol);
+        iexContext.companySymbol.changeCompanySymbol(_companySymbol);
+        fadeInCompanyDisplay();
+      });
+    };
+
+    if (iexContext.stocksSupported !== undefined) {
+      return (
+        <View style={styles.container}>
+          <ImageBackground source={images.background} style={styles.background}>
+            <SafeAreaView style={styles.container}>
+              {iexContext.stocksSupported.length > 0 ? (
+                <View style={styles.slotsContainer}>
+                  <ReelGroup
+                    companySymbolsArray={iexContext.stocksSupported.map(
+                      (stock) => stock.symbol,
+                    )}
+                    ref={reelGroup}
+                  />
+                </View>
+              ) : null}
+              {iexContext.stocksSupported.length > 0 ? (
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    disabled={stockBtnDisable}
+                    onPress={(e) => newStockBtnClicked(e)}>
+                    <Text style={styles.titleText}>
+                      {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+              <Animated.View
+                style={[
+                  styles.companyDisplayContainer,
+                  {opacity: companyDisplayFadeAnim},
+                ]}>
+                {companySymbol !== '' ? (
+                  <PartialCompanyDisplay
+                    navigation={props.navigation}
+                    width={screenWidth}
+                    companySymbol={companySymbol}
+                  />
+                ) : null}
+              </Animated.View>
+            </SafeAreaView>
+          </ImageBackground>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <ImageBackground
+            source={images.background}
+            style={styles.background}
+          />
+        </View>
+      );
+    }
+  }, [
+    iexContext.stocksSupported,
+    iexContext.companySymbol,
+    stockBtnDisable,
+    companyDisplayFadeAnim,
+    companySymbol,
+    props.navigation,
+  ]);
 }
 
 const styles = StyleSheet.create({

@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 
 import Reel from './Reel';
 import Constants from '../Utils/Constants';
-import {HARDCODED_COMPANY_SYMBOLS_ARRAY} from '../Utils/Constants';
 
 // TODO: Make letters show up BEFORE loading in all stocks
 // TODO: disable button while stocks still loading (throws error if you press before loaded fully)
@@ -24,8 +23,7 @@ export default class ReelGroup extends Component {
     this.reelHeight = Constants.MAX_HEIGHT * 0.55;
     this.reels = [Constants.REEL_COUNT];
 
-    // TODO: remove hardcoding and do API call here, or in a central location and pass it into here.
-
+    // TODO: may need to put this into state
     this.companySymbolsArray = props.companySymbolsArray;
     this.companySymbolArray = [4];
 

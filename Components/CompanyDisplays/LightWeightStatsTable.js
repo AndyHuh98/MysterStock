@@ -17,8 +17,6 @@ export default function LightWeightCompanyStatsTable(props) {
     },
   });
 
-  const companyAdvStats = props.advStats;
-
   const dataTableDisplay = () => {
     return (
       <DataTable>
@@ -35,7 +33,7 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.marketcap, 'en', null, {
+                {compactFormat(props.advStats.marketcap, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -48,7 +46,7 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.avg30Volume, 'en', null, {
+                {compactFormat(props.advStats.avg30Volume, 'en', null, {
                   significantDigits: 3,
                   maximumFractionDigits: 4,
                 })}
@@ -64,7 +62,7 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.week52low).toFixed(2)}
+                {parseFloat(props.advStats.week52low).toFixed(2)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -74,7 +72,7 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.week52high).toFixed(2)}
+                {parseFloat(props.advStats.week52high).toFixed(2)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -87,9 +85,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.dividendYield == null
+                {props.advStats.dividendYield == null
                   ? 'N/A'
-                  : parseFloat(companyAdvStats.dividendYield).toFixed(3)}
+                  : parseFloat(props.advStats.dividendYield).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -99,9 +97,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.nextDividendDate == null
+                {props.advStats.nextDividendDate == null
                   ? 'N/A'
-                  : companyAdvStats.nextDividendDate}
+                  : props.advStats.nextDividendDate}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -114,7 +112,7 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.peRatio).toFixed(2)}
+                {parseFloat(props.advStats.peRatio).toFixed(2)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -124,7 +122,7 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.ttmEPS).toFixed(3)}
+                {parseFloat(props.advStats.ttmEPS).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
