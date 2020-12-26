@@ -11,6 +11,9 @@ import {
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
+// TODO: Test LIVE UPDATE of this chart
+// TODO: See what Robinhood behavior is for live update of weekly / monthly data
+
 // Lightweight, single day stock price chart meant for the main page display.
 // Props passed: width, initialPageRender, companySymbol, api_key
 export default function LightWeightIntradayStockChart(props) {

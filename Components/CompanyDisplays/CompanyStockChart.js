@@ -66,9 +66,7 @@ export default function CompanyStockChart(props) {
     }
   };
 
-  // TODO: Fix "flickering" chart whenever changing between charts -- possibly use a
-  // boolean to not render with companyHistoryData until we're done processing the data.
-  // TODO: Implement behavior for 5d Chart --> group by date somehow so it looks less cluttered
+  // TODO: change Voronoi to horizontal line Robinhood type thing
   const renderHistoricalStockChart = () => {
     function getHistoricalData() {
       let earliestDateReturned = companyHistoricalData[0].date.split('-')[2];
@@ -132,23 +130,6 @@ export default function CompanyStockChart(props) {
         return [Math.min(...highPrices) * 0.99, Math.max(...highPrices) * 1.1];
       }
     };
-
-    /*
-                <VictoryLine
-              data={getHistoricalData()}
-              y={(datum) =>
-                chartHistoryWindow === '5d' ? datum.average : datum.high
-              }
-              x={(datum) =>
-                chartHistoryWindow === '5d' ? datum.minute : datum.date
-              }
-              style={{
-                data: {stroke: '#c43a31'},
-                parent: {border: '1px solid #ccc'},
-              }}
-              labelComponent={<VictoryLabel text={''} />}
-            />
-    */
 
     console.log('rendering historical chart for: ' + chartHistoryWindow);
     if (companyHistoricalData.length > 0) {

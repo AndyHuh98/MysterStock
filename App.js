@@ -7,6 +7,8 @@ import MainTabNavigator from './Components/Navigation/MainTabNavigator';
 
 const Stack = createStackNavigator();
 
+// TODO: Split off fetching from IEX into Services files? Do more reading on this
+
 /*
 ======EXAMPLE FOR CUSTOM HEADER======
 
@@ -36,10 +38,19 @@ const Stack = createStackNavigator();
   />
 */
 
+/*
+ADJUSTING HEADER STYLES: https://reactnavigation.org/docs/headers
+There are three key properties to use when customizing the style of your header: headerStyle, headerTintColor, and headerTitleStyle.
+
+headerStyle: a style object that will be applied to the View that wraps the header. If you set backgroundColor on it, that will be the color of your header.
+headerTintColor: the back button and title both use this property as their color. In the example below, we set the tint color to white (#fff) so the back button and the header title would be white.
+headerTitleStyle: if we want to customize the fontFamily, fontWeight and other Text style properties for the title, we can use this to do it.
+*/
+
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="MysterStock">
         <Stack.Screen name="Myster Stock" component={MainTabNavigator} />
         <Stack.Screen
           name="CompanyDisplay"
