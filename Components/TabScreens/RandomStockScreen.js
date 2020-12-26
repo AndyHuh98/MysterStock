@@ -101,27 +101,30 @@ export default function RandomStockScreen(props) {
     return display;
   };
 
+  // TODO: In one of these, place a LoadingScreen Component
   return (
     <View style={styles.container}>
       <ImageBackground source={images.background} style={styles.background}>
         <SafeAreaView style={styles.container}>
-          <View style={styles.slotsContainer}>
-            {allIEXStocks.length > 0 ? (
+          {allIEXStocks.length > 0 ? (
+            <View style={styles.slotsContainer}>
               <ReelGroup
                 companySymbolsArray={allIEXStocks.map((stock) => stock.symbol)}
                 ref={reelGroup}
               />
-            ) : null}
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              disabled={stockBtnDisable}
-              onPress={(e) => newStockBtnClicked(e)}>
-              <Text style={styles.titleText}>
-                {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+            </View>
+          ) : null}
+          {allIEXStocks.length > 0 ? (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                disabled={stockBtnDisable}
+                onPress={(e) => newStockBtnClicked(e)}>
+                <Text style={styles.titleText}>
+                  {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
           {renderCompanyDisplay()}
         </SafeAreaView>
       </ImageBackground>
