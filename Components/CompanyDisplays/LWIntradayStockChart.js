@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useMemo} from 'react';
-import {StyleSheet, View, Text, Dimensions} from 'react-native';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   VictoryChart,
   VictoryLine,
@@ -25,7 +25,10 @@ export default function LightWeightIntradayStockChart(props) {
   useEffect(() => {
     const fetchCompanyIntradayData = async (key) => {
       const companyIntradayURL = `https://cloud.iexapis.com/stable/stock/${props.companySymbol}/intraday-prices?token=${key}&chartLast=390`;
-      console.log(companyIntradayURL);
+      console.log(
+        'LWIntradayStockChart - fetchCompanyIntradayData(): ' +
+          companyIntradayURL,
+      );
 
       try {
         await fetch(companyIntradayURL)

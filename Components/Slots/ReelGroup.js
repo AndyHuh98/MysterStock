@@ -58,17 +58,14 @@ export default class ReelGroup extends Component {
       0,
       this.companySymbolsArray.length - 1,
     );
-    console.log(randomNum);
     const company = this.companySymbolsArray[randomNum];
     this.companySymbolArray = this.companySymbolsArray[randomNum].split('');
     for (let i = 0; i < this.reels.length; i++) {
       let symbol = '';
       if (this.companySymbolArray[i] === undefined) {
         symbol = ' ';
-        console.log(' ');
       } else {
         symbol = this.companySymbolArray[i];
-        console.log(this.companySymbolArray[i]);
       }
       this.reels[i].scrollToSymbol(symbol, () => {
         this.reelsInMotion -= 1;

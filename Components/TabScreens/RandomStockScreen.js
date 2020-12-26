@@ -23,16 +23,6 @@ export default function RandomStockScreen(props) {
   const [stockBtnDisable, setStockBtnDisable] = useState(false);
   const iexContext = useContext(IEXContext);
 
-  async function fetchAllIEXStocks() {
-    try {
-      if (iexContext.stocksSupported !== undefined) {
-        await setAllIEXStocks(iexContext.stocksSupported);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   useEffect(() => {}, [iexContext.stocksSupported, companySymbol]);
 
   const reelGroup = useRef();

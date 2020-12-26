@@ -44,7 +44,6 @@ export default class Reel extends Component {
     );
     const difference = desiredSymbolValue - currentSymbolValue;
     this.position = this.position - difference;
-    console.log('new position: ' + this.position);
 
     // Since tape starts with 'A' at the very top. Not sure why we need the 2 instead of 1 though.
     if (this.isInitialSpin) {

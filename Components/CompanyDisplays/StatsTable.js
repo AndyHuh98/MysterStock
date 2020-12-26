@@ -12,7 +12,6 @@ export default function StatsTable(props) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleTableCollapsed = () => {
-    console.log('clicked');
     setIsCollapsed(!isCollapsed);
   };
 
@@ -297,7 +296,6 @@ export default function StatsTable(props) {
     );
   };
 
-  // Change from ScrollView to <Collapsible> and see if it works.
   return (
     <Collapsible
       style={styles.container}

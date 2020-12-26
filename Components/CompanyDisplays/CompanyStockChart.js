@@ -31,156 +31,161 @@ export default function CompanyStockChart(props) {
     setChartHistoryWindow(newWindow);
   }
 
-  async function fetchNewHistoricalData(window) {
-    console.log('fetchNewHistoricalData()');
-    let modifiedWindow = window;
-    if (window === '5d') {
-      modifiedWindow = '5dm';
-    }
+  useEffect(() => {
+    async function fetchNewHistoricalData(window) {
+      console.log('fetchNewHistoricalData()');
+      let modifiedWindow = window;
+      if (window === '5d') {
+        modifiedWindow = '5dm';
+      }
 
-    const historicalDataURL = `https://sandbox.iexapis.com/stable/stock/${props.companySymbol}/chart/${modifiedWindow}?token=${props.sandbox_api_key}`;
-    console.log(historicalDataURL);
-
-    try {
-      await fetch(historicalDataURL)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          setCompanyHistoricalData(responseJson);
-        });
-    } catch (error) {
-      console.error('ERROR: ' + error);
-    }
-  }
-
-  const renderChart = () => {
-    if (chartHistoryWindow === '1d') {
-      return (
-        <LightWeightIntradayStockChart
-          companySymbol={props.companySymbol}
-          width={props.width}
-          api_key={props.cloud_api_key}
-        />
+      const historicalDataURL = `https://sandbox.iexapis.com/stable/stock/${props.companySymbol}/chart/${modifiedWindow}?token=${props.sandbox_api_key}`;
+      console.log(
+        'CompanyStockChart() - fetchNewHistoricalData(): ' + historicalDataURL,
       );
-    } else {
-      return renderHistoricalStockChart();
-    }
-  };
 
-  // TODO: change Voronoi to horizontal line Robinhood type thing
-  const renderHistoricalStockChart = () => {
-    function getHistoricalData() {
-      let earliestDateReturned = companyHistoricalData[0].date.split('-')[2];
-      console.log(earliestDateReturned);
-      if (chartHistoryWindow === '5d') {
-        console.log('hello');
-        let historicalData = companyHistoricalData.filter((dataPoint) => {
-          return (
-            parseInt(dataPoint.label.split(':')[1], 10) % 20 === 0 &&
-            dataPoint.average !== null
-          );
-        });
-        // map historical data into a label utilizing date and minute
-        historicalData.map((dataPoint) => {
-          let newLabel = dataPoint.date + ' ' + dataPoint.minute;
-          dataPoint.label = newLabel;
-        });
-        return historicalData;
-      } else {
-        if (chartHistoryWindow === '5y') {
-          let modulo = parseInt(earliestDateReturned, 10) % 4;
-          console.log('modulo: ' + modulo);
-          return companyHistoricalData.filter((dataPoint) => {
-            return (
-              parseInt(dataPoint.date.split('-')[2], 10) % 4 === modulo &&
-              dataPoint.high !== null
-            );
+      try {
+        await fetch(historicalDataURL)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            setCompanyHistoricalData(responseJson);
           });
-        } else if (chartHistoryWindow === '1y') {
-          let modulo = parseInt(earliestDateReturned, 10) % 2;
-          console.log('modulo: ' + modulo);
-          return companyHistoricalData.filter((dataPoint) => {
-            return (
-              parseInt(dataPoint.date.split('-')[2], 10) % 2 === modulo &&
-              dataPoint.high !== null
-            );
-          });
-        } else {
-          return companyHistoricalData.filter((dataPoint) => {
-            return dataPoint.high !== null;
-          });
-        }
+      } catch (error) {
+        console.error('ERROR: ' + error);
       }
     }
+    fetchNewHistoricalData(chartHistoryWindow);
+  }, [chartHistoryWindow, props.companySymbol, props.sandbox_api_key]);
 
-    const getDomain = () => {
-      if (chartHistoryWindow === '5d') {
-        const averagePrices = companyHistoricalData
-          .map((dataPoint) => dataPoint.average)
-          .filter((average) => average != null);
-
-        return [
-          Math.min(...averagePrices) * 0.99,
-          Math.max(...averagePrices) * 1.1,
-        ];
+  return useMemo(() => {
+    const renderChart = () => {
+      if (chartHistoryWindow === '1d') {
+        return (
+          <LightWeightIntradayStockChart
+            companySymbol={props.companySymbol}
+            width={props.width}
+            api_key={props.cloud_api_key}
+          />
+        );
       } else {
-        const highPrices = companyHistoricalData
-          .map((dataPoint) => dataPoint.high)
-          .filter((high) => high != null);
-
-        return [Math.min(...highPrices) * 0.99, Math.max(...highPrices) * 1.1];
+        return renderHistoricalStockChart();
       }
     };
 
-    console.log('rendering historical chart for: ' + chartHistoryWindow);
-    if (companyHistoricalData.length > 0) {
-      return (
-        <View style={styles.chartContainer}>
-          <VictoryChart
-            theme={VictoryTheme.material}
-            height={chartHeight}
-            width={props.width}
-            minDomain={{y: getDomain()[0]}}
-            domain={companyHistoricalData.length > 0 ? null : {y: getDomain()}}
-            containerComponent={
-              <VictoryVoronoiContainer
-                labels={
-                  chartHistoryWindow === '5d'
-                    ? ({datum}) => `${datum.average} @ ${datum.label}`
-                    : ({datum}) => `${datum.high} @ ${datum.date}`
-                }
-              />
-            }>
-            <VictoryAxis fixLabelOverlap={true} tickFormat={(x) => ''} />
-            <VictoryAxis dependentAxis />
-            <VictoryLine
-              data={getHistoricalData()}
-              y={
-                chartHistoryWindow === '5d'
-                  ? (datum) => datum.average
-                  : (datum) => datum.high
-              }
-              x={
-                chartHistoryWindow === '5d'
-                  ? (datum) => datum.label
-                  : (datum) => datum.date
-              }
-              style={{
-                data: {stroke: '#c43a31'},
-                parent: {border: '1px solid #ccc'},
-              }}
-              labelComponent={<VictoryLabel text={''} />}
-            />
-          </VictoryChart>
-        </View>
+    // TODO: change Voronoi to horizontal line Robinhood type thing
+    const renderHistoricalStockChart = () => {
+      function getHistoricalData() {
+        let earliestDateReturned = companyHistoricalData[0].date.split('-')[2];
+        if (chartHistoryWindow === '5d') {
+          let historicalData = companyHistoricalData.filter((dataPoint) => {
+            return (
+              parseInt(dataPoint.label.split(':')[1], 10) % 20 === 0 &&
+              dataPoint.average !== null
+            );
+          });
+          // map historical data into a label utilizing date and minute
+          historicalData.map((dataPoint) => {
+            let newLabel = dataPoint.date + ' ' + dataPoint.minute;
+            dataPoint.label = newLabel;
+          });
+          return historicalData;
+        } else {
+          if (chartHistoryWindow === '5y') {
+            let modulo = parseInt(earliestDateReturned, 10) % 4;
+            return companyHistoricalData.filter((dataPoint) => {
+              return (
+                parseInt(dataPoint.date.split('-')[2], 10) % 4 === modulo &&
+                dataPoint.high !== null
+              );
+            });
+          } else if (chartHistoryWindow === '1y') {
+            let modulo = parseInt(earliestDateReturned, 10) % 2;
+            return companyHistoricalData.filter((dataPoint) => {
+              return (
+                parseInt(dataPoint.date.split('-')[2], 10) % 2 === modulo &&
+                dataPoint.high !== null
+              );
+            });
+          } else {
+            return companyHistoricalData.filter((dataPoint) => {
+              return dataPoint.high !== null;
+            });
+          }
+        }
+      }
+
+      const getDomain = () => {
+        if (chartHistoryWindow === '5d') {
+          const averagePrices = companyHistoricalData
+            .map((dataPoint) => dataPoint.average)
+            .filter((average) => average != null);
+
+          return [
+            Math.min(...averagePrices) * 0.99,
+            Math.max(...averagePrices) * 1.1,
+          ];
+        } else {
+          const highPrices = companyHistoricalData
+            .map((dataPoint) => dataPoint.high)
+            .filter((high) => high != null);
+
+          return [
+            Math.min(...highPrices) * 0.99,
+            Math.max(...highPrices) * 1.1,
+          ];
+        }
+      };
+
+      console.log(
+        'CompanyStockChart(): rendering historical chart for: ' +
+          chartHistoryWindow,
       );
-    }
-  };
+      if (companyHistoricalData.length > 0) {
+        return (
+          <View style={styles.chartContainer}>
+            <VictoryChart
+              theme={VictoryTheme.material}
+              height={chartHeight}
+              width={props.width}
+              minDomain={{y: getDomain()[0]}}
+              domain={
+                companyHistoricalData.length > 0 ? null : {y: getDomain()}
+              }
+              containerComponent={
+                <VictoryVoronoiContainer
+                  labels={
+                    chartHistoryWindow === '5d'
+                      ? ({datum}) => `${datum.average} @ ${datum.label}`
+                      : ({datum}) => `${datum.high} @ ${datum.date}`
+                  }
+                />
+              }>
+              <VictoryAxis fixLabelOverlap={true} tickFormat={(x) => ''} />
+              <VictoryAxis dependentAxis />
+              <VictoryLine
+                data={getHistoricalData()}
+                y={
+                  chartHistoryWindow === '5d'
+                    ? (datum) => datum.average
+                    : (datum) => datum.high
+                }
+                x={
+                  chartHistoryWindow === '5d'
+                    ? (datum) => datum.label
+                    : (datum) => datum.date
+                }
+                style={{
+                  data: {stroke: '#c43a31'},
+                  parent: {border: '1px solid #ccc'},
+                }}
+                labelComponent={<VictoryLabel text={''} />}
+              />
+            </VictoryChart>
+          </View>
+        );
+      }
+    };
 
-  useEffect(() => {
-    fetchNewHistoricalData(chartHistoryWindow);
-  }, [chartHistoryWindow]);
-
-  return useMemo(() => {
     return (
       <View style={styles.container}>
         <View style={styles.chartContainer}>{renderChart()}</View>
@@ -218,7 +223,13 @@ export default function CompanyStockChart(props) {
         </View>
       </View>
     );
-  }, [companyHistoricalData]);
+  }, [
+    chartHistoryWindow,
+    companyHistoricalData,
+    props.cloud_api_key,
+    props.companySymbol,
+    props.width,
+  ]);
 }
 
 const styles = StyleSheet.create({

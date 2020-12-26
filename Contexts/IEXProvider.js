@@ -2,8 +2,23 @@ import React from 'react';
 import {useState, useEffect, useMemo} from 'react';
 import IEXContext from './IEXContext';
 
-// TODO: https://stackoverflow.com/questions/56193207/react-native-how-can-i-update-state-in-context-api
-// Add a set callback for the companySymbol and call fetchAdvStats when companySymbol is set in spin
+/* PARALLEL FETCHING - MAY COME IN HANDY - TODO: fetch historical data at the same time as advanced stats
+async function parallelIEXFetch() {
+  const fetchStocks = !stocksSupportedFetched
+    ? fetchStocksSupported(sandbox_api_key)
+    : null;
+  const fetchAdvStats =
+    companySymbol !== '' && !stocksSupportedFetched
+      ? fetchCompanyAdvStats(sandbox_api_key, companySymbol)
+      : null;
+
+  // returns nothing, just a way to run the two functions in parallel
+  return {
+    supportedStocksSet: await fetchStocks,
+    companyAdvStocksSet: await fetchAdvStats,
+  };
+  */
+
 export default function IEXProvider({children}) {
   const [stocksSupported, setStocksSupported] = useState(undefined);
   const [companySymbol, setCompanySymbol] = useState('');
@@ -42,32 +57,26 @@ export default function IEXProvider({children}) {
     await fetch(advStatsFetchURL)
       .then((response) => response.json())
       .then((responseJson) => {
+        setStocksSupportedFetched(true);
         advStats = responseJson;
         setCompanyName(advStats.companyName);
         setCompanyAdvStats(advStats);
-        setStocksSupportedFetched(true);
       });
   };
 
-  async function parallelIEXFetch() {
-    const fetchStocks = !stocksSupportedFetched
-      ? fetchStocksSupported(sandbox_api_key)
-      : null;
-    const fetchAdvStats =
-      companySymbol !== ''
-        ? fetchCompanyAdvStats(sandbox_api_key, companySymbol)
-        : null;
-
-    // returns nothing, just a way to run the two functions in parallel
-    return {
-      supportedStocksSet: await fetchStocks,
-      companyAdvStocksSet: await fetchAdvStats,
-    };
-  }
-
+  // Each time the companySymbol changes, we need to load new advanced stats.
   useEffect(() => {
-    parallelIEXFetch();
+    if (companySymbol !== '') {
+      fetchCompanyAdvStats(sandbox_api_key, companySymbol);
+    }
   }, [companySymbol]);
+
+  // The first time we load into the app, we want to make sure the list of stocks is updated
+  useEffect(() => {
+    if (!stocksSupportedFetched) {
+      fetchStocksSupported(sandbox_api_key);
+    }
+  }, [stocksSupportedFetched]);
 
   return useMemo(() => {
     console.log('IEXProvider Rendering');
