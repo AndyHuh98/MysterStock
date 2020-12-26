@@ -5,6 +5,8 @@ import {DataTable} from 'react-native-paper';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
 
+// TODO: Place N/A handlers in all entries of data table --> do this in LWStatsTable as well
+
 // Props passed in: advStats
 export default function StatsTable(props) {
   const companyAdvStats = props.advStats;

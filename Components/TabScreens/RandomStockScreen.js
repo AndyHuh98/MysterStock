@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,6 +12,7 @@ import {
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import images from '../../assets/images';
+import {useMemo} from 'react';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 
@@ -20,6 +21,33 @@ export default function RandomStockScreen(props) {
   const [companyDisplayFadeAnim] = useState(new Animated.Value(0));
   const [companySymbol, setCompanySymbol] = useState('');
   const [stockBtnDisable, setStockBtnDisable] = useState(false);
+  // TODO: pass to children through context provider instead of prop drilling
+  const [allIEXStocks, setAllIEXStocks] = useState([]);
+
+  // TODO: use these and pass them to all children, perhaps use Context Provider
+  const cloud_api_key = 'pk_765c2f02d9af4fd28f01fea090e2f544';
+  const sandbox_api_key = 'Tpk_77a598a1fa804de592413ba39f6b137a';
+
+  async function fetchAllIEXStocks() {
+    const allIEXStocksURL = `https://sandbox.iexapis.com/beta/ref-data/symbols?token=${sandbox_api_key}`;
+    console.log(allIEXStocksURL);
+
+    let allIEXStox = [];
+    try {
+      await fetch(allIEXStocksURL)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          allIEXStox = responseJson;
+          setAllIEXStocks(allIEXStox);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchAllIEXStocks();
+  }, []);
 
   const reelGroup = useRef();
 
@@ -78,7 +106,12 @@ export default function RandomStockScreen(props) {
       <ImageBackground source={images.background} style={styles.background}>
         <SafeAreaView style={styles.container}>
           <View style={styles.slotsContainer}>
-            <ReelGroup ref={reelGroup} />
+            {allIEXStocks.length > 0 ? (
+              <ReelGroup
+                companySymbolsArray={allIEXStocks.map((stock) => stock.symbol)}
+                ref={reelGroup}
+              />
+            ) : null}
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity

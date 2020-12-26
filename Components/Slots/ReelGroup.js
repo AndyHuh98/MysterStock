@@ -5,6 +5,9 @@ import Reel from './Reel';
 import Constants from '../Utils/Constants';
 import {HARDCODED_COMPANY_SYMBOLS_ARRAY} from '../Utils/Constants';
 
+// TODO: Make letters show up BEFORE loading in all stocks
+// TODO: disable button while stocks still loading (throws error if you press before loaded fully)
+// props passed in: companySymbolsArray
 export default class ReelGroup extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +25,8 @@ export default class ReelGroup extends Component {
     this.reels = [Constants.REEL_COUNT];
 
     // TODO: remove hardcoding and do API call here, or in a central location and pass it into here.
-    this.companySymbolsArray = HARDCODED_COMPANY_SYMBOLS_ARRAY;
+
+    this.companySymbolsArray = props.companySymbolsArray;
     this.companySymbolArray = [4];
 
     this.reelsInMotion = Constants.REEL_COUNT;
@@ -56,6 +60,7 @@ export default class ReelGroup extends Component {
       0,
       this.companySymbolsArray.length - 1,
     );
+    console.log(randomNum);
     const company = this.companySymbolsArray[randomNum];
     this.companySymbolArray = this.companySymbolsArray[randomNum].split('');
     for (let i = 0; i < this.reels.length; i++) {

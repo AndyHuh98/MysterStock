@@ -4,6 +4,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import CompanyDisplay from './Components/CompanyDisplays/CompanyDisplay';
 import MainTabNavigator from './Components/Navigation/MainTabNavigator';
+import {useState} from 'react';
+import {useEffect} from 'react';
+import {useMemo} from 'react';
 
 const Stack = createStackNavigator();
 
@@ -48,20 +51,25 @@ headerTitleStyle: if we want to customize the fontFamily, fontWeight and other T
 */
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="MysterStock">
-        <Stack.Screen name="Myster Stock" component={MainTabNavigator} />
-        <Stack.Screen
-          name="CompanyDisplay"
-          component={CompanyDisplay}
-          options={({route}) => ({
-            headerTitle: `${route.params.companySymbol}`,
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return useMemo(() => {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="MysterStock">
+          <Stack.Screen
+            name="Myster Stock"
+            component={MainTabNavigator}
+          />
+          <Stack.Screen
+            name="CompanyDisplay"
+            component={CompanyDisplay}
+            options={({route}) => ({
+              headerTitle: `${route.params.companySymbol}`,
+            })}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }, []);
 };
 
 export default App;

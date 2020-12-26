@@ -13,6 +13,8 @@ const chartHeight = Dimensions.get('screen').height * 0.3;
 
 // TODO: Test LIVE UPDATE of this chart
 // TODO: See what Robinhood behavior is for live update of weekly / monthly data
+// TODO: Add horizontal line for market open price (grey dashed on robinhood)
+// TODO: Fix crash whenever there are less than 2 data points
 
 // Lightweight, single day stock price chart meant for the main page display.
 // Props passed: width, initialPageRender, companySymbol, api_key
@@ -20,8 +22,6 @@ export default function LightWeightIntradayStockChart(props) {
   const companySymbol = props.companySymbol;
   const api_key = props.api_key;
   const [companyIntradayData, setCompanyIntradayData] = useState([]);
-
-  // <a href="https://www.freepik.com/vectors/gold">Gold vector created by vilmosvarga - www.freepik.com</a>
 
   const fetchCompanyIntradayData = async (key) => {
     const companyIntradayURL = `https://cloud.iexapis.com/stable/stock/${companySymbol}/intraday-prices?token=${key}&chartLast=390`;
@@ -31,7 +31,19 @@ export default function LightWeightIntradayStockChart(props) {
       await fetch(companyIntradayURL)
         .then((response) => response.json())
         .then((responseJson) => {
-          setCompanyIntradayData(responseJson);
+          let filteredData = [];
+          filteredData = responseJson;
+          filteredData.filter((dataPoint) => {
+            let minutes = dataPoint.minute.split(':')[1];
+            // can make graph more detailed by changing the modulo here
+            for (let i = 5; i > 0; i--) {
+              if (minutes % i === 0 && dataPoint.average !== null) {
+                return minutes % i === 0 && dataPoint.average !== null;
+              }
+            }
+            return minutes % 5 === 0 && dataPoint.average !== null;
+          });
+          setCompanyIntradayData(filteredData);
         });
     } catch (error) {
       console.error('ERROR: ' + error);
@@ -56,7 +68,10 @@ export default function LightWeightIntradayStockChart(props) {
       ];
     };
 
-    if (companyIntradayData.length > 0) {
+    if (
+      companyIntradayData.filter((dataPoint) => dataPoint.average !== null)
+        .length > 1
+    ) {
       return (
         <View style={styles.chartContainer}>
           <VictoryChart
@@ -74,11 +89,9 @@ export default function LightWeightIntradayStockChart(props) {
             <VictoryAxis fixLabelOverlap={true} />
             <VictoryAxis dependentAxis />
             <VictoryLine
-              data={companyIntradayData.filter((dataPoint) => {
-                let minutes = dataPoint.minute.split(':')[1];
-                // can make graph more detailed by changing the modulo here
-                return minutes % 5 === 0 && dataPoint.average !== null;
-              })}
+              data={companyIntradayData.filter(
+                (dataPoint) => dataPoint.average != null,
+              )}
               y={(datum) => datum.average}
               x={(datum) => datum.minute}
               style={{
@@ -86,6 +99,25 @@ export default function LightWeightIntradayStockChart(props) {
                 parent: {border: '1px solid #ccc'},
               }}
               labelComponent={<VictoryLabel text={''} />}
+            />
+          </VictoryChart>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.chartContainer}>
+          <VictoryChart
+            style={styles.chart}
+            height={chartHeight}
+            width={props.width}
+            theme={VictoryTheme.material}>
+            <VictoryAxis fixLabelOverlap={true} />
+            <VictoryAxis dependentAxis />
+            <VictoryLabel
+              text="No intraday data for company."
+              x={225}
+              y={30}
+              textAnchor="middle"
             />
           </VictoryChart>
         </View>
