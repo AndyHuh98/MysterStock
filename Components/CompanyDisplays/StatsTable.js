@@ -5,7 +5,6 @@ import {DataTable} from 'react-native-paper';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
 
-
 // Props passed in: advStats
 export default function StatsTable(props) {
   const [isCollapsed, setIsCollapsed] = useState(true);

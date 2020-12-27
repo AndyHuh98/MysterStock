@@ -33,7 +33,6 @@ export default function CompanyStockChart(props) {
 
   useEffect(() => {
     async function fetchNewHistoricalData(window) {
-      console.log('fetchNewHistoricalData()');
       let modifiedWindow = window;
       if (window === '5d') {
         modifiedWindow = '5dm';
@@ -66,13 +65,7 @@ export default function CompanyStockChart(props) {
   return useMemo(() => {
     const renderChart = () => {
       if (chartHistoryWindow === '1d') {
-        return (
-          <LightWeightIntradayStockChart
-            companySymbol={props.companySymbol}
-            width={props.width}
-            api_key={props.cloud_api_key}
-          />
-        );
+        return <LightWeightIntradayStockChart width={props.width} />;
       } else {
         return renderHistoricalStockChart();
       }

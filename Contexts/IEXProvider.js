@@ -20,14 +20,12 @@ async function parallelIEXFetch() {
   */
 
 export default function IEXProvider({children}) {
-  // TODO: Fetch intraday price at the same time as advanced stats to prevent
-  // duplicate call to API --> navigating from partial display to full display with default of '1d'
-  // leads to two calls, so we can just call once and pass it through since its default behavior
   const [stocksSupported, setStocksSupported] = useState(undefined);
+  const [stocksSupportedFetched, setStocksSupportedFetched] = useState(false);
+  const [companyName, setCompanyName] = useState(undefined);
   const [companySymbol, setCompanySymbol] = useState('');
   const [companyAdvStats, setCompanyAdvStats] = useState(undefined);
-  const [companyName, setCompanyName] = useState(undefined);
-  const [stocksSupportedFetched, setStocksSupportedFetched] = useState(false);
+  const [companyIntradayData, setCompanyIntradayData] = useState(undefined);
 
   // TODO: use these and pass them to all children, perhaps use Context Provider
   const cloud_api_key = 'pk_765c2f02d9af4fd28f01fea090e2f544';
@@ -52,7 +50,7 @@ export default function IEXProvider({children}) {
     }
   }
 
-  const fetchCompanyAdvStats = async (api_key, compSymbol) => {
+  async function fetchCompanyAdvStats(api_key, compSymbol) {
     const advStatsFetchURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/advanced-stats?token=${api_key}`;
     console.log('IEXProvider(): ' + advStatsFetchURL);
     let advStats = [];
@@ -65,12 +63,60 @@ export default function IEXProvider({children}) {
         setCompanyName(advStats.companyName);
         setCompanyAdvStats(advStats);
       });
-  };
+  }
+
+  async function fetchCompanyIntradayData(api_key, compSymbol) {
+    const companyIntradayURL = `https://cloud.iexapis.com/stable/stock/${compSymbol}/intraday-prices?token=${api_key}&chartLast=390`;
+    console.log(
+      'IEXProvider() - fetchCompanyIntradayData(): ' + companyIntradayURL,
+    );
+
+    try {
+      await fetch(companyIntradayURL)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          let filteredData = [];
+          filteredData = responseJson;
+          filteredData.filter((dataPoint) => {
+            let minutes = dataPoint.minute.split(':')[1];
+            // can make graph more detailed by changing the modulo here
+            for (let i = 5; i > 0; i--) {
+              if (minutes % i === 0 && dataPoint.average !== null) {
+                return minutes % i === 0 && dataPoint.average !== null;
+              }
+            }
+            return minutes % 5 === 0 && dataPoint.average !== null;
+          });
+          setCompanyIntradayData(filteredData);
+        });
+    } catch (error) {
+      console.error('ERROR: ' + error);
+    }
+  }
 
   // Each time the companySymbol changes, we need to load new advanced stats.
   useEffect(() => {
+    async function intradayAndAdvStatsFetch(
+      cloud_key,
+      sandbox_key,
+      compSymbol,
+    ) {
+      if (compSymbol !== '') {
+        const fetchIntradayData = fetchCompanyIntradayData(
+          cloud_key,
+          compSymbol,
+        );
+        const fetchAdvStats = fetchCompanyAdvStats(sandbox_key, compSymbol);
+
+        return {
+          intradayDataSet: await fetchIntradayData,
+          advStatsSet: await fetchAdvStats,
+        };
+      }
+    }
+
     if (companySymbol !== '') {
-      fetchCompanyAdvStats(sandbox_api_key, companySymbol);
+      intradayAndAdvStatsFetch(cloud_api_key, sandbox_api_key, companySymbol);
     }
   }, [companySymbol]);
 
@@ -89,10 +135,18 @@ export default function IEXProvider({children}) {
           stocksSupported: stocksSupported,
           companySymbol: {companySymbol, changeCompanySymbol},
           advStats: companyAdvStats,
+          companyIntradayData: companyIntradayData,
           companyName: companyName,
         }}>
         {children}
       </IEXContext.Provider>
     );
-  }, [companySymbol, companyAdvStats, stocksSupported, children, companyName]);
+  }, [
+    companySymbol,
+    companyAdvStats,
+    stocksSupported,
+    children,
+    companyName,
+    companyIntradayData,
+  ]);
 }

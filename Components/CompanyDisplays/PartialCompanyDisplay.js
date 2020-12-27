@@ -42,11 +42,7 @@ export default function PartialCompanyDisplay(props) {
             <LightWeightCompanyStatsTable advStats={iexContext.advStats} />
           </View>
           <View style={styles.chartContainer}>
-            <LightWeightIntradayStockChart
-              width={props.width}
-              companySymbol={props.companySymbol}
-              api_key={cloud_api_key}
-            />
+            <LightWeightIntradayStockChart width={props.width} />
           </View>
         </View>
       );
