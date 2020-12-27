@@ -7,10 +7,9 @@ import MainTabNavigator from './Components/Navigation/MainTabNavigator';
 import {useMemo} from 'react';
 import IEXProvider from './Contexts/IEXProvider';
 
+// TODO: fix react-native-paper require cycle warning
+
 const Stack = createStackNavigator();
-
-// TODO: Split off fetching from IEX into Services files? Do more reading on this
-
 /*
 ======EXAMPLE FOR CUSTOM HEADER======
 

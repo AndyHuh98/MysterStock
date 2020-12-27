@@ -33,10 +33,12 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(props.advStats.marketcap, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 4,
-                })}
+                {props.advStats.marketcap !== null
+                  ? compactFormat(props.advStats.marketcap, 'en', null, {
+                      significantDigits: 3,
+                      maximumFractionDigits: 4,
+                    })
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -46,10 +48,12 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(props.advStats.avg30Volume, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 4,
-                })}
+                {props.advStats.avg30Volume !== null
+                  ? compactFormat(props.advStats.avg30Volume, 'en', null, {
+                      significantDigits: 3,
+                      maximumFractionDigits: 4,
+                    })
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -62,7 +66,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(props.advStats.week52low).toFixed(2)}
+                {props.advStats.week52low !== null
+                  ? parseFloat(props.advStats.week52low).toFixed(2)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -72,7 +78,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(props.advStats.week52high).toFixed(2)}
+                {props.advStats.week52high !== null
+                  ? parseFloat(props.advStats.week52high).toFixed(2)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -86,7 +94,7 @@ export default function LightWeightCompanyStatsTable(props) {
             <DataTable.Cell>
               <Text style={styles.statsValue}>
                 {props.advStats.dividendYield == null
-                  ? 'N/A'
+                  ? 'No Data'
                   : parseFloat(props.advStats.dividendYield).toFixed(3)}
               </Text>
             </DataTable.Cell>
@@ -97,8 +105,8 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {props.advStats.nextDividendDate == null
-                  ? 'N/A'
+                {props.advStats.nextDividendDate === null
+                  ? 'No Data / None'
                   : props.advStats.nextDividendDate}
               </Text>
             </DataTable.Cell>
@@ -112,7 +120,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(props.advStats.peRatio).toFixed(2)}
+                {props.advStats.peRatio !== null
+                  ? parseFloat(props.advStats.peRatio).toFixed(2)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -122,7 +132,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(props.advStats.ttmEPS).toFixed(3)}
+                {props.advStats.ttmEPS !== null
+                  ? parseFloat(props.advStats.ttmEPS).toFixed(3)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>

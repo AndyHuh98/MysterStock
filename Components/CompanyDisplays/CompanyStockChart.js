@@ -39,21 +39,27 @@ export default function CompanyStockChart(props) {
         modifiedWindow = '5dm';
       }
 
-      const historicalDataURL = `https://sandbox.iexapis.com/stable/stock/${props.companySymbol}/chart/${modifiedWindow}?token=${props.sandbox_api_key}`;
-      console.log(
-        'CompanyStockChart() - fetchNewHistoricalData(): ' + historicalDataURL,
-      );
+      if (modifiedWindow !== '1d') {
+        const historicalDataURL = `https://sandbox.iexapis.com/stable/stock/${props.companySymbol}/chart/${modifiedWindow}?token=${props.sandbox_api_key}`;
+        console.log(
+          'CompanyStockChart() - fetchNewHistoricalData(): ' +
+            historicalDataURL,
+        );
 
-      try {
-        await fetch(historicalDataURL)
-          .then((response) => response.json())
-          .then((responseJson) => {
-            setCompanyHistoricalData(responseJson);
-          });
-      } catch (error) {
-        console.error('ERROR: ' + error);
+        try {
+          await fetch(historicalDataURL)
+            .then((response) => response.json())
+            .then((responseJson) => {
+              setCompanyHistoricalData(responseJson);
+            });
+        } catch (error) {
+          console.error('ERROR: ' + error);
+        }
+      } else {
+        setCompanyHistoricalData([]);
       }
     }
+
     fetchNewHistoricalData(chartHistoryWindow);
   }, [chartHistoryWindow, props.companySymbol, props.sandbox_api_key]);
 
@@ -140,7 +146,7 @@ export default function CompanyStockChart(props) {
         'CompanyStockChart(): rendering historical chart for: ' +
           chartHistoryWindow,
       );
-      if (companyHistoricalData.length > 0) {
+      if (getHistoricalData().length > 1) {
         return (
           <View style={styles.chartContainer}>
             <VictoryChart
@@ -179,6 +185,25 @@ export default function CompanyStockChart(props) {
                   parent: {border: '1px solid #ccc'},
                 }}
                 labelComponent={<VictoryLabel text={''} />}
+              />
+            </VictoryChart>
+          </View>
+        );
+      } else {
+        return (
+          <View style={styles.chartContainer}>
+            <VictoryChart
+              style={styles.chart}
+              height={chartHeight}
+              width={props.width}
+              theme={VictoryTheme.material}>
+              <VictoryAxis fixLabelOverlap={true} />
+              <VictoryAxis dependentAxis />
+              <VictoryLabel
+                text="No data for company for given window."
+                x={225}
+                y={30}
+                textAnchor="middle"
               />
             </VictoryChart>
           </View>
@@ -224,7 +249,6 @@ export default function CompanyStockChart(props) {
       </View>
     );
   }, [
-    chartHistoryWindow,
     companyHistoricalData,
     props.cloud_api_key,
     props.companySymbol,

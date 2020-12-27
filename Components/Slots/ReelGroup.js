@@ -23,9 +23,7 @@ export default class ReelGroup extends Component {
     this.reelHeight = Constants.MAX_HEIGHT * 0.55;
     this.reels = [Constants.REEL_COUNT];
 
-    // TODO: may need to put this into state
-    this.companySymbolsArray = props.companySymbolsArray;
-    this.companySymbolArray = [4];
+    this.companySymbolChars = [4];
 
     this.reelsInMotion = Constants.REEL_COUNT;
   }
@@ -56,16 +54,18 @@ export default class ReelGroup extends Component {
     this.reelsInMotion = Constants.REEL_COUNT;
     const randomNum = this.randomBetween(
       0,
-      this.companySymbolsArray.length - 1,
+      this.props.companySymbolsArray.length - 1,
     );
-    const company = this.companySymbolsArray[randomNum];
-    this.companySymbolArray = this.companySymbolsArray[randomNum].split('');
+    const company = this.props.companySymbolsArray[randomNum];
+    this.companySymbolChars = this.props.companySymbolsArray[randomNum].split(
+      '',
+    );
     for (let i = 0; i < this.reels.length; i++) {
       let symbol = '';
-      if (this.companySymbolArray[i] === undefined) {
+      if (this.companySymbolChars[i] === undefined) {
         symbol = ' ';
       } else {
-        symbol = this.companySymbolArray[i];
+        symbol = this.companySymbolChars[i];
       }
       this.reels[i].scrollToSymbol(symbol, () => {
         this.reelsInMotion -= 1;
@@ -77,9 +77,6 @@ export default class ReelGroup extends Component {
     }
   };
 
-  // Make a display fade in quickly for company info when this method is called
-  // Make display fade away when button is pressed again
-  // Display should be clickable for more customizable details page
   evaluateStockOnReel = (company, callback) => {
     callback(company);
   };

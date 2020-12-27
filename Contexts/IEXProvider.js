@@ -20,6 +20,9 @@ async function parallelIEXFetch() {
   */
 
 export default function IEXProvider({children}) {
+  // TODO: Fetch intraday price at the same time as advanced stats to prevent
+  // duplicate call to API --> navigating from partial display to full display with default of '1d'
+  // leads to two calls, so we can just call once and pass it through since its default behavior
   const [stocksSupported, setStocksSupported] = useState(undefined);
   const [companySymbol, setCompanySymbol] = useState('');
   const [companyAdvStats, setCompanyAdvStats] = useState(undefined);

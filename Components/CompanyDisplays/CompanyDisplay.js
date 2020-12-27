@@ -13,10 +13,7 @@ import StatsTable from './StatsTable';
 
 const height = Dimensions.get('screen').height * 0.25;
 
-// Props thru route => props.route.params.____ passed: companySymbol, companyName, advStats, width, cloud_api_key, sandbox_api_key
-// TODO: pass advStats thru something else, other than route params.
-//        this is allegedly an "Anti-pattern" and should pull this array in from
-//        some centralized global store
+// Props thru route => props.route.params.____ passed: companySymbol, companyName, width, cloud_api_key, sandbox_api_key
 export default function CompanyDisplay(props) {
   const iexContext = useContext(IEXContext);
   const propsParams = props.route.params;
