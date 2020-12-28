@@ -1,95 +1,65 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import {useContext} from 'react';
+import {useMemo} from 'react';
 
 import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
+import IEXContext from '../../Contexts/IEXContext';
 import LightWeightCompanyStatsTable from './LightWeightStatsTable';
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 // This is the display used in RandomStockScreen. Should be a 'lightweight' version of the main stock page for the stock.
+// props passed: navigation, width, companySymbol
 export default function PartialCompanyDisplay(props) {
-  console.log('PartialCompanyDisplay() Rendering...');
+  const iexContext = useContext(IEXContext);
 
   const cloud_api_key = 'pk_765c2f02d9af4fd28f01fea090e2f544';
   const sandbox_api_key = 'Tpk_77a598a1fa804de592413ba39f6b137a';
-  const companySymbol = props.companySymbol;
 
-  const [companyName, setCompanyName] = useState('');
-  const [companyAdvStats, setCompanyAdvStats] = useState([]);
-  const [initialPageRender, setInitialPageRender] = useState(true);
-
-  const fetchCompanyInfo = async (api_key, compSymbol) => {
-    const companyInfoURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/company?token=${api_key}`;
-    console.log(companyInfoURL);
-    let companyInfo = [];
-
-    await fetch(companyInfoURL)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        companyInfo = responseJson;
-      })
-      .then(() => {
-        console.log('COMPANY INFO:');
-        console.log(companyInfo);
+  return useMemo(() => {
+    const navigateToCompanyDisplay = (company) => {
+      console.log(`PartialCompanyDisplay: Navigating to ${company} page.`);
+      const navigation = props.navigation;
+      navigation.navigate('CompanyDisplay', {
+        companySymbol: props.companySymbol,
+        companyName: iexContext.companyName,
+        width: props.width,
+        cloud_api_key: cloud_api_key,
+        sandbox_api_key: sandbox_api_key,
       });
-  };
+    };
 
-  const fetchCompanyAdvStats = async (api_key, compSymbol) => {
-    const advStatsFetchURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/advanced-stats?token=${api_key}`;
-    console.log(advStatsFetchURL);
-    let advStats = [];
-
-    await fetch(advStatsFetchURL)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        advStats = responseJson;
-        setCompanyAdvStats(advStats);
-        setCompanyName(advStats.companyName);
-      })
-      .then(() => {
-        console.log('ADV STATS:');
-        console.log(companyAdvStats);
-      });
-  };
-
-  // Will re-render the display each time a new company is obtained from slots
-  useEffect(() => {
-    if (!initialPageRender) {
-      fetchCompanyAdvStats(sandbox_api_key, props.companySymbol);
+    if (iexContext.advStats !== undefined) {
+      return (
+        <View style={styles.container}>
+          <TouchableHighlight
+            style={styles.companyNameContainer}
+            onPress={() => navigateToCompanyDisplay(props.companySymbol)}>
+            <Text style={styles.titleText}>
+              {props.companySymbol} : {iexContext.companyName}
+            </Text>
+          </TouchableHighlight>
+          <View style={styles.advStatsContainer}>
+            <LightWeightCompanyStatsTable advStats={iexContext.advStats} />
+          </View>
+          <View style={styles.chartContainer}>
+            <LightWeightIntradayStockChart width={props.width} />
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.titleText}>Loading...</Text>
+        </View>
+      );
     }
-
-    setInitialPageRender(false);
-  }, [props.companySymbol]);
-
-  const navigateToCompanyDisplay = (company) => {
-    console.log(`Navigating to ${company} page.`);
-    const navigation = props.navigation;
-    navigation.navigate('CompanyDisplay', {
-      companySymbol: props.companySymbol,
-      companyName: companyName,
-    });
-  };
-
-  return (
-    <View style={styles.container}>
-      <TouchableHighlight
-        style={styles.companyNameContainer}
-        onPress={() => navigateToCompanyDisplay(props.companySymbol)}>
-        <Text style={styles.titleText}>
-          {props.companySymbol} : {companyName}
-        </Text>
-      </TouchableHighlight>
-      <View style={styles.advStatsContainer}>
-        <LightWeightCompanyStatsTable advStats={companyAdvStats} />
-      </View>
-      <View style={styles.chartContainer}>
-        <LightWeightIntradayStockChart
-          width={props.width}
-          initialPageRender={initialPageRender}
-          companySymbol={props.companySymbol}
-          api_key={cloud_api_key}
-        />
-      </View>
-    </View>
-  );
+  }, [
+    iexContext.advStats,
+    iexContext.companyName,
+    props.companySymbol,
+    props.navigation,
+    props.width,
+  ]);
 }
 
 const styles = StyleSheet.create({

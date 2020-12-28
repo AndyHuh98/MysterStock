@@ -25,7 +25,7 @@ const images = {
   x: require('./images/x.png'),
   y: require('./images/y.png'),
   z: require('./images/z.png'),
-  slotsBackground: require('./images/background-green.png'),
+  background: require('./images/background-green.png'),
 };
 
 export default images;

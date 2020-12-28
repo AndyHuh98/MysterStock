@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect, useContext, useMemo} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,88 +12,117 @@ import {
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import images from '../../assets/images';
+import IEXContext from '../../Contexts/IEXContext';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 
-// Implement SPIN Function using ReelGroup Spin within Functional Component
+// props passed: navigation
 export default function RandomStockScreen(props) {
   const [companyDisplayFadeAnim] = useState(new Animated.Value(0));
   const [companySymbol, setCompanySymbol] = useState('');
   const [stockBtnDisable, setStockBtnDisable] = useState(false);
+  const iexContext = useContext(IEXContext);
+
+  useEffect(() => {}, [iexContext.stocksSupported, companySymbol]);
 
   const reelGroup = useRef();
 
-  const newStockBtnClicked = (event) => {
-    fadeOutCompanyDisplay();
+  // TODO: In one of these, place a LoadingScreen Component
+  return useMemo(() => {
+    // Methods to fade in and fade out animations
+    const fadeInCompanyDisplay = () => {
+      Animated.timing(companyDisplayFadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    };
 
-    event.preventDefault();
-    setStockBtnDisable(true);
+    const fadeOutCompanyDisplay = () => {
+      Animated.timing(companyDisplayFadeAnim, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    };
 
-    setTimeout(() => setStockBtnDisable(false), 5000);
+    // On press method for stock button
+    const newStockBtnClicked = (event) => {
+      fadeOutCompanyDisplay();
 
-    reelGroup.current.spin((_companySymbol) => {
-      setCompanySymbol(_companySymbol);
-      fadeInCompanyDisplay();
-    });
-  };
+      event.preventDefault();
+      setStockBtnDisable(true);
 
-  const fadeInCompanyDisplay = () => {
-    Animated.timing(companyDisplayFadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
+      setTimeout(() => setStockBtnDisable(false), 4000);
 
-  const fadeOutCompanyDisplay = () => {
-    Animated.timing(companyDisplayFadeAnim, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
+      reelGroup.current.spin((_companySymbol) => {
+        setCompanySymbol(_companySymbol);
+        iexContext.companySymbol.changeCompanySymbol(_companySymbol);
+        fadeInCompanyDisplay();
+      });
+    };
 
-  const renderCompanyDisplay = () => {
-    const display = (
-      <Animated.View
-        style={[
-          styles.companyDisplayContainer,
-          {opacity: companyDisplayFadeAnim},
-        ]}>
-        <PartialCompanyDisplay
-          navigation={props.navigation}
-          width={screenWidth}
-          companySymbol={companySymbol}
-        />
-      </Animated.View>
-    );
-
-    return display;
-  };
-
-  return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={images.slotsBackground}
-        style={styles.slotsBackground}>
-        <SafeAreaView style={styles.container}>
-          <View style={styles.slotsContainer}>
-            <ReelGroup ref={reelGroup} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              disabled={stockBtnDisable}
-              onPress={(e) => newStockBtnClicked(e)}>
-              <Text style={styles.titleText}>
-                {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {renderCompanyDisplay()}
-        </SafeAreaView>
-      </ImageBackground>
-    </View>
-  );
+    if (iexContext.stocksSupported !== undefined) {
+      return (
+        <View style={styles.container}>
+          <ImageBackground source={images.background} style={styles.background}>
+            <SafeAreaView style={styles.container}>
+              {iexContext.stocksSupported.length > 0 ? (
+                <View style={styles.slotsContainer}>
+                  <ReelGroup
+                    companySymbolsArray={iexContext.stocksSupported.map(
+                      (stock) => stock.symbol,
+                    )}
+                    ref={reelGroup}
+                  />
+                </View>
+              ) : null}
+              {iexContext.stocksSupported.length > 0 ? (
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    disabled={stockBtnDisable}
+                    onPress={(e) => newStockBtnClicked(e)}>
+                    <Text style={styles.titleText}>
+                      {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+              <Animated.View
+                style={[
+                  styles.companyDisplayContainer,
+                  {opacity: companyDisplayFadeAnim},
+                ]}>
+                {companySymbol !== '' ? (
+                  <PartialCompanyDisplay
+                    navigation={props.navigation}
+                    width={screenWidth}
+                    companySymbol={companySymbol}
+                  />
+                ) : null}
+              </Animated.View>
+            </SafeAreaView>
+          </ImageBackground>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <ImageBackground
+            source={images.background}
+            style={styles.background}
+          />
+        </View>
+      );
+    }
+  }, [
+    iexContext.stocksSupported,
+    iexContext.companySymbol,
+    stockBtnDisable,
+    companyDisplayFadeAnim,
+    companySymbol,
+    props.navigation,
+  ]);
 }
 
 const styles = StyleSheet.create({
@@ -105,6 +134,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    flexDirection: 'column',
   },
   slotsContainer: {
     flex: 0.15,
@@ -114,9 +144,9 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderRadius: 10,
   },
-  slotsBackground: {
+  background: {
     flex: 1,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     justifyContent: 'center',
   },
   buttonContainer: {

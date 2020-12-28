@@ -4,6 +4,8 @@ import {Text, StyleSheet, View} from 'react-native';
 import compactFormat from 'cldr-compact-number';
 import {DataTable} from 'react-native-paper';
 
+// Lightweight stats table with only 8 advanced stats, more like a preview for main stock page.
+// Props passed: advStats
 export default function LightWeightCompanyStatsTable(props) {
   const styles = StyleSheet.create({
     statsTitle: {
@@ -15,11 +17,9 @@ export default function LightWeightCompanyStatsTable(props) {
     },
   });
 
-  const companyAdvStats = props.advStats;
-
   const dataTableDisplay = () => {
     return (
-      <DataTable style={{shadowColor: 'yellow'}}>
+      <DataTable>
         <DataTable.Header>
           <DataTable.Title>
             <Text style={styles.statsTitle}>Stats</Text>
@@ -33,10 +33,12 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.marketcap, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 4,
-                })}
+                {props.advStats.marketcap !== null
+                  ? compactFormat(props.advStats.marketcap, 'en', null, {
+                      significantDigits: 3,
+                      maximumFractionDigits: 4,
+                    })
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -46,10 +48,12 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {compactFormat(companyAdvStats.avg30Volume / 30, 'en', null, {
-                  significantDigits: 3,
-                  maximumFractionDigits: 4,
-                })}
+                {props.advStats.avg30Volume !== null
+                  ? compactFormat(props.advStats.avg30Volume, 'en', null, {
+                      significantDigits: 3,
+                      maximumFractionDigits: 4,
+                    })
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -62,7 +66,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.week52low).toFixed(2)}
+                {props.advStats.week52low !== null
+                  ? parseFloat(props.advStats.week52low).toFixed(2)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -72,7 +78,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.week52high).toFixed(2)}
+                {props.advStats.week52high !== null
+                  ? parseFloat(props.advStats.week52high).toFixed(2)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -85,9 +93,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.dividendYield == null
-                  ? 'N/A'
-                  : parseFloat(companyAdvStats.dividendYield).toFixed(3)}
+                {props.advStats.dividendYield == null
+                  ? 'No Data'
+                  : parseFloat(props.advStats.dividendYield).toFixed(3)}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -97,9 +105,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {companyAdvStats.nextDividendDate == null
-                  ? 'N/A'
-                  : companyAdvStats.nextDividendDate}
+                {props.advStats.nextDividendDate === null
+                  ? 'No Data / None'
+                  : props.advStats.nextDividendDate}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -112,7 +120,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.peRatio).toFixed(2)}
+                {props.advStats.peRatio !== null
+                  ? parseFloat(props.advStats.peRatio).toFixed(2)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
@@ -122,7 +132,9 @@ export default function LightWeightCompanyStatsTable(props) {
             </DataTable.Cell>
             <DataTable.Cell>
               <Text style={styles.statsValue}>
-                {parseFloat(companyAdvStats.ttmEPS).toFixed(3)}
+                {props.advStats.ttmEPS !== null
+                  ? parseFloat(props.advStats.ttmEPS).toFixed(3)
+                  : 'No Data'}
               </Text>
             </DataTable.Cell>
           </DataTable.Cell>
