@@ -30,7 +30,7 @@ export default function LightWeightIntradayStockChart(props) {
           .filter((average) => average != null);
 
         return [
-          Math.min(...averagePrices) * 0.99,
+          Math.min(...averagePrices) * 0.995,
           Math.max(...averagePrices) * 1.1,
         ];
       };

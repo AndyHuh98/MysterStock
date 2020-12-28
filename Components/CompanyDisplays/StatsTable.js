@@ -5,6 +5,8 @@ import {DataTable} from 'react-native-paper';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
 
+// TODO: Fix "flickering / blinking" whenever expanding stats table.
+
 // Props passed in: advStats
 export default function StatsTable(props) {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -23,7 +25,7 @@ export default function StatsTable(props) {
           onPress={() => toggleTableCollapsed()}>
           <DataTable.Header>
             <DataTable.Title>
-              <Text style={styles.statsTitle}>
+              <Text style={styles.statsHeader}>
                 Stats:{' '}
                 {isCollapsed ? '(Click to Show More)' : '(Click to Show Less)'}
               </Text>
@@ -348,8 +350,11 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'white',
-    borderColor: 'yellow',
-    borderWidth: 3,
+  },
+  statsHeader: {
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 20,
   },
   statsTitle: {
     fontWeight: 'bold',

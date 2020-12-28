@@ -252,8 +252,9 @@ export default function CompanyStockChart(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 3,
     flexDirection: 'column',
+    borderWidth: 3,
+    borderRadius: 10,
   },
   chartContainer: {
     backgroundColor: 'beige',

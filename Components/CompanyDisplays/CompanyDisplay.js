@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import IEXContext from '../../Contexts/IEXContext';
+import CompanyDescription from './CompanyDescription';
 import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
 
@@ -19,7 +20,7 @@ export default function CompanyDisplay(props) {
   const propsParams = props.route.params;
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.scrollContainer}>
       <SafeAreaView style={styles.container}>
         <View style={styles.chartContainer}>
           <CompanyStockChart
@@ -32,27 +33,35 @@ export default function CompanyDisplay(props) {
         <View style={styles.statsContainer}>
           <StatsTable height={height} advStats={iexContext.advStats} />
         </View>
-        <View style={styles.descriptionContainer} />
+        <View style={styles.descriptionContainer}>
+          <CompanyDescription />
+        </View>
       </SafeAreaView>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
     backgroundColor: 'green',
   },
-  statsContainer: {
-    flex: 0.3,
+  container: {
+    flex: 1,
+    marginHorizontal: '3%',
   },
   chartContainer: {
     flex: 0.5,
   },
-  descriptionContainer: {
-    borderColor: 'red',
+  statsContainer: {
+    flex: 0.3,
+    marginTop: '1%',
+    borderColor: 'black',
     borderWidth: 3,
-    alignItems: 'center',
+    borderRadius: 10,
+  },
+  descriptionContainer: {
     flex: 0.2,
+    marginTop: '1%',
   },
 });

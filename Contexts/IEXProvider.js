@@ -2,23 +2,6 @@ import React from 'react';
 import {useState, useEffect, useMemo} from 'react';
 import IEXContext from './IEXContext';
 
-/* PARALLEL FETCHING - MAY COME IN HANDY - TODO: fetch historical data at the same time as advanced stats
-async function parallelIEXFetch() {
-  const fetchStocks = !stocksSupportedFetched
-    ? fetchStocksSupported(sandbox_api_key)
-    : null;
-  const fetchAdvStats =
-    companySymbol !== '' && !stocksSupportedFetched
-      ? fetchCompanyAdvStats(sandbox_api_key, companySymbol)
-      : null;
-
-  // returns nothing, just a way to run the two functions in parallel
-  return {
-    supportedStocksSet: await fetchStocks,
-    companyAdvStocksSet: await fetchAdvStats,
-  };
-  */
-
 export default function IEXProvider({children}) {
   const [stocksSupported, setStocksSupported] = useState(undefined);
   const [stocksSupportedFetched, setStocksSupportedFetched] = useState(false);
@@ -26,8 +9,8 @@ export default function IEXProvider({children}) {
   const [companySymbol, setCompanySymbol] = useState('');
   const [companyAdvStats, setCompanyAdvStats] = useState(undefined);
   const [companyIntradayData, setCompanyIntradayData] = useState(undefined);
+  const [companyInfo, setCompanyInfo] = useState(undefined);
 
-  // TODO: use these and pass them to all children, perhaps use Context Provider
   const cloud_api_key = 'pk_765c2f02d9af4fd28f01fea090e2f544';
   const sandbox_api_key = 'Tpk_77a598a1fa804de592413ba39f6b137a';
 
@@ -50,19 +33,38 @@ export default function IEXProvider({children}) {
     }
   }
 
+  async function fetchCompanyInfo(api_key, compSymbol) {
+    const companyInfoFetchURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/company?token=${api_key}`;
+    console.log('IEXProvider(): ' + companyInfoFetchURL);
+
+    try {
+      await fetch(companyInfoFetchURL)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setCompanyInfo(responseJson);
+        });
+    } catch (error) {
+      console.error('ERROR: ' + error);
+    }
+  }
+
   async function fetchCompanyAdvStats(api_key, compSymbol) {
     const advStatsFetchURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/advanced-stats?token=${api_key}`;
     console.log('IEXProvider(): ' + advStatsFetchURL);
     let advStats = [];
 
-    await fetch(advStatsFetchURL)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setStocksSupportedFetched(true);
-        advStats = responseJson;
-        setCompanyName(advStats.companyName);
-        setCompanyAdvStats(advStats);
-      });
+    try {
+      await fetch(advStatsFetchURL)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setStocksSupportedFetched(true);
+          advStats = responseJson;
+          setCompanyName(advStats.companyName);
+          setCompanyAdvStats(advStats);
+        });
+    } catch (error) {
+      console.error('ERROR: ' + error);
+    }
   }
 
   async function fetchCompanyIntradayData(api_key, compSymbol) {
@@ -107,10 +109,12 @@ export default function IEXProvider({children}) {
           compSymbol,
         );
         const fetchAdvStats = fetchCompanyAdvStats(sandbox_key, compSymbol);
+        const fetchInfo = fetchCompanyInfo(sandbox_api_key, compSymbol);
 
         return {
           intradayDataSet: await fetchIntradayData,
           advStatsSet: await fetchAdvStats,
+          companyInfoSet: await fetchInfo,
         };
       }
     }
@@ -133,20 +137,22 @@ export default function IEXProvider({children}) {
       <IEXContext.Provider
         value={{
           stocksSupported: stocksSupported,
+          companyName: companyName,
           companySymbol: {companySymbol, changeCompanySymbol},
           advStats: companyAdvStats,
           companyIntradayData: companyIntradayData,
-          companyName: companyName,
+          companyInfo: companyInfo,
         }}>
         {children}
       </IEXContext.Provider>
     );
   }, [
+    companyName,
     companySymbol,
     companyAdvStats,
     stocksSupported,
-    children,
-    companyName,
     companyIntradayData,
+    companyInfo,
+    children,
   ]);
 }
