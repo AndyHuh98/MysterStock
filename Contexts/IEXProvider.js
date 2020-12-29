@@ -11,6 +11,9 @@ export default function IEXProvider({children}) {
   const [companyAdvStats, setCompanyAdvStats] = useState(undefined);
   const [companyIntradayData, setCompanyIntradayData] = useState(undefined);
   const [companyInfo, setCompanyInfo] = useState(undefined);
+  const [companyPreviousDayData, setCompanyPreviousDayData] = useState(
+    undefined,
+  );
 
   const changeCompanySymbol = (compSymbol) => {
     setCompanySymbol(compSymbol);
@@ -67,9 +70,7 @@ export default function IEXProvider({children}) {
 
   async function fetchCompanyIntradayData(compSymbol) {
     const companyIntradayURL = `${api_base_url}/intradaydata?symbol=${compSymbol}`;
-    console.log(
-      'IEXProvider() - fetchCompanyIntradayData(): ' + companyIntradayURL,
-    );
+    console.log('IEXProvider(): ' + companyIntradayURL);
 
     try {
       await fetch(companyIntradayURL)
@@ -94,6 +95,22 @@ export default function IEXProvider({children}) {
     }
   }
 
+  async function fetchCompanyPreviousDayData(compSymbol) {
+    const companyPreviousDayDataURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/previous?token=Tpk_77a598a1fa804de592413ba39f6b137a`;
+    console.log('IEXProvider(): ' + companyPreviousDayDataURL);
+
+    try {
+      await fetch(companyPreviousDayDataURL)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log(responseJson);
+          setCompanyPreviousDayData(responseJson);
+        });
+    } catch (error) {
+      console.error('ERROR: ' + error);
+    }
+  }
+
   // Each time the companySymbol changes, we need to load new advanced stats.
   useEffect(() => {
     async function intradayAndAdvStatsFetch(compSymbol) {
@@ -101,11 +118,13 @@ export default function IEXProvider({children}) {
         const fetchIntradayData = fetchCompanyIntradayData(compSymbol);
         const fetchAdvStats = fetchCompanyAdvStats(compSymbol);
         const fetchInfo = fetchCompanyInfo(compSymbol);
+        const fetchPreviousDayData = fetchCompanyPreviousDayData(compSymbol);
 
         return {
           intradayDataSet: await fetchIntradayData,
           advStatsSet: await fetchAdvStats,
           companyInfoSet: await fetchInfo,
+          previousDayDataSet: await fetchPreviousDayData,
         };
       }
     }
@@ -133,6 +152,7 @@ export default function IEXProvider({children}) {
           advStats: companyAdvStats,
           companyIntradayData: companyIntradayData,
           companyInfo: companyInfo,
+          companyPreviousDayData: companyPreviousDayData,
         }}>
         {children}
       </IEXContext.Provider>
@@ -144,6 +164,7 @@ export default function IEXProvider({children}) {
     stocksSupported,
     companyIntradayData,
     companyInfo,
+    companyPreviousDayData,
     children,
   ]);
 }

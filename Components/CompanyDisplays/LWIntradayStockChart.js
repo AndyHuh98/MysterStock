@@ -29,10 +29,28 @@ export default function LightWeightIntradayStockChart(props) {
           .map((dataPoint) => dataPoint.average)
           .filter((average) => average != null);
 
-        return [
-          Math.min(...averagePrices) * 0.995,
-          Math.max(...averagePrices) * 1.1,
-        ];
+        if (iexContext.companyPreviousDayData.fClose !== null) {
+          const previousDayClose = iexContext.companyPreviousDayData.fClose;
+          const minimum = Math.min(
+            previousDayClose,
+            Math.min(...averagePrices),
+          );
+          const maximum = Math.max(
+            previousDayClose,
+            Math.max(...averagePrices),
+          );
+          const paddedMinimum =
+            minimum * (0.995 - (maximum - minimum) / minimum);
+          const paddedMaximum =
+            maximum * (1.005 + (maximum - minimum) / maximum);
+
+          return [paddedMinimum, paddedMaximum];
+        } else {
+          return [
+            Math.min(...averagePrices) * 0.95,
+            Math.max(...averagePrices) * 1.05,
+          ];
+        }
       };
 
       if (iexContext.companyIntradayData !== undefined) {
@@ -46,17 +64,14 @@ export default function LightWeightIntradayStockChart(props) {
               <VictoryChart
                 style={styles.chart}
                 minDomain={{y: getDomain()[0]}}
+                maxDomain={{y: getDomain()[1]}}
                 height={chartHeight}
                 width={props.width}
                 theme={VictoryTheme.material}
-                domain={
-                  iexContext.companyIntradayData.length > 0
-                    ? null
-                    : {y: getDomain()}
-                }
                 containerComponent={
                   <VictoryVoronoiContainer
                     labels={({datum}) => `$${datum.average} @ ${datum.minute}`}
+                    voronoiBlacklist={['previousDayClose']}
                   />
                 }>
                 <VictoryAxis fixLabelOverlap={true} />
@@ -72,6 +87,17 @@ export default function LightWeightIntradayStockChart(props) {
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
+                />
+                <VictoryLine
+                  name="previousDayClose"
+                  y={() => iexContext.companyPreviousDayData.fClose}
+                  style={{
+                    data: {
+                      strokeDasharray: '5',
+                      strokeWidth: 0.75,
+                      fillOpacity: 0.4,
+                    },
+                  }}
                 />
               </VictoryChart>
             </View>
@@ -100,7 +126,11 @@ export default function LightWeightIntradayStockChart(props) {
     };
 
     return <View style={styles.chartContainer}>{chartDisplay()}</View>;
-  }, [iexContext.companyIntradayData, props.width]);
+  }, [
+    iexContext.companyIntradayData,
+    props.width,
+    iexContext.companyPreviousDayData,
+  ]);
 }
 
 const styles = StyleSheet.create({

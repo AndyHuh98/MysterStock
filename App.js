@@ -8,6 +8,7 @@ import {useMemo} from 'react';
 import IEXProvider from './Contexts/IEXProvider';
 
 // TODO: fix react-native-paper require cycle warning
+// TODO: add nginx load balancing / routing or whatever it is
 
 const Stack = createStackNavigator();
 /*
