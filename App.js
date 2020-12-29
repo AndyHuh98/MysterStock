@@ -9,6 +9,8 @@ import IEXProvider from './Contexts/IEXProvider';
 
 // TODO: fix react-native-paper require cycle warning
 // TODO: add nginx load balancing / routing or whatever it is
+// TODO: Add tab icons
+// TODO: Change header styling
 
 const Stack = createStackNavigator();
 /*

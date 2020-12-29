@@ -14,9 +14,17 @@ export default function IEXProvider({children}) {
   const [companyPreviousDayData, setCompanyPreviousDayData] = useState(
     undefined,
   );
+  // TODO: take this as properties of an exported constant somewhere
+  // options: '1d-lw', '1d-reg', '5d', '1m', '3m', '1y', '5y'
+  const [chartHistoryWindow, setChartHistoryWindow] = useState('1d');
 
   const changeCompanySymbol = (compSymbol) => {
     setCompanySymbol(compSymbol);
+  };
+
+  const changeChartHistoryWindow = (window) => {
+    console.log('changing chart history window in IEXProvider to ' + window);
+    setChartHistoryWindow(window);
   };
 
   async function fetchStocksSupported() {
@@ -103,7 +111,6 @@ export default function IEXProvider({children}) {
       await fetch(companyPreviousDayDataURL)
         .then((response) => response.json())
         .then((responseJson) => {
-          console.log(responseJson);
           setCompanyPreviousDayData(responseJson);
         });
     } catch (error) {
@@ -113,15 +120,13 @@ export default function IEXProvider({children}) {
 
   // Each time the companySymbol changes, we need to load new advanced stats.
   useEffect(() => {
-    async function intradayAndAdvStatsFetch(compSymbol) {
+    async function parallelCompDataFetch(compSymbol) {
       if (compSymbol !== '') {
-        const fetchIntradayData = fetchCompanyIntradayData(compSymbol);
         const fetchAdvStats = fetchCompanyAdvStats(compSymbol);
         const fetchInfo = fetchCompanyInfo(compSymbol);
         const fetchPreviousDayData = fetchCompanyPreviousDayData(compSymbol);
 
         return {
-          intradayDataSet: await fetchIntradayData,
           advStatsSet: await fetchAdvStats,
           companyInfoSet: await fetchInfo,
           previousDayDataSet: await fetchPreviousDayData,
@@ -130,9 +135,16 @@ export default function IEXProvider({children}) {
     }
 
     if (companySymbol !== '') {
-      intradayAndAdvStatsFetch(companySymbol);
+      parallelCompDataFetch(companySymbol);
     }
   }, [companySymbol]);
+
+  // Each time the chartHistoryWindow changes back to 1d, we want to refresh the fetch
+  useEffect(() => {
+    if (chartHistoryWindow === '1d' && companySymbol !== '') {
+      fetchCompanyIntradayData(companySymbol);
+    }
+  }, [chartHistoryWindow, companySymbol]);
 
   // The first time we load into the app, we want to make sure the list of stocks is updated
   useEffect(() => {
@@ -143,6 +155,7 @@ export default function IEXProvider({children}) {
 
   return useMemo(() => {
     console.log('IEXProvider Rendering');
+
     return (
       <IEXContext.Provider
         value={{
@@ -153,6 +166,7 @@ export default function IEXProvider({children}) {
           companyIntradayData: companyIntradayData,
           companyInfo: companyInfo,
           companyPreviousDayData: companyPreviousDayData,
+          changeChartHistoryWindow: changeChartHistoryWindow,
         }}>
         {children}
       </IEXContext.Provider>

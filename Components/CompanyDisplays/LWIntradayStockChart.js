@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import {useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   VictoryChart,
@@ -128,8 +127,8 @@ export default function LightWeightIntradayStockChart(props) {
     return <View style={styles.chartContainer}>{chartDisplay()}</View>;
   }, [
     iexContext.companyIntradayData,
-    props.width,
     iexContext.companyPreviousDayData,
+    props.width,
   ]);
 }
 

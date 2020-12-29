@@ -1,7 +1,4 @@
-import React from 'react';
-import {useEffect} from 'react';
-import {useMemo} from 'react';
-import {useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 
 import {View, StyleSheet, Button, Dimensions} from 'react-native';
 
@@ -13,6 +10,7 @@ import {
   VictoryAxis,
   VictoryLabel,
 } from 'victory-native';
+import IEXContext from '../../Contexts/IEXContext';
 import {api_base_url} from '../Utils/Constants';
 
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
@@ -30,6 +28,7 @@ const chartHeight = Dimensions.get('screen').height * 0.3;
 
 // props passed: companySymbol, width
 export default function CompanyStockChart(props) {
+  const iexContext = useContext(IEXContext);
   // 1d, 5d, 10d, 1m, 3m, 6m, 9m, 1y, 5y, 10y
   // roll out first: 1d, 5d, 1m, 3m, 1y, 5y
   // consider loading all historical data at once for seamless transitioning
@@ -39,6 +38,7 @@ export default function CompanyStockChart(props) {
   function adjustHistoryWindow(newWindow) {
     console.log('adjusting history window to: ' + newWindow);
     setChartHistoryWindow(newWindow);
+    iexContext.changeChartHistoryWindow(newWindow);
   }
 
   useEffect(() => {

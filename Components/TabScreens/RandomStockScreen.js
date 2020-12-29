@@ -27,7 +27,7 @@ export default function RandomStockScreen(props) {
 
   const reelGroup = useRef();
 
-  // TODO: In one of these, place a LoadingScreen Component
+  // TODO: place a LoadingScreen Component in one of these
   return useMemo(() => {
     // Methods to fade in and fade out animations
     const fadeInCompanyDisplay = () => {
