@@ -12,9 +12,6 @@ import LightWeightIntradayStockChart from './LWIntradayStockChart';
 export default function PartialCompanyDisplay(props) {
   const iexContext = useContext(IEXContext);
 
-  const cloud_api_key = 'pk_765c2f02d9af4fd28f01fea090e2f544';
-  const sandbox_api_key = 'Tpk_77a598a1fa804de592413ba39f6b137a';
-
   return useMemo(() => {
     const navigateToCompanyDisplay = (company) => {
       console.log(`PartialCompanyDisplay: Navigating to ${company} page.`);
@@ -23,8 +20,6 @@ export default function PartialCompanyDisplay(props) {
         companySymbol: props.companySymbol,
         companyName: iexContext.companyName,
         width: props.width,
-        cloud_api_key: cloud_api_key,
-        sandbox_api_key: sandbox_api_key,
       });
     };
 

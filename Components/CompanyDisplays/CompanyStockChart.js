@@ -13,12 +13,13 @@ import {
   VictoryAxis,
   VictoryLabel,
 } from 'victory-native';
+import {api_base_url} from '../Utils/Constants';
 
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
-// props passed: companySymbol, width, cloud_api_key, sandbox_api_key
+// props passed: companySymbol, width
 export default function CompanyStockChart(props) {
   // 1d, 5d, 10d, 1m, 3m, 6m, 9m, 1y, 5y, 10y
   // roll out first: 1d, 5d, 1m, 3m, 1y, 5y
@@ -33,17 +34,13 @@ export default function CompanyStockChart(props) {
 
   useEffect(() => {
     async function fetchNewHistoricalData(window) {
-      let modifiedWindow = window;
-      if (window === '5d') {
-        modifiedWindow = '5dm';
-      }
+      if (window !== '1d') {
+        const historicalDataURL =
+          window === '5d'
+            ? `${api_base_url}/5dhistoricaldata?symbol=${props.companySymbol}`
+            : `${api_base_url}/historicaldata?window=${window}&symbol=${props.companySymbol}`;
 
-      if (modifiedWindow !== '1d') {
-        const historicalDataURL = `https://sandbox.iexapis.com/stable/stock/${props.companySymbol}/chart/${modifiedWindow}?token=${props.sandbox_api_key}`;
-        console.log(
-          'CompanyStockChart() - fetchNewHistoricalData(): ' +
-            historicalDataURL,
-        );
+        console.log('CompanyStockChart(): ' + historicalDataURL);
 
         try {
           await fetch(historicalDataURL)
@@ -60,7 +57,7 @@ export default function CompanyStockChart(props) {
     }
 
     fetchNewHistoricalData(chartHistoryWindow);
-  }, [chartHistoryWindow, props.companySymbol, props.sandbox_api_key]);
+  }, [chartHistoryWindow, props.companySymbol]);
 
   return useMemo(() => {
     const renderChart = () => {
@@ -241,12 +238,7 @@ export default function CompanyStockChart(props) {
         </View>
       </View>
     );
-  }, [
-    companyHistoricalData,
-    props.cloud_api_key,
-    props.companySymbol,
-    props.width,
-  ]);
+  }, [companyHistoricalData, props.companySymbol, props.width]);
 }
 
 const styles = StyleSheet.create({
