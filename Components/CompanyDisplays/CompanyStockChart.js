@@ -19,6 +19,15 @@ import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
+// TODO: Implement slight padding of range min and max values for historical data / 5d intraday charts
+// refer to mindomain and maxdomain in lwintradaystockchart.js on how to do this.
+
+// TODO: Make horizontal line connect until actual data is served (if IPO / listed
+// more recently than 5y, for example)
+
+// TODO: for intraday and historical stock charts, play around with SVG styling:
+// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
+
 // props passed: companySymbol, width
 export default function CompanyStockChart(props) {
   // 1d, 5d, 10d, 1m, 3m, 6m, 9m, 1y, 5y, 10y
@@ -110,7 +119,7 @@ export default function CompanyStockChart(props) {
         }
       }
 
-      const getDomain = () => {
+      const getRange = () => {
         if (chartHistoryWindow === '5d') {
           const averagePrices = companyHistoricalData
             .map((dataPoint) => dataPoint.average)
@@ -143,10 +152,8 @@ export default function CompanyStockChart(props) {
               theme={VictoryTheme.material}
               height={chartHeight}
               width={props.width}
-              minDomain={{y: getDomain()[0]}}
-              domain={
-                companyHistoricalData.length > 0 ? null : {y: getDomain()}
-              }
+              minDomain={{y: getRange()[0]}}
+              domain={companyHistoricalData.length > 0 ? null : {y: getRange()}}
               containerComponent={
                 <VictoryVoronoiContainer
                   labels={
