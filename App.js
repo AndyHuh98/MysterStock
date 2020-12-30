@@ -13,6 +13,8 @@ import IEXProvider from './Contexts/IEXProvider';
 // TODO: Change header styling
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
+// TODO: Add a search tab where people can just directly search for stocks
+// TODO: Add filter for randomizing stocks that meet the filter
 
 /* TODO: Potential Name Bases (make more unique):
   - Lighthouse
