@@ -30,8 +30,8 @@ export default function LightWeightIntradayStockChart(props) {
           .map((dataPoint) => dataPoint.average)
           .filter((average) => average != null);
 
-        if (iexContext.companyPreviousDayData.fClose !== null) {
-          const previousDayClose = iexContext.companyPreviousDayData.fClose;
+        if (iexContext.companyPreviousDayData.close !== null) {
+          const previousDayClose = iexContext.companyPreviousDayData.close;
           const minimum = Math.min(
             previousDayClose,
             Math.min(...averagePrices),
@@ -89,17 +89,19 @@ export default function LightWeightIntradayStockChart(props) {
                   }}
                   labelComponent={<VictoryLabel text={''} />}
                 />
-                <VictoryLine
-                  name="previousDayClose"
-                  y={() => iexContext.companyPreviousDayData.fClose}
-                  style={{
-                    data: {
-                      strokeDasharray: '5',
-                      strokeWidth: 0.75,
-                      fillOpacity: 0.4,
-                    },
-                  }}
-                />
+                {iexContext.companyPreviousDayData.close !== null ? (
+                  <VictoryLine
+                    name="previousDayClose"
+                    y={() => iexContext.companyPreviousDayData.close}
+                    style={{
+                      data: {
+                        strokeDasharray: '5',
+                        strokeWidth: 0.75,
+                        fillOpacity: 0.4,
+                      },
+                    }}
+                  />
+                ) : null}
               </VictoryChart>
             </View>
           );
