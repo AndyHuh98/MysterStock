@@ -106,7 +106,7 @@ export default function IEXProvider({children}) {
   }
 
   async function fetchCompanyPreviousDayData(compSymbol) {
-    const companyPreviousDayDataURL = `https://sandbox.iexapis.com/stable/stock/${compSymbol}/previous?token=Tpk_77a598a1fa804de592413ba39f6b137a`;
+    const companyPreviousDayDataURL = `${api_base_url}/previous?symbol=${compSymbol}`;
     console.log('IEXProvider(): ' + companyPreviousDayDataURL);
 
     try {
