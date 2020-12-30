@@ -1,7 +1,4 @@
-import React from 'react';
-import {useEffect} from 'react';
-import {useMemo} from 'react';
-import {useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 
 import {View, StyleSheet, Button, Dimensions} from 'react-native';
 
@@ -13,37 +10,40 @@ import {
   VictoryAxis,
   VictoryLabel,
 } from 'victory-native';
+import IEXContext from '../../Contexts/IEXContext';
+import {api_base_url} from '../Utils/Constants';
 
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
-// props passed: companySymbol, width, cloud_api_key, sandbox_api_key
+// TODO: Implement slight padding of range min and max values for historical data / 5d intraday charts
+// refer to mindomain and maxdomain in lwintradaystockchart.js on how to do this.
+
+// TODO: Make horizontal line connect until actual data is served (if IPO / listed
+// more recently than 5y, for example)
+
+// TODO: for intraday and historical stock charts, play around with SVG styling:
+// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
+
+// props passed: companySymbol, width
 export default function CompanyStockChart(props) {
+  const iexContext = useContext(IEXContext);
   // 1d, 5d, 10d, 1m, 3m, 6m, 9m, 1y, 5y, 10y
   // roll out first: 1d, 5d, 1m, 3m, 1y, 5y
   // consider loading all historical data at once for seamless transitioning
   const [chartHistoryWindow, setChartHistoryWindow] = useState('1d');
   const [companyHistoricalData, setCompanyHistoricalData] = useState([]);
 
-  function adjustHistoryWindow(newWindow) {
-    console.log('adjusting history window to: ' + newWindow);
-    setChartHistoryWindow(newWindow);
-  }
-
   useEffect(() => {
     async function fetchNewHistoricalData(window) {
-      let modifiedWindow = window;
-      if (window === '5d') {
-        modifiedWindow = '5dm';
-      }
+      if (window !== '1d') {
+        const historicalDataURL =
+          window === '5d'
+            ? `${api_base_url}/5dhistoricaldata?symbol=${props.companySymbol}`
+            : `${api_base_url}/historicaldata?window=${window}&symbol=${props.companySymbol}`;
 
-      if (modifiedWindow !== '1d') {
-        const historicalDataURL = `https://sandbox.iexapis.com/stable/stock/${props.companySymbol}/chart/${modifiedWindow}?token=${props.sandbox_api_key}`;
-        console.log(
-          'CompanyStockChart() - fetchNewHistoricalData(): ' +
-            historicalDataURL,
-        );
+        console.log('CompanyStockChart(): ' + historicalDataURL);
 
         try {
           await fetch(historicalDataURL)
@@ -60,9 +60,15 @@ export default function CompanyStockChart(props) {
     }
 
     fetchNewHistoricalData(chartHistoryWindow);
-  }, [chartHistoryWindow, props.companySymbol, props.sandbox_api_key]);
+  }, [chartHistoryWindow, props.companySymbol]);
 
   return useMemo(() => {
+    function adjustHistoryWindow(newWindow) {
+      console.log('adjusting history window to: ' + newWindow);
+      setChartHistoryWindow(newWindow);
+      iexContext.changeChartHistoryWindow(newWindow);
+    }
+
     const renderChart = () => {
       if (chartHistoryWindow === '1d') {
         return <LightWeightIntradayStockChart width={props.width} />;
@@ -73,6 +79,11 @@ export default function CompanyStockChart(props) {
 
     // TODO: change Voronoi to horizontal line Robinhood type thing
     const renderHistoricalStockChart = () => {
+      console.log(
+        'CompanyStockChart(): rendering historical chart for: ' +
+          chartHistoryWindow,
+      );
+
       function getHistoricalData() {
         let earliestDateReturned = companyHistoricalData[0].date.split('-')[2];
         if (chartHistoryWindow === '5d') {
@@ -113,7 +124,7 @@ export default function CompanyStockChart(props) {
         }
       }
 
-      const getDomain = () => {
+      const getRange = () => {
         if (chartHistoryWindow === '5d') {
           const averagePrices = companyHistoricalData
             .map((dataPoint) => dataPoint.average)
@@ -135,10 +146,6 @@ export default function CompanyStockChart(props) {
         }
       };
 
-      console.log(
-        'CompanyStockChart(): rendering historical chart for: ' +
-          chartHistoryWindow,
-      );
       if (getHistoricalData().length > 1) {
         return (
           <View style={styles.chartContainer}>
@@ -146,10 +153,8 @@ export default function CompanyStockChart(props) {
               theme={VictoryTheme.material}
               height={chartHeight}
               width={props.width}
-              minDomain={{y: getDomain()[0]}}
-              domain={
-                companyHistoricalData.length > 0 ? null : {y: getDomain()}
-              }
+              minDomain={{y: getRange()[0]}}
+              domain={companyHistoricalData.length > 0 ? null : {y: getRange()}}
               containerComponent={
                 <VictoryVoronoiContainer
                   labels={
@@ -241,12 +246,7 @@ export default function CompanyStockChart(props) {
         </View>
       </View>
     );
-  }, [
-    companyHistoricalData,
-    props.cloud_api_key,
-    props.companySymbol,
-    props.width,
-  ]);
+  }, [companyHistoricalData, props.companySymbol, props.width, iexContext]);
 }
 
 const styles = StyleSheet.create({

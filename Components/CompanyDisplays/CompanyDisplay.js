@@ -14,7 +14,7 @@ import StatsTable from './StatsTable';
 
 const height = Dimensions.get('screen').height * 0.25;
 
-// Props thru route => props.route.params.____ passed: companySymbol, companyName, width, cloud_api_key, sandbox_api_key
+// Props thru route => props.route.params.____ passed: companySymbol, companyName, width
 export default function CompanyDisplay(props) {
   const iexContext = useContext(IEXContext);
   const propsParams = props.route.params;
@@ -26,8 +26,6 @@ export default function CompanyDisplay(props) {
           <CompanyStockChart
             width={propsParams.width}
             companySymbol={propsParams.companySymbol}
-            cloud_api_key={propsParams.cloud_api_key}
-            sandbox_api_key={propsParams.sandbox_api_key}
           />
         </View>
         <View style={styles.statsContainer}>

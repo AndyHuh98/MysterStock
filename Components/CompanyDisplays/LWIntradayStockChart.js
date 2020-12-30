@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import {useMemo} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   VictoryChart,
@@ -13,9 +12,9 @@ import IEXContext from '../../Contexts/IEXContext';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
+// TODO: Display live latest price (last data point in intraday, or use quotes endpoint)
 // TODO: Test LIVE UPDATE of this chart
 // TODO: See what Robinhood behavior is for live update of weekly / monthly data
-// TODO: Add horizontal line for market open price (grey dashed on robinhood)
 
 // Lightweight, single day stock price chart meant for the main page display.
 // Props passed: width
@@ -23,16 +22,36 @@ export default function LightWeightIntradayStockChart(props) {
   const iexContext = useContext(IEXContext);
 
   return useMemo(() => {
+    console.log('rendering new intradaydata');
+
     const chartDisplay = () => {
       const getDomain = () => {
         const averagePrices = iexContext.companyIntradayData
           .map((dataPoint) => dataPoint.average)
           .filter((average) => average != null);
 
-        return [
-          Math.min(...averagePrices) * 0.995,
-          Math.max(...averagePrices) * 1.1,
-        ];
+        if (iexContext.companyPreviousDayData.fClose !== null) {
+          const previousDayClose = iexContext.companyPreviousDayData.fClose;
+          const minimum = Math.min(
+            previousDayClose,
+            Math.min(...averagePrices),
+          );
+          const maximum = Math.max(
+            previousDayClose,
+            Math.max(...averagePrices),
+          );
+          const paddedMinimum =
+            minimum * (0.995 - (maximum - minimum) / minimum);
+          const paddedMaximum =
+            maximum * (1.005 + (maximum - minimum) / maximum);
+
+          return [paddedMinimum, paddedMaximum];
+        } else {
+          return [
+            Math.min(...averagePrices) * 0.95,
+            Math.max(...averagePrices) * 1.05,
+          ];
+        }
       };
 
       if (iexContext.companyIntradayData !== undefined) {
@@ -46,17 +65,14 @@ export default function LightWeightIntradayStockChart(props) {
               <VictoryChart
                 style={styles.chart}
                 minDomain={{y: getDomain()[0]}}
+                maxDomain={{y: getDomain()[1]}}
                 height={chartHeight}
                 width={props.width}
                 theme={VictoryTheme.material}
-                domain={
-                  iexContext.companyIntradayData.length > 0
-                    ? null
-                    : {y: getDomain()}
-                }
                 containerComponent={
                   <VictoryVoronoiContainer
                     labels={({datum}) => `$${datum.average} @ ${datum.minute}`}
+                    voronoiBlacklist={['previousDayClose']}
                   />
                 }>
                 <VictoryAxis fixLabelOverlap={true} />
@@ -72,6 +88,17 @@ export default function LightWeightIntradayStockChart(props) {
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
+                />
+                <VictoryLine
+                  name="previousDayClose"
+                  y={() => iexContext.companyPreviousDayData.fClose}
+                  style={{
+                    data: {
+                      strokeDasharray: '5',
+                      strokeWidth: 0.75,
+                      fillOpacity: 0.4,
+                    },
+                  }}
                 />
               </VictoryChart>
             </View>
@@ -100,7 +127,11 @@ export default function LightWeightIntradayStockChart(props) {
     };
 
     return <View style={styles.chartContainer}>{chartDisplay()}</View>;
-  }, [iexContext.companyIntradayData, props.width]);
+  }, [
+    iexContext.companyIntradayData,
+    iexContext.companyPreviousDayData,
+    props.width,
+  ]);
 }
 
 const styles = StyleSheet.create({

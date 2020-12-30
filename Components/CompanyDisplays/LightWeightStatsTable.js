@@ -4,6 +4,8 @@ import {Text, StyleSheet, View} from 'react-native';
 import compactFormat from 'cldr-compact-number';
 import {DataTable} from 'react-native-paper';
 
+// TODO: Replace 52 Wk Low and High with high and low from quote / intraday array
+
 // Lightweight stats table with only 8 advanced stats, more like a preview for main stock page.
 // Props passed: advStats
 export default function LightWeightCompanyStatsTable(props) {

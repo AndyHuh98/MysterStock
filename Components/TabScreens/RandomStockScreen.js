@@ -13,6 +13,7 @@ import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import images from '../../assets/images';
 import IEXContext from '../../Contexts/IEXContext';
+import LoadingScreen from '../Misc/LoadingScreen';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 
@@ -27,7 +28,7 @@ export default function RandomStockScreen(props) {
 
   const reelGroup = useRef();
 
-  // TODO: In one of these, place a LoadingScreen Component
+  // TODO: place a LoadingScreen Component in one of these
   return useMemo(() => {
     // Methods to fade in and fade out animations
     const fadeInCompanyDisplay = () => {
@@ -108,10 +109,9 @@ export default function RandomStockScreen(props) {
     } else {
       return (
         <View style={styles.container}>
-          <ImageBackground
-            source={images.background}
-            style={styles.background}
-          />
+          <ImageBackground source={images.background} style={styles.background}>
+            <LoadingScreen />
+          </ImageBackground>
         </View>
       );
     }

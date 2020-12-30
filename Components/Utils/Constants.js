@@ -11,16 +11,4 @@ const Constants = {
 
 export default Constants;
 
-export const HARDCODED_COMPANY_SYMBOLS_ARRAY = [
-  'AAPL',
-  'TSLA',
-  'IBM',
-  'MSFT',
-  'NET',
-  'GE',
-  'BA',
-  'AMZN',
-  'GOOGL',
-  'FSLY',
-  'PLTR',
-];
+export const api_base_url = 'http://3.140.106.13:8080/api';
