@@ -1,4 +1,5 @@
 import React, {useMemo, useEffect} from 'react';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
@@ -9,8 +10,6 @@ import IEXProvider from './Contexts/IEXProvider';
 
 // TODO: fix react-native-paper require cycle warning
 // TODO: add nginx load balancing / routing or whatever it is
-// TODO: Add tab icons
-// TODO: Change header styling
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
 // TODO: Add a search tab where people can just directly search for stocks
@@ -54,16 +53,6 @@ const Stack = createStackNavigator();
     })}
   />
 */
-
-/*
-ADJUSTING HEADER STYLES: https://reactnavigation.org/docs/headers
-There are three key properties to use when customizing the style of your header: headerStyle, headerTintColor, and headerTitleStyle.
-
-headerStyle: a style object that will be applied to the View that wraps the header. If you set backgroundColor on it, that will be the color of your header.
-headerTintColor: the back button and title both use this property as their color. In the example below, we set the tint color to white (#fff) so the back button and the header title would be white.
-headerTitleStyle: if we want to customize the fontFamily, fontWeight and other Text style properties for the title, we can use this to do it.
-*/
-
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
@@ -71,22 +60,39 @@ const App = () => {
 
   return useMemo(() => {
     return (
-      <NavigationContainer>
-        <IEXProvider>
-          <Stack.Navigator initialRouteName="MysterStock">
-            <Stack.Screen name="Myster Stock" component={MainTabNavigator} />
-            <Stack.Screen
-              name="CompanyDisplay"
-              component={CompanyDisplay}
-              options={({route}) => ({
-                headerTitle: `${route.params.companySymbol}`,
-              })}
-            />
-          </Stack.Navigator>
-        </IEXProvider>
-      </NavigationContainer>
+      <SafeAreaView style={styles.safeArea}>
+        <NavigationContainer>
+          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <IEXProvider>
+            <Stack.Navigator
+              initialRouteName="MysterStock"
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: 'green',
+                },
+                headerTintColor: 'white',
+              }}>
+              <Stack.Screen name="Myster Stock" component={MainTabNavigator} />
+              <Stack.Screen
+                name="CompanyDisplay"
+                component={CompanyDisplay}
+                options={({route}) => ({
+                  headerTitle: `${route.params.companySymbol}`,
+                })}
+              />
+            </Stack.Navigator>
+          </IEXProvider>
+        </NavigationContainer>
+      </SafeAreaView>
     );
   }, []);
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'green',
+  },
+});
 
 export default App;

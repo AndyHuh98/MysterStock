@@ -7,6 +7,9 @@ import AccountScreen from '../TabScreens/AccountScreen';
 
 const Tab = createBottomTabNavigator();
 
+// To change navigation color: this file
+// to change header color: app.js screenoptions in Stack.Navigator
+// to change safearea color (black): app.js styles.safeArea
 export default function MainTabNavigator(props) {
   return (
     <Tab.Navigator
@@ -25,8 +28,10 @@ export default function MainTabNavigator(props) {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'green',
-        inactiveTintColor: 'gray',
+        activeTintColor: 'limegreen',
+        inactiveTintColor: 'white',
+        activeBackgroundColor: 'green',
+        inactiveBackgroundColor: 'green',
       }}>
       <Tab.Screen
         name="Stock"
