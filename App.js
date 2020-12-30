@@ -11,7 +11,6 @@ import IEXProvider from './Contexts/IEXProvider';
 // TODO: add nginx load balancing / routing or whatever it is
 // TODO: Add tab icons
 // TODO: Change header styling
-// TODO: Add Splash Screen
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
 
