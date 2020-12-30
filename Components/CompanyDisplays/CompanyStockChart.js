@@ -35,12 +35,6 @@ export default function CompanyStockChart(props) {
   const [chartHistoryWindow, setChartHistoryWindow] = useState('1d');
   const [companyHistoricalData, setCompanyHistoricalData] = useState([]);
 
-  function adjustHistoryWindow(newWindow) {
-    console.log('adjusting history window to: ' + newWindow);
-    setChartHistoryWindow(newWindow);
-    iexContext.changeChartHistoryWindow(newWindow);
-  }
-
   useEffect(() => {
     async function fetchNewHistoricalData(window) {
       if (window !== '1d') {
@@ -69,6 +63,12 @@ export default function CompanyStockChart(props) {
   }, [chartHistoryWindow, props.companySymbol]);
 
   return useMemo(() => {
+    function adjustHistoryWindow(newWindow) {
+      console.log('adjusting history window to: ' + newWindow);
+      setChartHistoryWindow(newWindow);
+      iexContext.changeChartHistoryWindow(newWindow);
+    }
+
     const renderChart = () => {
       if (chartHistoryWindow === '1d') {
         return <LightWeightIntradayStockChart width={props.width} />;
@@ -79,6 +79,11 @@ export default function CompanyStockChart(props) {
 
     // TODO: change Voronoi to horizontal line Robinhood type thing
     const renderHistoricalStockChart = () => {
+      console.log(
+        'CompanyStockChart(): rendering historical chart for: ' +
+          chartHistoryWindow,
+      );
+
       function getHistoricalData() {
         let earliestDateReturned = companyHistoricalData[0].date.split('-')[2];
         if (chartHistoryWindow === '5d') {
@@ -141,10 +146,6 @@ export default function CompanyStockChart(props) {
         }
       };
 
-      console.log(
-        'CompanyStockChart(): rendering historical chart for: ' +
-          chartHistoryWindow,
-      );
       if (getHistoricalData().length > 1) {
         return (
           <View style={styles.chartContainer}>
@@ -245,7 +246,7 @@ export default function CompanyStockChart(props) {
         </View>
       </View>
     );
-  }, [companyHistoricalData, props.companySymbol, props.width]);
+  }, [companyHistoricalData, props.companySymbol, props.width, iexContext]);
 }
 
 const styles = StyleSheet.create({

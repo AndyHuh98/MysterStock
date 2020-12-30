@@ -1,16 +1,28 @@
-import React from 'react';
+import React, {useMemo, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import SplashScreen from 'react-native-splash-screen';
 
 import CompanyDisplay from './Components/CompanyDisplays/CompanyDisplay';
 import MainTabNavigator from './Components/Navigation/MainTabNavigator';
-import {useMemo} from 'react';
 import IEXProvider from './Contexts/IEXProvider';
 
 // TODO: fix react-native-paper require cycle warning
 // TODO: add nginx load balancing / routing or whatever it is
 // TODO: Add tab icons
 // TODO: Change header styling
+// TODO: Add Splash Screen
+// TODO: Make app try to reload every x intervals if network request is bad.
+// Might have to do this in backend. Google it.
+
+/* TODO: Potential Name Bases (make more unique):
+  - Lighthouse
+  - Oracle
+  - Mystery
+  - Random
+  - Rocket
+  - Launch
+*/
 
 const Stack = createStackNavigator();
 /*
@@ -52,6 +64,10 @@ headerTitleStyle: if we want to customize the fontFamily, fontWeight and other T
 */
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return useMemo(() => {
     return (
       <NavigationContainer>

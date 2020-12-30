@@ -1,10 +1,16 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import LottieView from 'lottie-react-native';
 
 export default function LoadingScreen(props) {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#0000ff" />
+      <LottieView
+        style={styles.loadingContent}
+        source={require('../../assets/loading-animations/rocket-6.json')}
+        autoPlay
+        loop
+      />
     </View>
   );
 }
@@ -14,7 +20,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  loadingText: {
+  loadingContent: {
     alignSelf: 'center',
   },
 });

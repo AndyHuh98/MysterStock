@@ -22,6 +22,8 @@ export default function LightWeightIntradayStockChart(props) {
   const iexContext = useContext(IEXContext);
 
   return useMemo(() => {
+    console.log('rendering new intradaydata');
+
     const chartDisplay = () => {
       const getDomain = () => {
         const averagePrices = iexContext.companyIntradayData
