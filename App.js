@@ -14,7 +14,7 @@ import IEXProvider from './Contexts/IEXProvider';
 // Might have to do this in backend. Google it.
 // TODO: Add a search tab where people can just directly search for stocks
 // TODO: Add filter for randomizing stocks that meet the filter
-// TODO: Add a "settings" tab with about and faq / explanations for header and other 
+// TODO: Add a "settings" tab with about and faq / explanations for header and other
 // various machinations of the application
 
 /* TODO: Potential Name Bases (make more unique):

@@ -36,7 +36,7 @@ export default function LightWeightCompanyStatsTable(props) {
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>
-            <Text style={styles.statsTitle}>{dataTableCats.marketcap}</Text>
+            <Text style={styles.statsTitle}>Stats</Text>
           </DataTable.Title>
         </DataTable.Header>
 
@@ -45,7 +45,7 @@ export default function LightWeightCompanyStatsTable(props) {
             <Text style={styles.statsTitle}>MktCap: </Text>
             <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
-                {props.advStats.marketCap !== null
+                {props.advStats.marketcap !== null
                   ? compactFormat(props.advStats.marketcap, 'en', null, {
                       significantDigits: 2,
                       maximumFractionDigits: 1,

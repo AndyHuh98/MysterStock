@@ -87,16 +87,13 @@ export default function IEXProvider({children}) {
         .then((response) => response.json())
         .then((responseJson) => {
           let filteredData = [];
-          filteredData = responseJson;
-          filteredData.filter((dataPoint) => {
-            let minutes = dataPoint.minute.split(':')[1];
+          filteredData = responseJson.filter((dataPoint) => {
+            let minutes = parseInt(dataPoint.minute.split(':')[1]);
             // can make graph more detailed by changing the modulo here
-            for (let i = 5; i > 0; i--) {
-              if (minutes % i === 0 && dataPoint.average !== null) {
-                return minutes % i === 0 && dataPoint.average !== null;
-              }
-            }
-            return minutes % 5 === 0 && dataPoint.average !== null;
+            return (
+              (minutes % 4 === 0 || minutes % 5 === 0) &&
+              dataPoint.average !== null
+            );
           });
           setCompanyIntradayData(filteredData);
         });

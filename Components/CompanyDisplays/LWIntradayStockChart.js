@@ -1,12 +1,13 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   VictoryChart,
   VictoryLine,
-  VictoryVoronoiContainer,
   VictoryTheme,
+  VictoryScatter,
   VictoryAxis,
   VictoryLabel,
+  VictoryCursorContainer,
 } from 'victory-native';
 import IEXContext from '../../Contexts/IEXContext';
 
@@ -19,10 +20,13 @@ const chartHeight = Dimensions.get('screen').height * 0.3;
 // Props passed: width
 export default function LightWeightIntradayStockChart(props) {
   const iexContext = useContext(IEXContext);
+  const [activeData, setActiveData] = useState({
+    minute: null,
+    average: null,
+    cursorValue: null,
+  });
 
   return useMemo(() => {
-    console.log('rendering new intradaydata');
-
     const chartDisplay = () => {
       const getDomain = () => {
         const averagePrices = iexContext.companyIntradayData
@@ -39,16 +43,14 @@ export default function LightWeightIntradayStockChart(props) {
             previousDayClose,
             Math.max(...averagePrices),
           );
-          const paddedMinimum =
-            minimum * (0.995 - (maximum - minimum) / minimum);
-          const paddedMaximum =
-            maximum * (1.005 + (maximum - minimum) / maximum);
+          const paddedMinimum = minimum * 0.985;
+          const paddedMaximum = maximum * 1.015;
 
           return [paddedMinimum, paddedMaximum];
         } else {
           return [
-            Math.min(...averagePrices) * 0.95,
-            Math.max(...averagePrices) * 1.05,
+            Math.min(...averagePrices) * 0.975,
+            Math.max(...averagePrices) * 1.025,
           ];
         }
       };
@@ -59,6 +61,12 @@ export default function LightWeightIntradayStockChart(props) {
             (dataPoint) => dataPoint.average !== null,
           ).length > 1
         ) {
+          const point = activeData ? (
+            <VictoryScatter
+              data={[{x: activeData.cursorValue, y: activeData.average}]}
+              style={{data: {size: 100}}}
+            />
+          ) : null;
           return (
             <View style={styles.chartContainer}>
               <VictoryChart
@@ -69,13 +77,32 @@ export default function LightWeightIntradayStockChart(props) {
                 width={props.width}
                 theme={VictoryTheme.material}
                 containerComponent={
-                  <VictoryVoronoiContainer
-                    labels={({datum}) => `$${datum.average} @ ${datum.minute}`}
-                    voronoiBlacklist={['previousDayClose']}
+                  <VictoryCursorContainer
+                    cursorDimension="x"
+                    cursorLabel={() =>
+                      `${activeData.average} @ ${activeData.minute}`
+                    }
+                    cursorLabelOffset={{x: -60, y: -60}}
+                    onCursorChange={(value) => {
+                      const filteredData = iexContext.companyIntradayData.filter(
+                        (dataPoint) => dataPoint.average !== null,
+                      );
+                      const cursorValue =
+                        value !== undefined && value !== null
+                          ? Math.round(value)
+                          : filteredData.length;
+                      const dataPoint = filteredData[cursorValue - 1];
+                      setActiveData({
+                        minute: dataPoint.minute,
+                        average: dataPoint.average,
+                        cursorValue: cursorValue,
+                      });
+                    }}
                   />
                 }>
                 <VictoryAxis fixLabelOverlap={true} />
                 <VictoryAxis dependentAxis />
+                {point}
                 <VictoryLine
                   data={iexContext.companyIntradayData.filter(
                     (dataPoint) => dataPoint.average != null,
@@ -129,6 +156,7 @@ export default function LightWeightIntradayStockChart(props) {
 
     return <View style={styles.chartContainer}>{chartDisplay()}</View>;
   }, [
+    activeData,
     iexContext.companyIntradayData,
     iexContext.companyPreviousDayData,
     props.width,
