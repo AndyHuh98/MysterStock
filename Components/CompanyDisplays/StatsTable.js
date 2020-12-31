@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import compactFormat from 'cldr-compact-number';
 import {DataTable} from 'react-native-paper';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
+import {noDataStatTableString, dataTableCats} from '../Utils/Constants';
 
 // TODO: Fix "flickering / blinking" whenever expanding stats table.
 
@@ -33,144 +34,128 @@ export default function StatsTable(props) {
           </DataTable.Header>
         </TouchableHighlight>
 
-        <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Mkt Cap: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+        <DataTable.Row style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.mktcap}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.marketcap !== null
                   ? compactFormat(props.advStats.marketcap, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 4,
+                      significantDigits: 2,
+                      maximumFractionDigits: 1,
                     })
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Employees: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.employees}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.employees === null
-                  ? 'No Data'
+                  ? noDataStatTableString
                   : props.advStats.employees}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
-        <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>52 Wk Low: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+        <DataTable.Row style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.week52low}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.week52low !== null
                   ? parseFloat(props.advStats.week52low).toFixed(2)
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>52 Wk High: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.week52high}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.week52high !== null
                   ? parseFloat(props.advStats.week52high).toFixed(2)
-                  : 'No Data'}
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
-        <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Revenue: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+        <DataTable.Row style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.revenue}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.revenue !== null
                   ? compactFormat(props.advStats.revenue, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 4,
+                      significantDigits: 2,
+                      maximumFractionDigits: 1,
                     })
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Rev. Per Share: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>
+              {dataTableCats.revenuePerShare}
+            </Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.revenuePerShare !== null
                   ? parseFloat(props.advStats.revenuePerShare).toFixed(3)
-                  : 'No Data'}
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
-        <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Gross Profit: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+        <DataTable.Row style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.grossprofit}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.grossProfit !== null
                   ? compactFormat(props.advStats.grossProfit, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 4,
+                      significantDigits: 2,
+                      maximumFractionDigits: 1,
                     })
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Profit Margin: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.profitMargin}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.profitMargin !== null
                   ? parseFloat(props.advStats.profitMargin).toFixed(3)
-                  : 'No Data'}
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
         <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Avg Vol: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.avg30Volume}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.avg30Volume !== null
                   ? compactFormat(props.advStats.avg30Volume, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 4,
+                      significantDigits: 2,
+                      maximumFractionDigits: 2,
                     })
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Out. Shares: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>
+              {dataTableCats.sharesOutstanding}
+            </Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.sharesOutstanding !== null
                   ? compactFormat(
@@ -178,158 +163,143 @@ export default function StatsTable(props) {
                       'en',
                       null,
                       {
-                        significantDigits: 3,
-                        maximumFractionDigits: 4,
+                        significantDigits: 2,
+                        maximumFractionDigits: 2,
                       },
                     )
-                  : 'No Data'}
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
         <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Tot. Cash: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.totalCash}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.totalCash !== null
                   ? compactFormat(props.advStats.totalCash, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 4,
+                      significantDigits: 2,
+                      maximumFractionDigits: 1,
                     })
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Current Debt: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.currentDebt}</Text>
+
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.currentDebt !== null
                   ? compactFormat(props.advStats.currentDebt, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 4,
+                      significantDigits: 2,
+                      maximumFractionDigits: 1,
                     })
-                  : 'No Data'}
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
         <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>P/E Ratio: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.peRatio}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.peRatio !== null
                   ? parseFloat(props.advStats.peRatio).toFixed(2)
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>EPS (TTM): </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.ttmEPS}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.ttmEPS !== null
-                  ? parseFloat(props.advStats.ttmEPS).toFixed(3)
-                  : 'No Data'}
+                  ? parseFloat(props.advStats.ttmEPS).toFixed(2)
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
         <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Fwd P/E Ratio: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>
+              {dataTableCats.forwardPERatio}
+            </Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.forwardPERatio !== null
-                  ? parseFloat(props.advStats.forwardPERatio).toFixed(3)
-                  : 'No Data'}
+                  ? parseFloat(props.advStats.forwardPERatio).toFixed(2)
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>PEG Ratio:</Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.pegRatio}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.pegRatio !== null
                   ? parseFloat(props.advStats.pegRatio).toFixed(3)
-                  : 'No Data'}
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
         <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Put/Call Ratio: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.putCallRatio}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.putCallRatio !== null
                   ? parseFloat(props.advStats.putCallRatio).toFixed(3)
-                  : 'No Data'}
+                  : noDataStatTableString}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>EBITDA: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.ebitda}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
-                {props.advStats.EBITDA !== null
-                  ? compactFormat(props.advStats.EBITDA, 'en', null, {
-                      significantDigits: 3,
-                      maximumFractionDigits: 4,
+                {props.advStats.ebitda !== null
+                  ? compactFormat(props.advStats.ebitda, 'en', null, {
+                      significantDigits: 2,
+                      maximumFractionDigits: 2,
                     })
-                  : 'No Data'}
+                  : noDataStatTableString}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
 
         <DataTable.Row>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Div/Yield: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>{dataTableCats.dividendYield}</Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.dividendYield == null
-                  ? 'No Data'
-                  : parseFloat(props.advStats.dividendYield).toFixed(3)}
+                  ? noDataStatTableString
+                  : parseFloat(props.advStats.dividendYield).toFixed(3)}{' '}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
-          <DataTable.Cell>
-            <DataTable.Cell>
-              <Text style={styles.statsTitle}>Nxt Div: </Text>
-            </DataTable.Cell>
-            <DataTable.Cell>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.statsTitle}>
+              {dataTableCats.nextDividendDate}
+            </Text>
+            <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.nextDividendDate === null
-                  ? 'No Data / None'
+                  ? noDataStatTableString
                   : props.advStats.nextDividendDate}
               </Text>
             </DataTable.Cell>
-          </DataTable.Cell>
+          </View>
         </DataTable.Row>
       </DataTable>
     );
@@ -354,13 +324,23 @@ const styles = StyleSheet.create({
   statsHeader: {
     fontWeight: 'bold',
     color: 'black',
-    fontSize: 20,
+    fontSize: 12,
   },
   statsTitle: {
     fontWeight: 'bold',
     color: 'black',
+    alignSelf: 'center',
   },
   statsValue: {
     color: 'black',
+    alignSelf: 'flex-end',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  cell: {
+    flex: 0.5,
+    flexDirection: 'row',
   },
 });
