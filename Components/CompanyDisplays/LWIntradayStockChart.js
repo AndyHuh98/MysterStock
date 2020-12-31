@@ -12,9 +12,8 @@ import IEXContext from '../../Contexts/IEXContext';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
-// TODO: Display live latest price (last data point in intraday, or use quotes endpoint)
-// TODO: Test LIVE UPDATE of this chart
 // TODO: See what Robinhood behavior is for live update of weekly / monthly data
+// TODO: Implement true "live refresh" with pulsing last data
 
 // Lightweight, single day stock price chart meant for the main page display.
 // Props passed: width

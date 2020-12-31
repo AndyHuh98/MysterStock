@@ -14,6 +14,8 @@ import StatsTable from './StatsTable';
 
 const height = Dimensions.get('screen').height * 0.25;
 
+// TODO: Add company name in display somewhere
+
 // Props thru route => props.route.params.____ passed: companySymbol, companyName, width
 export default function CompanyDisplay(props) {
   const iexContext = useContext(IEXContext);

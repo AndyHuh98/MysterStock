@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   Text,
-  SafeAreaView,
   Animated,
   TouchableOpacity,
   Dimensions,
@@ -28,7 +27,6 @@ export default function RandomStockScreen(props) {
 
   const reelGroup = useRef();
 
-  // TODO: place a LoadingScreen Component in one of these
   return useMemo(() => {
     // Methods to fade in and fade out animations
     const fadeInCompanyDisplay = () => {

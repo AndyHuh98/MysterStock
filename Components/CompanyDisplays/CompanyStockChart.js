@@ -17,9 +17,6 @@ import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
-// TODO: Implement slight padding of range min and max values for historical data / 5d intraday charts
-// refer to mindomain and maxdomain in lwintradaystockchart.js on how to do this.
-
 // TODO: Make horizontal line connect until actual data is served (if IPO / listed
 // more recently than 5y, for example)
 

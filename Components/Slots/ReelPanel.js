@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import images from '../../assets/images';
+import FastImage from 'react-native-fast-image';
 
 export default class ReelPanel extends Component {
   // height, symbol, index, key
@@ -29,7 +30,7 @@ export default class ReelPanel extends Component {
   render() {
     return (
       <View style={this.styles.panelContainer}>
-        <Image
+        <FastImage
           style={this.styles.image}
           resizeMode="contain"
           source={this.symbolSource}
