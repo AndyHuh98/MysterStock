@@ -17,11 +17,14 @@ import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
+// TODO: See if it's possible to move the chart out of the scroll view, or disable scrolling when gestures are on chart cursor
+
 // TODO: Make horizontal line connect until actual data is served (if IPO / listed
 // more recently than 5y, for example)
 
 // TODO: play around filtering to the points for 5y and 1y
 // TODO: add the cursor container to historical and 5d intraday charts
+// TODO: add labels to historical charts (5d will be tricky)
 
 // TODO: for intraday and historical stock charts, play around with SVG styling:
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
@@ -108,10 +111,10 @@ export default function CompanyStockChart(props) {
               );
             });
           } else if (chartHistoryWindow === '1y') {
-            let modulo = parseInt(earliestDateReturned, 10) % 2;
+            let modulo = parseInt(earliestDateReturned, 10) % 3;
             return companyHistoricalData.filter((dataPoint) => {
               return (
-                parseInt(dataPoint.date.split('-')[2], 10) % 2 === modulo &&
+                parseInt(dataPoint.date.split('-')[2], 10) % 3 === modulo &&
                 dataPoint.high !== null
               );
             });
