@@ -142,7 +142,7 @@ export default function LightWeightIntradayStockChart(props) {
                 <VictoryAxis dependentAxis />
                 <VictoryLabel
                   text="No intraday data for company."
-                  x={225}
+                  x={props.width / 2}
                   y={30}
                   textAnchor="middle"
                 />

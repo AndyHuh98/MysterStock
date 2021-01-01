@@ -198,7 +198,7 @@ export default function CompanyStockChart(props) {
               <VictoryAxis dependentAxis />
               <VictoryLabel
                 text="No data for company for given window."
-                x={225}
+                x={props.width / 2}
                 y={30}
                 textAnchor="middle"
               />
