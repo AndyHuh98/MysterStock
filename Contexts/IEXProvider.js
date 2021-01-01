@@ -14,7 +14,6 @@ export default function IEXProvider({children}) {
   const [companyPreviousDayData, setCompanyPreviousDayData] = useState(
     undefined,
   );
-  // TODO: take this as properties of an exported constant somewhere
   // options: '1d-lw', '1d-reg', '5d', '1m', '3m', '1y', '5y'
   const [chartHistoryWindow, setChartHistoryWindow] = useState('1d');
 
@@ -76,7 +75,6 @@ export default function IEXProvider({children}) {
     }
   }
 
-  // TODO: make it refresh every 5 minutes
   async function fetchCompanyIntradayData(compSymbol) {
     const companyIntradayURL = `${api_base_url}/intradaydata?symbol=${compSymbol}`;
     console.log('IEXProvider(): ' + companyIntradayURL);
@@ -116,7 +114,7 @@ export default function IEXProvider({children}) {
     }
   }
 
-  // Each time the companySymbol changes, we need to load new advanced stats.
+  // Each time the companySymbol changes, we need to load new advanced stats, companyInfo, and previous day data
   useEffect(() => {
     async function parallelCompDataFetch(compSymbol) {
       if (compSymbol !== '') {
@@ -137,14 +135,26 @@ export default function IEXProvider({children}) {
     }
   }, [companySymbol]);
 
-  // Each time the chartHistoryWindow changes back to 1d, we want to refresh the fetch
+  // Each time the chartHistoryWindow changes back to 1d, we want to refresh the fetch, we also want to refresh every 5 minutes for new intraday data
+  // Also each time the company symbol changes we want new intraday data for the new company
   useEffect(() => {
+    let intervalID = null;
     if (chartHistoryWindow === '1d' && companySymbol !== '') {
       fetchCompanyIntradayData(companySymbol);
+      intervalID = setInterval(() => {
+        console.log('setting timer for intraday data for ' + companySymbol);
+        fetchCompanyIntradayData(companySymbol);
+      }, 300000);
     }
+
+    return () => {
+      console.log('clearing interval set');
+      clearInterval(intervalID);
+    };
   }, [chartHistoryWindow, companySymbol]);
 
   // The first time we load into the app, we want to make sure the list of stocks is updated
+  // TODO: put this in local storage and refresh only once every day (each time the app is booted up again)
   useEffect(() => {
     if (!stocksSupportedFetched) {
       fetchStocksSupported();
