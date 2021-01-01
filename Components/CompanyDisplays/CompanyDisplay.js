@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import {useEffect} from 'react';
 
 import {
   View,
@@ -13,13 +14,18 @@ import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
 
 const height = Dimensions.get('screen').height * 0.25;
-
 // TODO: Add company name in display somewhere
 
 // Props thru route => props.route.params.____ passed: companySymbol, companyName, width
-export default function CompanyDisplay(props) {
+const CompanyDisplay = (props) => {
   const iexContext = useContext(IEXContext);
   const propsParams = props.route.params;
+
+  useEffect(() => {
+    return () => {
+      iexContext.changeChartHistoryWindow('1d');
+    };
+  }, []);
 
   return (
     <ScrollView style={styles.scrollContainer}>
@@ -39,7 +45,9 @@ export default function CompanyDisplay(props) {
       </SafeAreaView>
     </ScrollView>
   );
-}
+};
+
+export default CompanyDisplay;
 
 const styles = StyleSheet.create({
   scrollContainer: {
