@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import compactFormat from 'cldr-compact-number';
-import {DataTable} from 'react-native-paper';
+import {DataTable, Divider} from 'react-native-paper';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
 import {noDataStatTableString, dataTableCats} from '../Utils/Constants';
-
-// TODO: Fix "flickering / blinking" whenever expanding stats table.
 
 // Props passed in: advStats
 export default function StatsTable(props) {
@@ -19,21 +17,6 @@ export default function StatsTable(props) {
   const dataTableDisplay = () => {
     return (
       <DataTable>
-        <TouchableHighlight
-          underlayColor="grey"
-          activeOpacity={0.5}
-          style={styles.touchableTest}
-          onPress={() => toggleTableCollapsed()}>
-          <DataTable.Header>
-            <DataTable.Title>
-              <Text style={styles.statsHeader}>
-                Stats:{' '}
-                {isCollapsed ? '(Click to Show More)' : '(Click to Show Less)'}
-              </Text>
-            </DataTable.Title>
-          </DataTable.Header>
-        </TouchableHighlight>
-
         <DataTable.Row style={styles.row}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.mktcap}</Text>
@@ -304,15 +287,31 @@ export default function StatsTable(props) {
       </DataTable>
     );
   };
+  /*
+    <Collapse>
+      <CollapseHeader>
+      </CollapseHeader>
+    </Collapse>
+  */
 
   return (
-    <Collapsible
-      style={styles.container}
-      collapsed={isCollapsed}
-      collapsedHeight={props.height}
-      enablePointerEvents={true}>
-      {dataTableDisplay()}
-    </Collapsible>
+    <View style={styles.container}>
+      <TouchableHighlight
+        underlayColor="grey"
+        activeOpacity={0.5}
+        style={styles.collapseBtn}
+        onPress={() => toggleTableCollapsed()}>
+        <Text style={styles.statsHeader}>
+          Stats: {isCollapsed ? '(Click to Show)' : '(Click to Hide)'}
+        </Text>
+      </TouchableHighlight>
+      <Divider></Divider>
+      <Collapsible
+        collapsed={isCollapsed}
+        enablePointerEvents={true}>
+        {dataTableDisplay()}
+      </Collapsible>
+    </View>
   );
 }
 
@@ -320,11 +319,19 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  collapseBtn: {
+    height: 30,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
   },
   statsHeader: {
     fontWeight: 'bold',
     color: 'black',
     fontSize: 12,
+    alignSelf: 'center',
   },
   statsTitle: {
     fontWeight: 'bold',

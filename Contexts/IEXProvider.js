@@ -76,8 +76,7 @@ export default function IEXProvider({children}) {
     }
   }
 
-  // TODO: Test Live updates of this, also make it refresh every 5 minutes
-  // as well as just each time the window changes (already implemented potentially)
+  // TODO: make it refresh every 5 minutes
   async function fetchCompanyIntradayData(compSymbol) {
     const companyIntradayURL = `${api_base_url}/intradaydata?symbol=${compSymbol}`;
     console.log('IEXProvider(): ' + companyIntradayURL);

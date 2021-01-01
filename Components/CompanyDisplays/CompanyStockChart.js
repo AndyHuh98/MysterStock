@@ -20,6 +20,9 @@ const chartHeight = Dimensions.get('screen').height * 0.3;
 // TODO: Make horizontal line connect until actual data is served (if IPO / listed
 // more recently than 5y, for example)
 
+// TODO: play around filtering to the points for 5y and 1y
+// TODO: add the cursor container to historical and 5d intraday charts
+
 // TODO: for intraday and historical stock charts, play around with SVG styling:
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 
@@ -74,7 +77,6 @@ export default function CompanyStockChart(props) {
       }
     };
 
-    // TODO: change Voronoi to horizontal line Robinhood type thing
     const renderHistoricalStockChart = () => {
       console.log(
         'CompanyStockChart(): rendering historical chart for: ' +
@@ -98,10 +100,10 @@ export default function CompanyStockChart(props) {
           return historicalData;
         } else {
           if (chartHistoryWindow === '5y') {
-            let modulo = parseInt(earliestDateReturned, 10) % 4;
+            let modulo = parseInt(earliestDateReturned, 10) % 5;
             return companyHistoricalData.filter((dataPoint) => {
               return (
-                parseInt(dataPoint.date.split('-')[2], 10) % 4 === modulo &&
+                parseInt(dataPoint.date.split('-')[2], 10) % 5 === modulo &&
                 dataPoint.high !== null
               );
             });

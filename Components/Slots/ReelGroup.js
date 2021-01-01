@@ -5,8 +5,6 @@ import Reel from './Reel';
 import Constants from '../Utils/Constants';
 
 // TODO: Make letters show up BEFORE loading in all stocks
-// TODO: disable button while stocks still loading (throws error if you press before loaded fully)
-// props passed in: companySymbolsArray
 export default class ReelGroup extends Component {
   constructor(props) {
     super(props);
