@@ -1,21 +1,31 @@
 import React, {useMemo, useEffect} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  getFocusedRouteNameFromRoute,
+  NavigationContainer,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 
 import CompanyDisplay from './Components/CompanyDisplays/CompanyDisplay';
 import MainTabNavigator from './Components/Navigation/MainTabNavigator';
 import IEXProvider from './Contexts/IEXProvider';
+import AboutScreen from './Components/MiscScreens/AboutScreen';
+import ProfileScreen from './Components/MiscScreens/ProfileScreen';
+import FAQScreen from './Components/MiscScreens/FAQScreen';
+import SettingsScreen from './Components/MiscScreens/SettingsScreen';
 
+// TODO: !!! show more text on description !!!
 // TODO: fix react-native-paper require cycle warning
 // TODO: add nginx load balancing / routing or whatever it is
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
 // TODO: Add a search tab where people can just directly search for stocks
 // TODO: Add filter for randomizing stocks that meet the filter
-// TODO: Add a "settings" tab with about and faq / explanations for header and other
-// various machinations of the application
+// TODO: Fill out About Screen
+// TODO: Fill out FAQ Screen
+// TODO: Fill out Settings Screen
+// TODO: Fill out profile screen (implement profiles)
 
 /* TODO: Potential Name Bases (make more unique):
   - Lighthouse
@@ -61,6 +71,16 @@ const App = () => {
   }, []);
 
   return useMemo(() => {
+    const getHeaderTitle = (route) => {
+      const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stock';
+
+      switch (routeName) {
+        case 'Stock':
+          return 'More Money';
+        case 'More':
+          return 'More Fun';
+      }
+    };
     return (
       <SafeAreaView style={styles.safeArea}>
         <NavigationContainer>
@@ -74,7 +94,13 @@ const App = () => {
                 },
                 headerTintColor: 'white',
               }}>
-              <Stack.Screen name="Myster Stock" component={MainTabNavigator} />
+              <Stack.Screen
+                name="Myster Stock"
+                component={MainTabNavigator}
+                options={({route}) => ({
+                  headerTitle: getHeaderTitle(route),
+                })}
+              />
               <Stack.Screen
                 name="CompanyDisplay"
                 component={CompanyDisplay}
@@ -82,6 +108,10 @@ const App = () => {
                   headerTitle: `${route.params.companySymbol}`,
                 })}
               />
+              <Stack.Screen name="About" component={AboutScreen} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen name="FAQ" component={FAQScreen} />
+              <Stack.Screen name="Settings" component={SettingsScreen} />
             </Stack.Navigator>
           </IEXProvider>
         </NavigationContainer>

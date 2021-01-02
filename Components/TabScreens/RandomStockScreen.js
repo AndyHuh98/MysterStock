@@ -12,7 +12,7 @@ import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import images from '../../assets/images';
 import IEXContext from '../../Contexts/IEXContext';
-import LoadingScreen from '../Misc/LoadingScreen';
+import LoadingScreen from '../MiscScreens/LoadingScreen';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 

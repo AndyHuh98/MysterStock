@@ -1,11 +1,10 @@
-import {useState} from 'react';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-export default function AccountScreen(props) {
+export default function SettingsScreen(props) {
   return (
     <View style={styles.container}>
-      <Text>Account Screen</Text>
+      <Text>Settings Screen</Text>
     </View>
   );
 }
@@ -13,6 +12,6 @@ export default function AccountScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'green',
   },
 });

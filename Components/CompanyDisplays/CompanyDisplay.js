@@ -8,11 +8,14 @@ import {
   ScrollView,
   Dimensions,
   Text,
+  ImageBackground,
+  Image,
 } from 'react-native';
 import IEXContext from '../../Contexts/IEXContext';
 import CompanyDescription from './CompanyDescription';
 import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
+import images from '../../assets/images';
 
 const height = Dimensions.get('screen').height * 0.25;
 // Props thru route => props.route.params.____ passed: companySymbol, companyName, width
@@ -29,25 +32,29 @@ const CompanyDisplay = (props) => {
   }, []);
 
   return (
-    <ScrollView style={styles.scrollContainer}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.companyName}>{iexContext.companyName}</Text>
-        </View>
-        <View style={styles.chartContainer}>
-          <CompanyStockChart
-            width={propsParams.width}
-            companySymbol={propsParams.companySymbol}
-          />
-        </View>
-        <View style={styles.statsContainer}>
-          <StatsTable height={height} advStats={iexContext.advStats} />
-        </View>
-        <View style={styles.descriptionContainer}>
-          <CompanyDescription />
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+    <View style={styles.container}>
+      <ImageBackground source={images.background} style={styles.imageBackGround}>
+        <SafeAreaView style={styles.safeContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.companyName}>{iexContext.companyName}</Text>
+          </View>
+          <ScrollView style={styles.scrollContainer}>
+            <View style={styles.chartContainer}>
+              <CompanyStockChart
+                width={propsParams.width}
+                companySymbol={propsParams.companySymbol}
+              />
+            </View>
+            <View style={styles.statsContainer}>
+              <StatsTable height={height} advStats={iexContext.advStats} />
+            </View>
+            <View style={styles.descriptionContainer}>
+              <CompanyDescription />
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </ImageBackground>
+    </View>
   );
 };
 
@@ -56,14 +63,18 @@ export default CompanyDisplay;
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
-    backgroundColor: 'green',
+  },
+  imageBackGround: {
+    flex: 1,
+    resizeMode: 'cover',
   },
   container: {
     flex: 1,
-    marginHorizontal: '3%',
+    backgroundColor: 'green',
   },
-  titleContainer: {
-    flex: 0.1,
+  safeContainer: {
+    flex: 1, 
+    marginHorizontal: '2%',
   },
   companyName: {
     color: 'white',
