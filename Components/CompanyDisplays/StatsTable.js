@@ -287,12 +287,6 @@ export default function StatsTable(props) {
       </DataTable>
     );
   };
-  /*
-    <Collapse>
-      <CollapseHeader>
-      </CollapseHeader>
-    </Collapse>
-  */
 
   return (
     <View style={styles.container}>
