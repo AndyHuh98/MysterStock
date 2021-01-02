@@ -28,7 +28,9 @@ import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/Com
 // TODO: Fill out Settings Screen
 // TODO: Fill out profile screen (implement profiles)
 // TODO: Implement favorites tab with percentage increase since favorited
-// for users that are logged in 
+// for users that are logged in
+// TODO: Possibly find some way to consolidate stock chart from search or at least
+// reuse code within (historical charts, intraday charts).
 
 /* TODO: Potential Name Bases (make more unique):
   - Lighthouse
@@ -83,7 +85,7 @@ const App = () => {
         case 'Search':
           return 'Explore';
         case 'More':
-          return 'Regulate';
+          return 'Mission Control';
       }
     };
     return (
