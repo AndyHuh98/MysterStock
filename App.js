@@ -23,12 +23,12 @@ import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/Com
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
 // TODO: Add filter for randomizing stocks that meet the filter
-// TODO: Fill out About Screen
 // TODO: Fill out FAQ Screen
 // TODO: Fill out Settings Screen
 // TODO: Fill out profile screen (implement profiles)
 // TODO: Implement favorites tab with percentage increase since favorited
 // for users that are logged in
+// As far as persisting the state and keeping the user logged in, your two options are Redux Persist or AsyncStorage
 // TODO: Possibly find some way to consolidate stock chart from search or at least
 // reuse code within (historical charts, intraday charts).
 

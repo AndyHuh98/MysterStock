@@ -12,9 +12,6 @@ import {
 import IEXContext from '../../Contexts/IEXContext';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
-
-// TODO: Implement true "live refresh" with pulsing last data
-
 // Lightweight, single day stock price chart meant for the main page display.
 // Props passed: width
 export default function LightWeightIntradayStockChart(props) {

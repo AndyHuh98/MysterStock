@@ -31,12 +31,10 @@ export default function AboutScreen(props) {
   const [coreFeaturesCollapsed, setCoreFeaturesCollapsed] = useState(true);
 
   const toggleDescriptionCollapsed = () => {
-    console.log('descriptionCollapsed()');
     setDescriptionCollapsed(!descriptionCollapsed);
   };
 
   const toggleCoreFeaturesCollapsed = () => {
-    console.log('coreFeaturesCollapsed()');
     setCoreFeaturesCollapsed(!coreFeaturesCollapsed);
   };
 
