@@ -108,6 +108,7 @@ const CompanyDisplayFromSearch = (props) => {
     let intervalID = null;
     const fetchAllData = async (compSymbol) => {
       const fetchInfo = fetchCompanyInfo(compSymbol);
+      const fetchIntradayData = fetchCompanyIntradayData(compSymbol);
       const fetchAdvStats = fetchCompanyAdvStats(compSymbol);
       const fetchPreviousDayData = fetchCompanyPreviousDayData(compSymbol);
 
@@ -118,6 +119,7 @@ const CompanyDisplayFromSearch = (props) => {
 
       return {
         companyInfoFetched: await fetchInfo,
+        intradayDataFetched: await fetchIntradayData,
         advStatsFetched: await fetchAdvStats,
         previousDayDataFetched: await fetchPreviousDayData,
       };

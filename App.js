@@ -17,16 +17,18 @@ import SettingsScreen from './Components/MiscScreens/SettingsScreen';
 import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/CompanyDisplayFromSearch';
 
 // TODO: !!! show more text on description !!!
+// TODO: Clean up search code
 // TODO: fix react-native-paper require cycle warning
 // TODO: add nginx load balancing / routing or whatever it is
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
-// TODO: Add a search tab where people can just directly search for stocks
 // TODO: Add filter for randomizing stocks that meet the filter
 // TODO: Fill out About Screen
 // TODO: Fill out FAQ Screen
 // TODO: Fill out Settings Screen
 // TODO: Fill out profile screen (implement profiles)
+// TODO: Implement favorites tab with percentage increase since favorited
+// for users that are logged in 
 
 /* TODO: Potential Name Bases (make more unique):
   - Lighthouse
