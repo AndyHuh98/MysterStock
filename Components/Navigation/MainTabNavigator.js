@@ -3,7 +3,7 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import RandomStockScreen from '../TabScreens/RandomStockScreen';
-import AccountScreen from '../TabScreens/AccountScreen';
+import MoreScreen from '../TabScreens/MoreScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,8 +19,10 @@ export default function MainTabNavigator(props) {
 
           if (route.name === 'Stock') {
             iconName = focused ? 'cash' : 'cash-outline';
-          } else if (route.name === 'Account') {
-            iconName = focused ? 'person-circle' : 'person-circle-outline';
+          } else if (route.name === 'More') {
+            iconName = focused
+              ? 'ellipsis-horizontal-circle'
+              : 'ellipsis-horizontal-circle-outline';
           }
 
           // You can return any component that you like here!
@@ -38,8 +40,8 @@ export default function MainTabNavigator(props) {
         children={() => <RandomStockScreen navigation={props.navigation} />}
       />
       <Tab.Screen
-        name="Account"
-        children={() => <AccountScreen navigation={props.navigation} />}
+        name="More"
+        children={() => <MoreScreen navigation={props.navigation} />}
       />
     </Tab.Navigator>
   );
