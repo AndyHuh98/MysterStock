@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   Text,
-  SafeAreaView,
   Animated,
   TouchableOpacity,
   Dimensions,
@@ -28,7 +27,6 @@ export default function RandomStockScreen(props) {
 
   const reelGroup = useRef();
 
-  // TODO: place a LoadingScreen Component in one of these
   return useMemo(() => {
     // Methods to fade in and fade out animations
     const fadeInCompanyDisplay = () => {
@@ -67,42 +65,40 @@ export default function RandomStockScreen(props) {
       return (
         <View style={styles.container}>
           <ImageBackground source={images.background} style={styles.background}>
-            <SafeAreaView style={styles.container}>
-              {iexContext.stocksSupported.length > 0 ? (
-                <View style={styles.slotsContainer}>
-                  <ReelGroup
-                    companySymbolsArray={iexContext.stocksSupported.map(
-                      (stock) => stock.symbol,
-                    )}
-                    ref={reelGroup}
-                  />
-                </View>
+            {iexContext.stocksSupported.length > 0 ? (
+              <View style={styles.slotsContainer}>
+                <ReelGroup
+                  companySymbolsArray={iexContext.stocksSupported.map(
+                    (stock) => stock.symbol,
+                  )}
+                  ref={reelGroup}
+                />
+              </View>
+            ) : null}
+            {iexContext.stocksSupported.length > 0 ? (
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  disabled={stockBtnDisable}
+                  onPress={(e) => newStockBtnClicked(e)}>
+                  <Text style={styles.titleText}>
+                    {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
+            <Animated.View
+              style={[
+                styles.companyDisplayContainer,
+                {opacity: companyDisplayFadeAnim},
+              ]}>
+              {companySymbol !== '' ? (
+                <PartialCompanyDisplay
+                  navigation={props.navigation}
+                  width={screenWidth}
+                  companySymbol={companySymbol}
+                />
               ) : null}
-              {iexContext.stocksSupported.length > 0 ? (
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity
-                    disabled={stockBtnDisable}
-                    onPress={(e) => newStockBtnClicked(e)}>
-                    <Text style={styles.titleText}>
-                      {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              ) : null}
-              <Animated.View
-                style={[
-                  styles.companyDisplayContainer,
-                  {opacity: companyDisplayFadeAnim},
-                ]}>
-                {companySymbol !== '' ? (
-                  <PartialCompanyDisplay
-                    navigation={props.navigation}
-                    width={screenWidth}
-                    companySymbol={companySymbol}
-                  />
-                ) : null}
-              </Animated.View>
-            </SafeAreaView>
+            </Animated.View>
           </ImageBackground>
         </View>
       );

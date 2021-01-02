@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import {useEffect} from 'react';
 
 import {
   View,
@@ -6,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  Text,
 } from 'react-native';
 import IEXContext from '../../Contexts/IEXContext';
 import CompanyDescription from './CompanyDescription';
@@ -13,15 +15,25 @@ import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
 
 const height = Dimensions.get('screen').height * 0.25;
-
 // Props thru route => props.route.params.____ passed: companySymbol, companyName, width
-export default function CompanyDisplay(props) {
+const CompanyDisplay = (props) => {
   const iexContext = useContext(IEXContext);
   const propsParams = props.route.params;
+
+  // PROBLEM -- when more pages exist for company display to go back to, this will still change
+  // intraday window which may trigger unnecessary fetches
+  useEffect(() => {
+    return () => {
+      iexContext.changeChartHistoryWindow('1d');
+    };
+  }, []);
 
   return (
     <ScrollView style={styles.scrollContainer}>
       <SafeAreaView style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.companyName}>{iexContext.companyName}</Text>
+        </View>
         <View style={styles.chartContainer}>
           <CompanyStockChart
             width={propsParams.width}
@@ -37,7 +49,9 @@ export default function CompanyDisplay(props) {
       </SafeAreaView>
     </ScrollView>
   );
-}
+};
+
+export default CompanyDisplay;
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -47,6 +61,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: '3%',
+  },
+  titleContainer: {
+    flex: 0.1,
+  },
+  companyName: {
+    color: 'white',
+    alignSelf: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   chartContainer: {
     flex: 0.5,

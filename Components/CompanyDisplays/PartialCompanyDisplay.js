@@ -2,7 +2,13 @@ import React from 'react';
 import {useContext} from 'react';
 import {useMemo} from 'react';
 
-import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  TouchableHighlight,
+} from 'react-native';
 import IEXContext from '../../Contexts/IEXContext';
 import LightWeightCompanyStatsTable from './LightWeightStatsTable';
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
@@ -25,7 +31,7 @@ export default function PartialCompanyDisplay(props) {
 
     if (iexContext.advStats !== undefined) {
       return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           <TouchableHighlight
             style={styles.companyNameContainer}
             onPress={() => navigateToCompanyDisplay(props.companySymbol)}>
@@ -39,7 +45,7 @@ export default function PartialCompanyDisplay(props) {
           <View style={styles.chartContainer}>
             <LightWeightIntradayStockChart width={props.width} />
           </View>
-        </View>
+        </ScrollView>
       );
     } else {
       return (

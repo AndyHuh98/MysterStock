@@ -17,11 +17,14 @@ import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 
-// TODO: Implement slight padding of range min and max values for historical data / 5d intraday charts
-// refer to mindomain and maxdomain in lwintradaystockchart.js on how to do this.
+// TODO: See if it's possible to move the chart out of the scroll view, or disable scrolling when gestures are on chart cursor
 
 // TODO: Make horizontal line connect until actual data is served (if IPO / listed
 // more recently than 5y, for example)
+
+// TODO: play around filtering to the points for 5y and 1y
+// TODO: add the cursor container to historical and 5d intraday charts
+// TODO: add labels to historical charts (5d will be tricky)
 
 // TODO: for intraday and historical stock charts, play around with SVG styling:
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
@@ -77,7 +80,6 @@ export default function CompanyStockChart(props) {
       }
     };
 
-    // TODO: change Voronoi to horizontal line Robinhood type thing
     const renderHistoricalStockChart = () => {
       console.log(
         'CompanyStockChart(): rendering historical chart for: ' +
@@ -101,18 +103,18 @@ export default function CompanyStockChart(props) {
           return historicalData;
         } else {
           if (chartHistoryWindow === '5y') {
-            let modulo = parseInt(earliestDateReturned, 10) % 4;
+            let modulo = parseInt(earliestDateReturned, 10) % 5;
             return companyHistoricalData.filter((dataPoint) => {
               return (
-                parseInt(dataPoint.date.split('-')[2], 10) % 4 === modulo &&
+                parseInt(dataPoint.date.split('-')[2], 10) % 5 === modulo &&
                 dataPoint.high !== null
               );
             });
           } else if (chartHistoryWindow === '1y') {
-            let modulo = parseInt(earliestDateReturned, 10) % 2;
+            let modulo = parseInt(earliestDateReturned, 10) % 3;
             return companyHistoricalData.filter((dataPoint) => {
               return (
-                parseInt(dataPoint.date.split('-')[2], 10) % 2 === modulo &&
+                parseInt(dataPoint.date.split('-')[2], 10) % 3 === modulo &&
                 dataPoint.high !== null
               );
             });
@@ -199,7 +201,7 @@ export default function CompanyStockChart(props) {
               <VictoryAxis dependentAxis />
               <VictoryLabel
                 text="No data for company for given window."
-                x={225}
+                x={props.width / 2}
                 y={30}
                 textAnchor="middle"
               />
