@@ -9,7 +9,6 @@ import {
   Dimensions,
   Text,
   ImageBackground,
-  Image,
 } from 'react-native';
 import IEXContext from '../../Contexts/IEXContext';
 import CompanyDescription from './CompanyDescription';
@@ -33,7 +32,9 @@ const CompanyDisplay = (props) => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={images.background} style={styles.imageBackGround}>
+      <ImageBackground
+        source={images.background}
+        style={styles.imageBackGround}>
         <SafeAreaView style={styles.safeContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.companyName}>{iexContext.companyName}</Text>
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   safeContainer: {
-    flex: 1, 
+    flex: 1,
     marginHorizontal: '2%',
   },
   companyName: {

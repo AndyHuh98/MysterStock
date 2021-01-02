@@ -305,10 +305,8 @@ export default function StatsTable(props) {
           Stats: {isCollapsed ? '(Click to Show)' : '(Click to Hide)'}
         </Text>
       </TouchableHighlight>
-      <Divider></Divider>
-      <Collapsible
-        collapsed={isCollapsed}
-        enablePointerEvents={true}>
+      <Divider />
+      <Collapsible collapsed={isCollapsed} enablePointerEvents={true}>
         {dataTableDisplay()}
       </Collapsible>
     </View>

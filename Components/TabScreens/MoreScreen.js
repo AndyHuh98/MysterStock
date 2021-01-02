@@ -44,7 +44,9 @@ export default function MoreScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={images.background} style={styles.imageBackground}>
+      <ImageBackground
+        source={images.background}
+        style={styles.imageBackground}>
         <View style={styles.searchBarContainer}>
           <View style={styles.iconContainer}>
             <Ionicons
@@ -83,7 +85,6 @@ const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   searchBarContainer: {
     borderRadius: 10,
