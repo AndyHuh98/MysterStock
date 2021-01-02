@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   searchBarContainer: {
     borderRadius: 10,

@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import RandomStockScreen from '../TabScreens/RandomStockScreen';
 import MoreScreen from '../TabScreens/MoreScreen';
+import SearchScreen from '../TabScreens/SearchScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,8 @@ export default function MainTabNavigator(props) {
             iconName = focused
               ? 'ellipsis-horizontal-circle'
               : 'ellipsis-horizontal-circle-outline';
+          } else if (route.name === 'Search') {
+            iconName = focused ? 'search-circle' : 'search-circle-outline';
           }
 
           // You can return any component that you like here!
@@ -38,6 +41,10 @@ export default function MainTabNavigator(props) {
       <Tab.Screen
         name="Stock"
         children={() => <RandomStockScreen navigation={props.navigation} />}
+      />
+      <Tab.Screen
+        name="Search"
+        children={() => <SearchScreen navigation={props.navigation} />}
       />
       <Tab.Screen
         name="More"

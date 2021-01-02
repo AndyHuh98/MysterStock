@@ -5,7 +5,9 @@ import images from '../../assets/images';
 export default function ProfileScreen(props) {
   return (
     <View style={styles.container}>
-      <ImageBackground source={images.background} style={styles.imageBackground}>
+      <ImageBackground
+        source={images.background}
+        style={styles.imageBackground}>
         <Text>Profile Screen</Text>
       </ImageBackground>
     </View>
@@ -13,12 +15,12 @@ export default function ProfileScreen(props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'green',
-    },
-    imageBackground: {
-      flex: 1,
-      resizeMode: 'cover',
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: 'green',
+  },
+  imageBackground: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+});

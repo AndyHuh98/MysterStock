@@ -14,6 +14,7 @@ import AboutScreen from './Components/MiscScreens/AboutScreen';
 import ProfileScreen from './Components/MiscScreens/ProfileScreen';
 import FAQScreen from './Components/MiscScreens/FAQScreen';
 import SettingsScreen from './Components/MiscScreens/SettingsScreen';
+import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/CompanyDisplayFromSearch';
 
 // TODO: !!! show more text on description !!!
 // TODO: fix react-native-paper require cycle warning
@@ -76,9 +77,11 @@ const App = () => {
 
       switch (routeName) {
         case 'Stock':
-          return 'More Money';
+          return 'Discover';
+        case 'Search':
+          return 'Explore';
         case 'More':
-          return 'More Fun';
+          return 'Regulate';
       }
     };
     return (
@@ -104,6 +107,13 @@ const App = () => {
               <Stack.Screen
                 name="CompanyDisplay"
                 component={CompanyDisplay}
+                options={({route}) => ({
+                  headerTitle: `${route.params.companySymbol}`,
+                })}
+              />
+              <Stack.Screen
+                name="CompanyDisplayFromSearch"
+                component={CompanyDisplayFromSearch}
                 options={({route}) => ({
                   headerTitle: `${route.params.companySymbol}`,
                 })}
