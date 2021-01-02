@@ -85,7 +85,7 @@ export default function IEXProvider({children}) {
         .then((responseJson) => {
           let filteredData = [];
           filteredData = responseJson.filter((dataPoint) => {
-            let minutes = parseInt(dataPoint.minute.split(':')[1]);
+            let minutes = parseInt(dataPoint.minute.split(':')[1], 10);
             // can make graph more detailed by changing the modulo here
             return (
               (minutes % 4 === 0 || minutes % 5 === 0) &&

@@ -18,13 +18,15 @@ import images from '../../assets/images';
 export default function AboutScreen(props) {
   return (
     <View style={styles.container}>
-    <ImageBackground source={images.background} style={styles.imageBackground}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Credits:</Text>
-      </View>
-      <View style={styles.headerBody}>
-        <Text style={styles.body}>Developed by: Andrew He</Text>
-      </View>
+      <ImageBackground
+        source={images.background}
+        style={styles.imageBackground}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Credits:</Text>
+        </View>
+        <View style={styles.headerBody}>
+          <Text style={styles.body}>Developed by: Andrew He</Text>
+        </View>
       </ImageBackground>
     </View>
   );
