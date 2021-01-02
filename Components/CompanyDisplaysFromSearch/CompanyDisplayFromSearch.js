@@ -138,10 +138,10 @@ const CompanyDisplayFromSearch = (props) => {
   return useMemo(() => {
     if (
       companySymbol !== '' &&
-      companyAdvStats !== undefined &&
-      companyPreviousDayData !== undefined &&
-      companyIntradayData !== undefined &&
-      companyAdvStats !== undefined
+      companyAdvStats &&
+      companyPreviousDayData &&
+      companyIntradayData &&
+      companyAdvStats
     ) {
       return (
         <View style={styles.container}>

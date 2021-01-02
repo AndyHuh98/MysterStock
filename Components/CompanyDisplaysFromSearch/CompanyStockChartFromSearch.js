@@ -15,18 +15,7 @@ import {
 import {api_base_url} from '../Utils/Constants';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
-
-// TODO: See if it's possible to move the chart out of the scroll view, or disable scrolling when gestures are on chart cursor
-
-// TODO: Make horizontal line connect until actual data is served (if IPO / listed
-// more recently than 5y, for example)
-
-// TODO: play around filtering to the points for 5y and 1y
-// TODO: add the cursor container to historical and 5d intraday charts
-// TODO: add labels to historical charts (5d will be tricky)
-
-// TODO: for intraday and historical stock charts, play around with SVG styling:
-// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
+// TODO: ParallaxScrollView: https://github.com/i6mi6/react-native-parallax-scroll-view
 
 // props passed: companySymbol, width, companyPreviousDayData, companyIntradayData
 export default function CompanyStockChartFromSearch(props) {
@@ -111,7 +100,7 @@ export default function CompanyStockChartFromSearch(props) {
         }
       };
 
-      if (props.companyIntradayData !== undefined) {
+      if (props.companyIntradayData) {
         if (
           props.companyIntradayData.filter(
             (dataPoint) => dataPoint.average !== null,
@@ -234,28 +223,26 @@ export default function CompanyStockChartFromSearch(props) {
               dataPoint.label = newLabel;
             });
             return historicalData;
+          } else if (chartHistoryWindow === '5y') {
+            let modulo = parseInt(earliestDateReturned, 10) % 5;
+            return companyHistoricalData.filter((dataPoint) => {
+              return (
+                parseInt(dataPoint.date.split('-')[2], 10) % 5 === modulo &&
+                dataPoint.high !== null
+              );
+            });
+          } else if (chartHistoryWindow === '1y') {
+            let modulo = parseInt(earliestDateReturned, 10) % 3;
+            return companyHistoricalData.filter((dataPoint) => {
+              return (
+                parseInt(dataPoint.date.split('-')[2], 10) % 3 === modulo &&
+                dataPoint.high !== null
+              );
+            });
           } else {
-            if (chartHistoryWindow === '5y') {
-              let modulo = parseInt(earliestDateReturned, 10) % 5;
-              return companyHistoricalData.filter((dataPoint) => {
-                return (
-                  parseInt(dataPoint.date.split('-')[2], 10) % 5 === modulo &&
-                  dataPoint.high !== null
-                );
-              });
-            } else if (chartHistoryWindow === '1y') {
-              let modulo = parseInt(earliestDateReturned, 10) % 3;
-              return companyHistoricalData.filter((dataPoint) => {
-                return (
-                  parseInt(dataPoint.date.split('-')[2], 10) % 3 === modulo &&
-                  dataPoint.high !== null
-                );
-              });
-            } else {
-              return companyHistoricalData.filter((dataPoint) => {
-                return dataPoint.high !== null;
-              });
-            }
+            return companyHistoricalData.filter((dataPoint) => {
+              return dataPoint.high !== null;
+            });
           }
         }
       }
@@ -282,7 +269,7 @@ export default function CompanyStockChartFromSearch(props) {
         }
       };
 
-      if (companyHistoricalData !== undefined) {
+      if (companyHistoricalData) {
         if (getHistoricalData().length > 1) {
           return (
             <View style={styles.chartContainer}>
