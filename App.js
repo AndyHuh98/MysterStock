@@ -15,6 +15,9 @@ import ProfileScreen from './Components/MiscScreens/ProfileScreen';
 import FAQScreen from './Components/MiscScreens/FAQScreen';
 import SettingsScreen from './Components/MiscScreens/SettingsScreen';
 import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/CompanyDisplayFromSearch';
+import LoginScreen from './Components/Auth/LoginScreen';
+import SignUpScreen from './Components/Auth/SignUpScreen';
+import FBAuthProvider from './Contexts/FBAuthProvider';
 
 // TODO: !!! show more text on description !!!
 // TODO: Clean up search code
@@ -42,34 +45,7 @@ import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/Com
 */
 
 const Stack = createStackNavigator();
-/*
-======EXAMPLE FOR CUSTOM HEADER======
 
-  const getHeaderTitle = (route) => {
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Stocks';
-
-    switch (routeName) {
-      case TAB_NAMES.stocks:
-        return 'Your Stocks';
-      case TAB_NAMES.forums:
-        return 'Forums';
-      case TAB_NAMES.createPost:
-        return 'Create A Post';
-      case TAB_NAMES.chatMsgs:
-        return 'Your Message Rooms';
-      case TAB_NAMES.profile:
-        return 'Profile';
-    }
-  };
-
-  <Stack.Screen
-    name="Stock Chat"
-    component={HomeScreen}
-    options={({route}) => ({
-      headerTitle: getHeaderTitle(route),
-    })}
-  />
-*/
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
@@ -89,47 +65,51 @@ const App = () => {
       }
     };
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <NavigationContainer>
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-          <IEXProvider>
-            <Stack.Navigator
-              initialRouteName="MysterStock"
-              screenOptions={{
-                headerStyle: {
-                  backgroundColor: 'green',
-                },
-                headerTintColor: 'white',
-              }}>
-              <Stack.Screen
-                name="Myster Stock"
-                component={MainTabNavigator}
-                options={({route}) => ({
-                  headerTitle: getHeaderTitle(route),
-                })}
-              />
-              <Stack.Screen
-                name="CompanyDisplay"
-                component={CompanyDisplay}
-                options={({route}) => ({
-                  headerTitle: `${route.params.companySymbol}`,
-                })}
-              />
-              <Stack.Screen
-                name="CompanyDisplayFromSearch"
-                component={CompanyDisplayFromSearch}
-                options={({route}) => ({
-                  headerTitle: `${route.params.companySymbol}`,
-                })}
-              />
-              <Stack.Screen name="About" component={AboutScreen} />
-              <Stack.Screen name="Profile" component={ProfileScreen} />
-              <Stack.Screen name="FAQ" component={FAQScreen} />
-              <Stack.Screen name="Settings" component={SettingsScreen} />
-            </Stack.Navigator>
-          </IEXProvider>
-        </NavigationContainer>
-      </SafeAreaView>
+      <FBAuthProvider>
+        <SafeAreaView style={styles.safeArea}>
+          <NavigationContainer>
+            <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+            <IEXProvider>
+              <Stack.Navigator
+                initialRouteName="MysterStock"
+                screenOptions={{
+                  headerStyle: {
+                    backgroundColor: 'green',
+                  },
+                  headerTintColor: 'white',
+                }}>
+                <Stack.Screen
+                  name="Myster Stock"
+                  component={MainTabNavigator}
+                  options={({route}) => ({
+                    headerTitle: getHeaderTitle(route),
+                  })}
+                />
+                <Stack.Screen
+                  name="CompanyDisplay"
+                  component={CompanyDisplay}
+                  options={({route}) => ({
+                    headerTitle: `${route.params.companySymbol}`,
+                  })}
+                />
+                <Stack.Screen
+                  name="CompanyDisplayFromSearch"
+                  component={CompanyDisplayFromSearch}
+                  options={({route}) => ({
+                    headerTitle: `${route.params.companySymbol}`,
+                  })}
+                />
+                <Stack.Screen name="About" component={AboutScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="FAQ" component={FAQScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Sign Up" component={SignUpScreen} />
+              </Stack.Navigator>
+            </IEXProvider>
+          </NavigationContainer>
+        </SafeAreaView>
+      </FBAuthProvider>
     );
   }, []);
 };

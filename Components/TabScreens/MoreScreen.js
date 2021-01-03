@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -10,25 +10,71 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import auth from '@react-native-firebase/auth';
+
 import images from '../../assets/images';
+import FBAuthContext from '../../Contexts/FBAuthContext';
+
+// TODO: Add forgot password option
+/*
+const currentPass = window.prompt('Please enter current password');
+const emailCred  = firebase.auth.EmailAuthProvider.credential(
+    firebase.auth().currentUser, currentPass);
+firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
+    .then(() => {
+      // User successfully reauthenticated.
+      const newPass = window.prompt('Please enter new password');
+      return firebase.auth().currentUser.updatePassword(newPass);
+    })
+    .catch(error = > {
+      // Handle error.
+    });
+*/
+
+// TODO: Add change user email option:
+/*
+auth()
+    .signInWithEmailAndPassword('you@domain.com', 'correcthorsebatterystaple')
+    .then(function(userCredential) {
+        userCredential.user.updateEmail('newyou@domain.com')
+    })
+*/
 
 export default function MoreScreen(props) {
+  const authContext = useContext(FBAuthContext);
   const [searchText, setSearchText] = useState('');
 
-  const FLATLIST_SECTIONS = [
-    {id: 'about', title: 'About'},
-    {id: 'faq', title: 'FAQ'},
-    {id: 'settings', title: 'Settings'},
-    {id: 'profile', title: 'Profile'},
-  ];
+  const FLATLIST_SECTIONS = authContext.loggedIn
+    ? [
+        {id: 'about', title: 'About'},
+        {id: 'faq', title: 'FAQ'},
+        {id: 'settings', title: 'Settings'},
+        {id: 'profile', title: 'Profile'},
+        {id: 'signout', title: 'Sign Out'},
+      ]
+    : [
+        {id: 'about', title: 'About'},
+        {id: 'faq', title: 'FAQ'},
+        {id: 'settings', title: 'Settings'},
+        {id: 'profile', title: 'Profile'},
+        {id: 'login', title: 'Login'},
+        {id: 'signup', title: 'Sign Up'},
+      ];
 
+  // If a user is logged in, only show sign out.
+  // If a user is not logged in, only show sign up and login.
   const renderFlatListItem = ({item}) => {
     if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
       return (
         <Pressable
           onPressIn={() => {
-            console.log(`Navigating to ${item.title} Screen`);
-            props.navigation.navigate(item.title);
+            if (item.title !== 'Sign Out') {
+              console.log(`Navigating to ${item.title} Screen`);
+              props.navigation.navigate(item.title);
+            } else {
+              console.log('Signing Out');
+              auth().signOut();
+            }
           }}
           style={({pressed}) => [
             {
@@ -47,6 +93,13 @@ export default function MoreScreen(props) {
       <ImageBackground
         source={images.background}
         style={styles.imageBackground}>
+        {authContext.user ? (
+          <View style={styles.welcomeUser}>
+            <Text style={styles.welcomeText}>
+              {authContext.user.email.split('@')[0]} is ready for launch!
+            </Text>
+          </View>
+        ) : null}
         <View style={styles.searchBarContainer}>
           <View style={styles.iconContainer}>
             <Ionicons
@@ -116,5 +169,17 @@ const styles = StyleSheet.create({
     marginHorizontal: '1%',
     justifyContent: 'center',
     borderRadius: 10,
+  },
+  welcomeUser: {
+    flex: 0.3,
+    borderRadius: 10,
+    borderWidth: 3,
+    justifyContent: 'center',
+  },
+  welcomeText: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',
   },
 });

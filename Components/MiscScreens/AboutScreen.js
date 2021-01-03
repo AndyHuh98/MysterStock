@@ -12,18 +12,7 @@ import Collapsible from 'react-native-collapsible';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import images from '../../assets/images';
 
-/*
-   import images from '../../assets/images';
-
-  <ImageBackground source={images.background} style={styles.imageBackground}></ImageBackground>
-
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
-
-*/
+// TODO: Line up the core features and what is random stock text
 
 export default function AboutScreen(props) {
   const appName = 'Random Stock';
