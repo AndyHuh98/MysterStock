@@ -1,5 +1,4 @@
-import React from 'react';
-import {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {api_base_url} from '../Components/Utils/Constants';
 import IEXContext from './IEXContext';
 
