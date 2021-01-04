@@ -17,6 +17,7 @@ import SettingsScreen from './Components/MiscScreens/SettingsScreen';
 import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/CompanyDisplayFromSearch';
 import LoginScreen from './Components/Auth/LoginScreen';
 import SignUpScreen from './Components/Auth/SignUpScreen';
+import ResetPassword from './Components/Auth/ResetPassword';
 import FBAuthProvider from './Contexts/FBAuthProvider';
 
 // TODO: !!! show more text on description !!!
@@ -105,6 +106,7 @@ const App = () => {
                 <Stack.Screen name="Settings" component={SettingsScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Sign Up" component={SignUpScreen} />
+                <Stack.Screen name="Reset Password" component={ResetPassword} />
               </Stack.Navigator>
             </IEXProvider>
           </NavigationContainer>

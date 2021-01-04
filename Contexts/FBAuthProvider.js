@@ -6,15 +6,19 @@ export default function FBAuthProvider({children}) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(undefined);
 
+  const setEmail = (email) => {
+    setUser({email: email});
+  };
+
   useEffect(() => {
-    auth().onAuthStateChanged((user) => {
-      console.log('auth state changed');
-      if (user) {
+    auth().onAuthStateChanged((usr) => {
+      console.log(usr);
+      if (usr) {
         setLoggedIn(true);
-        setUser(user);
+        setUser(usr);
       } else {
         setLoggedIn(false);
-        setUser(user);
+        setUser(undefined);
       }
     });
   }, []);
@@ -24,6 +28,7 @@ export default function FBAuthProvider({children}) {
       value={{
         loggedIn: loggedIn,
         user: user,
+        setEmail: setEmail,
       }}>
       {children}
     </FBAuthContext.Provider>

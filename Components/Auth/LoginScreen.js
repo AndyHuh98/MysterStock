@@ -78,6 +78,18 @@ export default function LoginScreen(props) {
             onPressIn={() => submitLoginInformation()}>
             <Text style={styles.buttonText}>Login</Text>
           </Pressable>
+          <Pressable
+            style={styles.button}
+            onPressIn={() => {
+              props.navigation.navigate('Reset Password');
+            }}>
+            <Text style={styles.buttonText}>Reset Password</Text>
+          </Pressable>
+          <Pressable
+            style={styles.button}
+            onPressIn={() => props.navigation.navigate('Sign Up')}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </Pressable>
         </View>
       </ImageBackground>
     </View>
@@ -92,15 +104,15 @@ const styles = StyleSheet.create({
   imageBackground: {
     flex: 1,
     resizeMode: 'cover',
+    justifyContent: 'center',
   },
-  modalView: {},
   loginFormContainer: {
-    marginVertical: '3%',
     marginHorizontal: '5%',
-    flex: 0.5,
+    flex: 0.6,
     borderRadius: 10,
     borderWidth: 3,
     flexDirection: 'column',
+    justifyContent: 'space-evenly',
   },
   title: {
     flex: 0.15,

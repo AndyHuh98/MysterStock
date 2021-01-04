@@ -15,31 +15,6 @@ import auth from '@react-native-firebase/auth';
 import images from '../../assets/images';
 import FBAuthContext from '../../Contexts/FBAuthContext';
 
-// TODO: Add forgot password option
-/*
-const currentPass = window.prompt('Please enter current password');
-const emailCred  = firebase.auth.EmailAuthProvider.credential(
-    firebase.auth().currentUser, currentPass);
-firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
-    .then(() => {
-      // User successfully reauthenticated.
-      const newPass = window.prompt('Please enter new password');
-      return firebase.auth().currentUser.updatePassword(newPass);
-    })
-    .catch(error = > {
-      // Handle error.
-    });
-*/
-
-// TODO: Add change user email option:
-/*
-auth()
-    .signInWithEmailAndPassword('you@domain.com', 'correcthorsebatterystaple')
-    .then(function(userCredential) {
-        userCredential.user.updateEmail('newyou@domain.com')
-    })
-*/
-
 export default function MoreScreen(props) {
   const authContext = useContext(FBAuthContext);
   const [searchText, setSearchText] = useState('');
@@ -93,11 +68,13 @@ export default function MoreScreen(props) {
       <ImageBackground
         source={images.background}
         style={styles.imageBackground}>
-        {authContext.user ? (
+        {authContext.loggedIn ? (
           <View style={styles.welcomeUser}>
-            <Text style={styles.welcomeText}>
-              {authContext.user.email.split('@')[0]} is ready for launch!
-            </Text>
+            {authContext.user ? (
+              <Text style={styles.welcomeText}>
+                {authContext.user.email.split('@')[0]} is ready for launch!
+              </Text>
+            ) : null}
           </View>
         ) : null}
         <View style={styles.searchBarContainer}>

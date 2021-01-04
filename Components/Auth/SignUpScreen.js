@@ -145,6 +145,11 @@ export default function SignUpScreen(props) {
             onPressIn={() => submitSignUpInformation()}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </Pressable>
+          <Pressable
+            style={styles.button}
+            onPressIn={() => props.navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>Login</Text>
+          </Pressable>
         </View>
       </ImageBackground>
     </View>
@@ -180,12 +185,12 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 10,
     margin: '5%',
+    justifyContent: 'space-evenly',
   },
   fieldContainer: {
     marginVertical: '2%',
     marginHorizontal: '2%',
     flex: 0.3,
-    borderWidth: 3,
     flexDirection: 'column',
   },
   fieldTitle: {
