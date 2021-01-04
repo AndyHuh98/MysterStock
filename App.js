@@ -63,6 +63,8 @@ const App = () => {
           return 'Explore';
         case 'More':
           return 'Mission Control';
+        case 'Favorites':
+          return 'Mission Log';
       }
     };
     return (

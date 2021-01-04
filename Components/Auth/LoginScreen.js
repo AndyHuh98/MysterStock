@@ -13,7 +13,6 @@ import auth from '@react-native-firebase/auth';
 
 import images from '../../assets/images';
 
-// TODO: Create auth provider and change the value of user in the auth provider when logging in.
 export default function LoginScreen(props) {
   const [email, setEmail] = useState(undefined);
   const [password, setPassword] = useState(undefined);
