@@ -32,6 +32,10 @@ const CompanyDisplay = (props) => {
     };
   }, []);
 
+  const updateUserFavorites = () => {
+    
+  }
+
   useLayoutEffect(() => {
     const name = isFavorited ? 'heart' : 'heart-outline';
     props.navigation.setOptions({
