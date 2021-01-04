@@ -6,13 +6,12 @@ import {
   Animated,
   TouchableOpacity,
   Dimensions,
-  ImageBackground,
 } from 'react-native';
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
-import images from '../../assets/images';
 import IEXContext from '../../Contexts/IEXContext';
 import LoadingScreen from '../MiscScreens/LoadingScreen';
+import {AppBackgroundColor} from '../Utils/Constants';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
 
@@ -64,50 +63,47 @@ export default function RandomStockScreen(props) {
     if (iexContext.stocksSupported !== undefined) {
       return (
         <View style={styles.container}>
-          <ImageBackground source={images.background} style={styles.background}>
-            {iexContext.stocksSupported.length > 0 ? (
-              <View style={styles.slotsContainer}>
-                <ReelGroup
-                  companySymbolsArray={iexContext.stocksSupported.map(
-                    (stock) => stock.symbol,
-                  )}
-                  ref={reelGroup}
-                />
-              </View>
+          {iexContext.stocksSupported.length > 0 ? (
+            <View style={styles.slotsContainer}>
+              <ReelGroup
+                companySymbolsArray={iexContext.stocksSupported.map(
+                  (stock) => stock.symbol,
+                )}
+                ref={reelGroup}
+              />
+            </View>
+          ) : null}
+          {iexContext.stocksSupported.length > 0 ? (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.touchableOpacity}
+                disabled={stockBtnDisable}
+                onPress={(e) => newStockBtnClicked(e)}>
+                <Text style={styles.titleBtnText}>
+                  {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+          <Animated.View
+            style={[
+              styles.companyDisplayContainer,
+              {opacity: companyDisplayFadeAnim},
+            ]}>
+            {companySymbol !== '' ? (
+              <PartialCompanyDisplay
+                navigation={props.navigation}
+                width={screenWidth}
+                companySymbol={companySymbol}
+              />
             ) : null}
-            {iexContext.stocksSupported.length > 0 ? (
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  disabled={stockBtnDisable}
-                  onPress={(e) => newStockBtnClicked(e)}>
-                  <Text style={styles.titleText}>
-                    {stockBtnDisable ? 'Please Wait...' : 'New Stock'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : null}
-            <Animated.View
-              style={[
-                styles.companyDisplayContainer,
-                {opacity: companyDisplayFadeAnim},
-              ]}>
-              {companySymbol !== '' ? (
-                <PartialCompanyDisplay
-                  navigation={props.navigation}
-                  width={screenWidth}
-                  companySymbol={companySymbol}
-                />
-              ) : null}
-            </Animated.View>
-          </ImageBackground>
+          </Animated.View>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <ImageBackground source={images.background} style={styles.background}>
-            <LoadingScreen />
-          </ImageBackground>
+          <LoadingScreen />
         </View>
       );
     }
@@ -126,19 +122,24 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center',
+    alignSelf: 'center',
+  },
+  titleBtnText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'center',
   },
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: `${AppBackgroundColor}`,
   },
   slotsContainer: {
     flex: 0.15,
     marginHorizontal: '2%',
+    marginTop: '5%',
     justifyContent: 'center',
-    borderColor: 'black',
-    borderWidth: 5,
-    borderRadius: 10,
   },
   background: {
     flex: 1,
@@ -147,15 +148,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 0.1,
-    backgroundColor: 'grey',
     marginTop: '1%',
-    marginHorizontal: '3%',
-    textAlign: 'center',
+    marginHorizontal: '10%',
+    marginBottom: '5%',
     justifyContent: 'center',
+    backgroundColor: '#0067da',
+    borderRadius: 30,
   },
   companyDisplayContainer: {
     flex: 0.75,
-    marginHorizontal: '3%',
     marginVertical: '2%',
   },
 });

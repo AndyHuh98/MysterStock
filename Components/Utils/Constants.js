@@ -37,3 +37,6 @@ export const dataTableCats = {
   dividendYield: 'Div Yld: ',
   nextDividendDate: 'Nxt Div: ',
 };
+
+export const AppBackgroundColor = '#051e23';
+export const AppSecondaryColor = '#04272e';

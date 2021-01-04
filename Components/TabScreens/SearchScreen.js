@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TextInput,
   KeyboardAvoidingView,
   Platform,
@@ -11,8 +10,8 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import images from '../../assets/images';
 import IEXContext from '../../Contexts/IEXContext';
+import {AppBackgroundColor} from '../Utils/Constants';
 
 // TODO: Move search bar into its own component to get practice with this
 // TODO: in backend, change return of stockssupported to include company name as well
@@ -62,7 +61,7 @@ export default function SearchScreen(props) {
           }}
           style={({pressed}) => [
             {
-              backgroundColor: pressed ? 'darkgray' : 'green',
+              backgroundColor: pressed ? 'darkgray' : '#04272e',
             },
             styles.resultCard,
           ]}
@@ -75,36 +74,32 @@ export default function SearchScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        <View style={styles.searchBarContainer}>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              style={styles.searchIcon}
-              size={20}
-              name="search-outline"
-              color="white"
-            />
-          </View>
-          <TextInput
-            placeholder="Search for a stock..."
-            placeholderTextColor="silver"
-            onChangeText={(text) => setSearchText(text)}
-            autoCorrect={false}
-            autoCapitalize="characters"
-            clearButtonMode="always"
-            fontSize={20}
+      <View style={styles.searchBarContainer}>
+        <View style={styles.iconContainer}>
+          <Ionicons
+            style={styles.searchIcon}
+            size={20}
+            name="search-outline"
             color="white"
-            style={styles.searchInput}
           />
         </View>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.resultsContainer}>
-          {renderSearchResults()}
-        </KeyboardAvoidingView>
-      </ImageBackground>
+        <TextInput
+          placeholder="Search for a stock..."
+          placeholderTextColor="silver"
+          onChangeText={(text) => setSearchText(text)}
+          autoCorrect={false}
+          autoCapitalize="characters"
+          clearButtonMode="always"
+          fontSize={20}
+          color="white"
+          style={styles.searchInput}
+        />
+      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.resultsContainer}>
+        {renderSearchResults()}
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -112,11 +107,7 @@ export default function SearchScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: `${AppBackgroundColor}`,
   },
   searchBarContainer: {
     flex: 0.1,

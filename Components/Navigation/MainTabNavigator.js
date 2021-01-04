@@ -36,10 +36,10 @@ export default function MainTabNavigator(props) {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'limegreen',
+        activeTintColor: 'green',
         inactiveTintColor: 'white',
-        activeBackgroundColor: 'green',
-        inactiveBackgroundColor: 'green',
+        activeBackgroundColor: '#04272e',
+        inactiveBackgroundColor: '#04272e',
       }}>
       <Tab.Screen
         name="Stock"

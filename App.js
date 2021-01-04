@@ -77,7 +77,7 @@ const App = () => {
                 initialRouteName="MysterStock"
                 screenOptions={{
                   headerStyle: {
-                    backgroundColor: 'green',
+                    backgroundColor: '#04272e',
                   },
                   headerTintColor: 'white',
                 }}>
@@ -121,7 +121,7 @@ const App = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: '#04272e',
   },
 });
 

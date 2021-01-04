@@ -3,7 +3,11 @@ import React from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import compactFormat from 'cldr-compact-number';
 import {DataTable} from 'react-native-paper';
-import {dataTableCats, noDataStatTableString} from '../Utils/Constants';
+import {
+  AppSecondaryColor,
+  dataTableCats,
+  noDataStatTableString,
+} from '../Utils/Constants';
 
 // TODO: Replace 52 Wk Low and High with high and low from quote / intraday array
 // TODO: Design custom data table component
@@ -29,9 +33,16 @@ export default function LightWeightCompanyStatsTable(props) {
       flex: 0.5,
       flexDirection: 'row',
     },
+    alternateRow: {
+      flex: 1,
+      backgroundColor: `${AppSecondaryColor}`,
+      flexDirection: 'row',
+      marginHorizontal: '3%',
+      borderRadius: 10,
+    },
   });
 
-  const dataTableDisplay2 = () => {
+  const dataTableDisplay = () => {
     return (
       <DataTable>
         <DataTable.Header>
@@ -40,7 +51,7 @@ export default function LightWeightCompanyStatsTable(props) {
           </DataTable.Title>
         </DataTable.Header>
 
-        <DataTable.Row style={styles.row}>
+        <DataTable.Row style={styles.alternateRow}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>MktCap: </Text>
             <DataTable.Cell numeric>
@@ -92,7 +103,7 @@ export default function LightWeightCompanyStatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row style={styles.row}>
+        <DataTable.Row style={styles.alternateRow}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.dividendYield}</Text>
             <DataTable.Cell numeric>
@@ -144,5 +155,5 @@ export default function LightWeightCompanyStatsTable(props) {
     );
   };
 
-  return <View>{dataTableDisplay2()}</View>;
+  return <View>{dataTableDisplay()}</View>;
 }

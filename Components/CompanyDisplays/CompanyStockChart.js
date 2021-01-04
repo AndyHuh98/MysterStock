@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
-import {View, StyleSheet, Button, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
 
 import {
   VictoryChart,
@@ -11,7 +11,11 @@ import {
   VictoryLabel,
 } from 'victory-native';
 import IEXContext from '../../Contexts/IEXContext';
-import {api_base_url} from '../Utils/Constants';
+import {
+  api_base_url,
+  AppBackgroundColor,
+  AppSecondaryColor,
+} from '../Utils/Constants';
 
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
@@ -24,7 +28,7 @@ const chartHeight = Dimensions.get('screen').height * 0.3;
 
 // TODO: play around filtering to the points for 5y and 1y
 // TODO: add the cursor container to historical and 5d intraday charts
-// TODO: add labels to historical charts (5d will be tricky)
+// TODO: highlight the window button we are currently on!! VERY IMPORTANT
 
 // TODO: for intraday and historical stock charts, play around with SVG styling:
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
@@ -166,8 +170,12 @@ export default function CompanyStockChart(props) {
                   }
                 />
               }>
-              <VictoryAxis fixLabelOverlap={true} tickFormat={(x) => ''} />
-              <VictoryAxis dependentAxis />
+              <VictoryAxis
+                fixLabelOverlap={true}
+                tickFormat={(x) => ''}
+                style={{grid: {stroke: 'none'}}}
+              />
+              <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
               <VictoryLine
                 data={getHistoricalData()}
                 y={
@@ -215,36 +223,36 @@ export default function CompanyStockChart(props) {
       <View style={styles.container}>
         <View style={styles.chartContainer}>{renderChart()}</View>
         <View style={styles.historyButtonsContainer}>
-          <Button
-            onPress={() => adjustHistoryWindow('1d')}
-            style={styles.historyWindowBtn}
-            title="1d"
-          />
-          <Button
+          <Pressable
+            onPressIn={() => adjustHistoryWindow('1d')}
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>1D</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('5d')}
-            style={styles.historyWindowBtn}
-            title="5d"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>5D</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('1m')}
-            style={styles.historyWindowBtn}
-            title="1m"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>1M</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('3m')}
-            style={styles.historyWindowBtn}
-            title="3m"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>3M</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('1y')}
-            style={styles.historyWindowBtn}
-            title="1y"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>1Y</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('5y')}
-            style={styles.historyWindowBtn}
-            title="5y"
-          />
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>5Y</Text>
+          </Pressable>
         </View>
       </View>
     );
@@ -255,20 +263,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    borderWidth: 3,
     borderRadius: 10,
+    backgroundColor: `${AppBackgroundColor}`,
   },
   chartContainer: {
-    backgroundColor: 'beige',
     flex: 0.7,
+    backgroundColor: `${AppSecondaryColor}`,
+    borderRadius: 20,
   },
   historyButtonsContainer: {
-    backgroundColor: 'pink',
+    marginTop: '2%',
     flex: 0.3,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
   historyWindowBtn: {
+    backgroundColor: `${AppSecondaryColor}`,
     flex: 0.15,
+    borderRadius: 20,
+  },
+  btnText: {
+    color: 'white',
+    alignSelf: 'center',
+    fontWeight: 'bold',
   },
 });

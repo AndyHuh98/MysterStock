@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TextInput,
   Pressable,
   Alert,
@@ -12,7 +11,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 
-import images from '../../assets/images';
+import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function ResetPassword(props) {
   const [email, setEmail] = useState(undefined);
@@ -43,25 +42,21 @@ export default function ResetPassword(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        <View style={styles.changePasswordFormContainer}>
-          <Text style={styles.title}>Reset Password</Text>
-          <TextInput
-            style={styles.infoInput}
-            placeholder="Email"
-            placeholderTextColor="silver"
-            autoCorrect={false}
-            autoCapitalize="none"
-            onChangeText={(text) => setEmail(text)}
-          />
-          <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
-          <Pressable style={styles.button} onPressIn={() => resetPassword()}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </Pressable>
-        </View>
-      </ImageBackground>
+      <View style={styles.changePasswordFormContainer}>
+        <Text style={styles.title}>Reset Password</Text>
+        <TextInput
+          style={styles.infoInput}
+          placeholder="Email"
+          placeholderTextColor="silver"
+          autoCorrect={false}
+          autoCapitalize="none"
+          onChangeText={(text) => setEmail(text)}
+        />
+        <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
+        <Pressable style={styles.button} onPressIn={() => resetPassword()}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -69,18 +64,15 @@ export default function ResetPassword(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: `${AppBackgroundColor}`,
+    justifyContent: 'center',
   },
   changePasswordFormContainer: {
+    backgroundColor: `${AppSecondaryColor}`,
     marginVertical: '3%',
     marginHorizontal: '5%',
-    flex: 1,
-    borderRadius: 10,
-    borderWidth: 3,
+    flex: 0.6,
+    borderRadius: 20,
     flexDirection: 'column',
     justifyContent: 'center',
   },
@@ -92,11 +84,14 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
   },
   infoInput: {
-    borderWidth: 3,
-    flex: 0.1,
+    backgroundColor: `${AppSecondaryColor}`,
+    borderColor: 'silver',
+    borderWidth: StyleSheet.hairlineWidth,
+    flex: 0.2,
     marginBottom: '1%',
     marginHorizontal: '5%',
     textAlign: 'center',
+    color: 'white',
   },
   errorMessage: {
     flex: 0.075,
@@ -108,12 +103,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   button: {
-    borderWidth: 3,
-    flex: 0.1,
-    marginTop: '5%',
-    backgroundColor: 'blue',
+    flex: 0.15,
+    backgroundColor: '#0067da',
     marginHorizontal: '20%',
     justifyContent: 'center',
+    borderRadius: 20,
+    marginVertical: '2%',
   },
   buttonText: {
     color: 'white',

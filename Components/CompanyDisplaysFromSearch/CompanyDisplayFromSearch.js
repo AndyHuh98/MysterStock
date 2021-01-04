@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState, useMemo, useLayoutEffect} from 'react';
 
 import {
@@ -7,14 +8,12 @@ import {
   ScrollView,
   Dimensions,
   Text,
-  ImageBackground,
   Pressable,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import images from '../../assets/images';
 import LoadingScreen from '../MiscScreens/LoadingScreen';
-import {api_base_url} from '../Utils/Constants';
+import {api_base_url, AppBackgroundColor} from '../Utils/Constants';
 import CompanyDescriptionFromSearch from './CompanyDescriptionFromSearch';
 import CompanyStockChartFromSearch from './CompanyStockChartFromSearch';
 import StatsTableFromSearch from './StatsTableFromSearch';
@@ -107,6 +106,7 @@ const CompanyDisplayFromSearch = (props) => {
   }
 
   // TODO move favorited array to it's own context and provider and pull from there.
+  // When changing this, make sure to change companydisplay.js as well.
   useLayoutEffect(() => {
     const name = isFavorited ? 'heart' : 'heart-outline';
     props.navigation.setOptions({
@@ -171,41 +171,33 @@ const CompanyDisplayFromSearch = (props) => {
     ) {
       return (
         <View style={styles.container}>
-          <ImageBackground
-            source={images.background}
-            style={styles.imageBackGround}>
-            <SafeAreaView style={styles.safeContainer}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.companyName}>{companyName}</Text>
+          <SafeAreaView style={styles.safeContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.companyName}>{companyName}</Text>
+            </View>
+            <ScrollView style={styles.scrollContainer}>
+              <View style={styles.chartContainer}>
+                <CompanyStockChartFromSearch
+                  width={width}
+                  companySymbol={companySymbol}
+                  companyPreviousDayData={companyPreviousDayData}
+                  companyIntradayData={companyIntradayData}
+                />
               </View>
-              <ScrollView style={styles.scrollContainer}>
-                <View style={styles.chartContainer}>
-                  <CompanyStockChartFromSearch
-                    width={width}
-                    companySymbol={companySymbol}
-                    companyPreviousDayData={companyPreviousDayData}
-                    companyIntradayData={companyIntradayData}
-                  />
-                </View>
-                <View style={styles.statsContainer}>
-                  <StatsTableFromSearch advStats={companyAdvStats} />
-                </View>
-                <View style={styles.descriptionContainer}>
-                  <CompanyDescriptionFromSearch companyInfo={companyInfo} />
-                </View>
-              </ScrollView>
-            </SafeAreaView>
-          </ImageBackground>
+              <View style={styles.statsContainer}>
+                <StatsTableFromSearch advStats={companyAdvStats} />
+              </View>
+              <View style={styles.descriptionContainer}>
+                <CompanyDescriptionFromSearch companyInfo={companyInfo} />
+              </View>
+            </ScrollView>
+          </SafeAreaView>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <ImageBackground
-            source={images.background}
-            style={styles.imageBackGround}>
-            <LoadingScreen />
-          </ImageBackground>
+          <LoadingScreen />
         </View>
       );
     }
@@ -222,19 +214,12 @@ const CompanyDisplayFromSearch = (props) => {
 export default CompanyDisplayFromSearch;
 
 const styles = StyleSheet.create({
-  headerRightBtn: {
-    justifyContent: 'center',
-  },
   scrollContainer: {
     flex: 1,
   },
-  imageBackGround: {
-    flex: 1,
-    resizeMode: 'cover',
-  },
   container: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: `${AppBackgroundColor}`,
   },
   safeContainer: {
     flex: 1,
@@ -251,13 +236,10 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flex: 0.3,
-    marginTop: '1%',
-    borderColor: 'black',
-    borderWidth: 3,
-    borderRadius: 10,
+    marginTop: '5%',
   },
   descriptionContainer: {
     flex: 0.2,
-    marginTop: '1%',
+    marginTop: '5%',
   },
 });

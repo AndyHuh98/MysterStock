@@ -1,15 +1,8 @@
 import React, {useState} from 'react';
 import {useEffect} from 'react';
-import {
-  FlatList,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
 
-import images from '../../assets/images';
+import {AppBackgroundColor} from '../Utils/Constants';
 
 export default function FavoritesScreen(props) {
   const [favorites, setFavorites] = useState(undefined);
@@ -54,15 +47,11 @@ export default function FavoritesScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        <FlatList
-          data={favorites}
-          renderItem={renderFavorite}
-          keyExtractor={(item) => item.symbol}
-        />
-      </ImageBackground>
+      <FlatList
+        data={favorites}
+        renderItem={renderFavorite}
+        keyExtractor={(item) => item.symbol}
+      />
     </View>
   );
 }
@@ -70,17 +59,13 @@ export default function FavoritesScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: `${AppBackgroundColor}`,
   },
   favoriteCard: {
     marginVertical: '2%',
     flex: 1,
     marginHorizontal: '10%',
-    backgroundColor: 'green',
+    backgroundColor: '#04272e',
     flexDirection: 'row',
     borderRadius: 10,
   },
@@ -90,6 +75,7 @@ const styles = StyleSheet.create({
   symbolText: {
     fontSize: 33,
     alignSelf: 'center',
+    color: 'white',
   },
   priceContainer: {
     flex: 0.5,
@@ -99,9 +85,11 @@ const styles = StyleSheet.create({
   priceText: {
     alignSelf: 'flex-end',
     fontSize: 20,
+    color: 'white',
   },
   miniHeader: {
     fontSize: 10,
     alignSelf: 'flex-end',
+    color: 'white',
   },
 });

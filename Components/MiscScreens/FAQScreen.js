@@ -1,15 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, ImageBackground} from 'react-native';
-import images from '../../assets/images';
+import {View, Text, StyleSheet} from 'react-native';
+import {AppBackgroundColor} from '../Utils/Constants';
 
 export default function FAQScreen(props) {
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        <Text>FAQ Screen</Text>
-      </ImageBackground>
+      <Text style={styles.text}>FAQ Screen</Text>
     </View>
   );
 }
@@ -17,10 +13,9 @@ export default function FAQScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: `${AppBackgroundColor}`,
   },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+  text: {
+    color: 'white',
   },
 });

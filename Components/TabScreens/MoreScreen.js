@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  ImageBackground,
   Pressable,
   TextInput,
 } from 'react-native';
@@ -12,8 +11,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import auth from '@react-native-firebase/auth';
 
-import images from '../../assets/images';
 import FBAuthContext from '../../Contexts/FBAuthContext';
+import {AppBackgroundColor} from '../Utils/Constants';
 
 export default function MoreScreen(props) {
   const authContext = useContext(FBAuthContext);
@@ -53,7 +52,7 @@ export default function MoreScreen(props) {
           }}
           style={({pressed}) => [
             {
-              backgroundColor: pressed ? 'darkgray' : 'green',
+              backgroundColor: pressed ? 'darkgray' : '#04272e',
             },
             styles.card,
           ]}>
@@ -65,44 +64,31 @@ export default function MoreScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        {authContext.loggedIn ? (
-          <View style={styles.welcomeUser}>
-            {authContext.user ? (
-              <Text style={styles.welcomeText}>
-                {authContext.user.email.split('@')[0]} is ready for launch!
-              </Text>
-            ) : null}
-          </View>
-        ) : null}
-        <View style={styles.searchBarContainer}>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              style={styles.searchIcon}
-              size={20}
-              name="search-outline"
-              color="white"
-            />
-          </View>
-          <TextInput
-            placeholder="Search..."
-            placeholderTextColor="silver"
-            onChangeText={(text) => setSearchText(text)}
-            autoCorrect={false}
-            clearButtonMode="always"
-            fontSize={20}
+      <View style={styles.searchBarContainer}>
+        <View style={styles.iconContainer}>
+          <Ionicons
+            style={styles.searchIcon}
+            size={20}
+            name="search-outline"
             color="white"
-            style={styles.searchInput}
           />
         </View>
-        <FlatList
-          data={FLATLIST_SECTIONS}
-          renderItem={renderFlatListItem}
-          keyExtractor={(item) => item.id}
+        <TextInput
+          placeholder="Search..."
+          placeholderTextColor="silver"
+          onChangeText={(text) => setSearchText(text)}
+          autoCorrect={false}
+          clearButtonMode="always"
+          fontSize={20}
+          color="white"
+          style={styles.searchInput}
         />
-      </ImageBackground>
+      </View>
+      <FlatList
+        data={FLATLIST_SECTIONS}
+        renderItem={renderFlatListItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }
@@ -110,11 +96,7 @@ export default function MoreScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: `${AppBackgroundColor}`,
   },
   searchBarContainer: {
     borderRadius: 10,
