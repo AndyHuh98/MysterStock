@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
 import {useEffect} from 'react';
-import {FlatList, ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+} from 'react-native';
+
 import images from '../../assets/images';
 
 export default function FavoritesScreen(props) {
@@ -9,6 +17,8 @@ export default function FavoritesScreen(props) {
   // move this fetch of favorites (from firebase) into a provider so that in other screens
   // we can check if a company is favorited already or not.
   // when storing favorites use UID instead of username / email!!
+
+  // also when adding favorites option to companies: make sure to do both CompanyDisplays
   useEffect(() => {
     const favorites_hardcoded = [
       {symbol: 'AAPL', favoritedPrice: 124.22},
@@ -22,15 +32,23 @@ export default function FavoritesScreen(props) {
 
   const renderFavorite = ({item}) => {
     return (
-      <View style={styles.favoriteCard}>
-        <View style={styles.symbolContainer}>
-          <Text style={styles.symbolText}>{item.symbol}</Text>
+      <Pressable
+        onPressIn={() => {
+          console.log(`Navigating to ${item.symbol} page`);
+          props.navigation.navigate('CompanyDisplayFromSearch', {
+            companySymbol: item.symbol,
+          });
+        }}>
+        <View style={styles.favoriteCard}>
+          <View style={styles.symbolContainer}>
+            <Text style={styles.symbolText}>{item.symbol}</Text>
+          </View>
+          <View style={styles.priceContainer}>
+            <Text style={styles.miniHeader}>Price When Added</Text>
+            <Text style={styles.priceText}>{item.favoritedPrice}</Text>
+          </View>
         </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.miniHeader}>Price When Added</Text>
-          <Text style={styles.priceText}>{item.favoritedPrice}</Text>
-        </View>
-      </View>
+      </Pressable>
     );
   };
 

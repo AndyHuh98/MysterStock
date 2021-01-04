@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useLayoutEffect} from 'react';
 
 import {
   View,
@@ -8,7 +8,10 @@ import {
   Dimensions,
   Text,
   ImageBackground,
+  Pressable,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import images from '../../assets/images';
 import LoadingScreen from '../MiscScreens/LoadingScreen';
 import {api_base_url} from '../Utils/Constants';
@@ -29,6 +32,7 @@ const CompanyDisplayFromSearch = (props) => {
   const [companyPreviousDayData, setCompanyPreviousDayData] = useState(
     undefined,
   );
+  const [isFavorited, setIsFavorited] = useState(undefined);
 
   async function fetchCompanyInfo(compSymbol) {
     const companyInfoFetchURL = `${api_base_url}/company?symbol=${compSymbol}`;
@@ -101,6 +105,28 @@ const CompanyDisplayFromSearch = (props) => {
       console.error('ERROR: ' + error);
     }
   }
+
+  // TODO move favorited array to it's own context and provider and pull from there.
+  useLayoutEffect(() => {
+    const name = isFavorited ? 'heart' : 'heart-outline';
+    props.navigation.setOptions({
+      headerRight: () => (
+        <Pressable
+          style={styles.headerRightBtn}
+          onPressIn={() => {
+            // get array of favorited from DB, then
+            setIsFavorited(!isFavorited);
+          }}>
+          <Ionicons
+            name={name}
+            size={30}
+            color="lightcoral"
+            style={{marginRight: 20}}
+          />
+        </Pressable>
+      ),
+    });
+  }, [isFavorited, props.navigation]);
 
   // PROBLEM -- when more pages exist for company display to go back to, this will still change
   // intraday window which may trigger unnecessary fetches
@@ -196,6 +222,9 @@ const CompanyDisplayFromSearch = (props) => {
 export default CompanyDisplayFromSearch;
 
 const styles = StyleSheet.create({
+  headerRightBtn: {
+    justifyContent: 'center',
+  },
   scrollContainer: {
     flex: 1,
   },

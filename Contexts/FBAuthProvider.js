@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import FBAuthContext from './FBAuthContext';
 import auth from '@react-native-firebase/auth';
 
@@ -23,14 +23,16 @@ export default function FBAuthProvider({children}) {
     });
   }, []);
 
-  return (
-    <FBAuthContext.Provider
-      value={{
-        loggedIn: loggedIn,
-        user: user,
-        setEmail: setEmail,
-      }}>
-      {children}
-    </FBAuthContext.Provider>
-  );
+  return useMemo(() => {
+    return (
+      <FBAuthContext.Provider
+        value={{
+          loggedIn: loggedIn,
+          user: user,
+          setEmail: setEmail,
+        }}>
+        {children}
+      </FBAuthContext.Provider>
+    );
+  }, [children, loggedIn, user]);
 }

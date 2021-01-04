@@ -14,6 +14,7 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import images from '../../assets/images';
 import FBAuthContext from '../../Contexts/FBAuthContext';
 
+// TODO: fix bug where text in profile doesn't update when email changes.
 export default function ChangeEmail(props) {
   const authContext = useContext(FBAuthContext);
   const [currentPassword, setCurrentPassword] = useState(undefined);
