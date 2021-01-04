@@ -111,8 +111,9 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     flex: 0.1,
-    borderRadius: 10,
-    borderWidth: 3,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'grey',
+    borderRadius: 20,
     marginHorizontal: '10%',
     marginVertical: '5%',
     flexDirection: 'row',

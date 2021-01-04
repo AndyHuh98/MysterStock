@@ -99,8 +99,9 @@ const styles = StyleSheet.create({
     backgroundColor: `${AppBackgroundColor}`,
   },
   searchBarContainer: {
-    borderRadius: 10,
-    borderWidth: 3,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'grey',
+    borderRadius: 20,
     marginHorizontal: '10%',
     marginVertical: '5%',
     flexDirection: 'row',
