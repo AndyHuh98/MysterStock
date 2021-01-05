@@ -21,8 +21,8 @@ import ResetPassword from './Components/Auth/ResetPassword';
 import FBAuthProvider from './Contexts/FBAuthProvider';
 import {AppSecondaryColor} from './Components/Utils/Constants';
 
-// TODO: !!! show more text on description !!!
 // TODO: Clean up search code
+// TODO: Clean up favorites code
 // TODO: fix react-native-paper require cycle warning
 // TODO: add nginx load balancing / routing or whatever it is
 // TODO: Make app try to reload every x intervals if network request is bad.

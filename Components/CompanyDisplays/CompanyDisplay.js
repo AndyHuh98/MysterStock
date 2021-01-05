@@ -41,7 +41,7 @@ const CompanyDisplay = (props) => {
     return () => {
       iexContext.changeChartHistoryWindow('1d');
     };
-  }, [firebaseContext.userFavorites, iexContext, propsParams.companySymbol]);
+  }, [iexContext, propsParams.companySymbol]);
 
   useLayoutEffect(() => {
     const updateUserFavorites = async () => {

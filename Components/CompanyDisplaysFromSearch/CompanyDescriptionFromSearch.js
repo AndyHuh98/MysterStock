@@ -1,19 +1,32 @@
-import React from 'react';
+import React, {useState, useMemo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {AppSecondaryColor} from '../Utils/Constants';
 
 // props passed in: companyInfo
 export default function CompanyDescriptionFromSearch(props) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.titleText}>Description</Text>
-      <Text style={styles.descriptionText}>
-        {props.companyInfo.description === '0'
-          ? 'Company description not supported.'
-          : props.companyInfo.description}
-      </Text>
-    </View>
-  );
+  const [showMore, setShowMore] = useState(undefined);
+
+  return useMemo(() => {
+    const toggleShowMore = () => {
+      setShowMore(!showMore);
+    };
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.titleText}>Description</Text>
+        <Text
+          numberOfLines={showMore ? undefined : 4}
+          style={styles.descriptionText}>
+          {props.companyInfo.description === '0'
+            ? 'Company description not supported.'
+            : props.companyInfo.description}
+        </Text>
+        <Text onPress={toggleShowMore} style={styles.showMoreText}>
+          {showMore ? 'Show less...' : 'Show more...'}
+        </Text>
+      </View>
+    );
+  }, [props.companyInfo.description, showMore]);
 }
 
 const styles = StyleSheet.create({
@@ -29,6 +42,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   descriptionText: {
+    lineHeight: 21,
     color: 'white',
+  },
+  showMoreText: {
+    lineHeight: 21,
+    marginTop: 10,
+    color: 'green',
+    fontWeight: 'bold',
   },
 });

@@ -21,6 +21,7 @@ import {
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 // TODO: ParallaxScrollView: https://github.com/i6mi6/react-native-parallax-scroll-view
+// TODO: Make cursor adjust label in static position
 
 // props passed: companySymbol, width, companyPreviousDayData, companyIntradayData
 export default function CompanyStockChartFromSearch(props) {
@@ -169,7 +170,7 @@ export default function CompanyStockChartFromSearch(props) {
                   y={(datum) => datum.average}
                   x={(datum) => datum.minute}
                   style={{
-                    data: {stroke: '#c43a31'},
+                    data: {stroke: 'limegreen'},
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}

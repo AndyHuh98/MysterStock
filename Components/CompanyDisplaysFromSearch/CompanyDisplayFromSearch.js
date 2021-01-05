@@ -243,7 +243,7 @@ const CompanyDisplayFromSearch = (props) => {
       console.log('clearing interval set: SEARCH');
       clearInterval(intervalID);
     };
-  }, [companySymbol, firebaseContext.userFavorites]);
+  }, [companySymbol]);
 
   return useMemo(() => {
     if (
