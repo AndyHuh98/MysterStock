@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TextInput,
   Pressable,
   Keyboard,
@@ -11,8 +10,8 @@ import {
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
-import images from '../../assets/images';
 import FBAuthContext from '../../Contexts/FBAuthContext';
+import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 // TODO: Extract all text inputs into a single component with standardized styling.
 // TODO: Extract all Pressables in forms into a single component with standardized styling.
@@ -77,45 +76,41 @@ export default function ChangePassword(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        <View style={styles.changePasswordFormContainer}>
-          <Text style={styles.title}>Change Credentials</Text>
-          <TextInput
-            style={styles.infoInput}
-            placeholder="Current Password"
-            placeholderTextColor="silver"
-            secureTextEntry={true}
-            autoCorrect={false}
-            autoCapitalize="none"
-            onChangeText={(text) => setCurrentPassword(text)}
-          />
-          <Text style={styles.errorMessage}>{currentPasswordErrorMessage}</Text>
-          <TextInput
-            style={styles.infoInput}
-            placeholder="New Password"
-            placeholderTextColor="silver"
-            secureTextEntry={true}
-            autoCorrect={false}
-            autoCapitalize="none"
-            onChangeText={(text) => setNewPassword(text)}
-          />
-          <Text style={styles.errorMessage}>{newPasswordErrorMessage}</Text>
-          <TextInput
-            style={styles.infoInput}
-            placeholder="Verify New Password"
-            placeholderTextColor="silver"
-            secureTextEntry={true}
-            autoCorrect={false}
-            autoCapitalize="none"
-            onChangeText={(text) => setVerifyNewPassword(text)}
-          />
-          <Pressable style={styles.button} onPressIn={() => changePassword()}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </Pressable>
-        </View>
-      </ImageBackground>
+      <View style={styles.changePasswordFormContainer}>
+        <Text style={styles.title}>Change Credentials</Text>
+        <TextInput
+          style={styles.infoInput}
+          placeholder="Current Password"
+          placeholderTextColor="silver"
+          secureTextEntry={true}
+          autoCorrect={false}
+          autoCapitalize="none"
+          onChangeText={(text) => setCurrentPassword(text)}
+        />
+        <Text style={styles.errorMessage}>{currentPasswordErrorMessage}</Text>
+        <TextInput
+          style={styles.infoInput}
+          placeholder="New Password"
+          placeholderTextColor="silver"
+          secureTextEntry={true}
+          autoCorrect={false}
+          autoCapitalize="none"
+          onChangeText={(text) => setNewPassword(text)}
+        />
+        <Text style={styles.errorMessage}>{newPasswordErrorMessage}</Text>
+        <TextInput
+          style={styles.infoInput}
+          placeholder="Verify New Password"
+          placeholderTextColor="silver"
+          secureTextEntry={true}
+          autoCorrect={false}
+          autoCapitalize="none"
+          onChangeText={(text) => setVerifyNewPassword(text)}
+        />
+        <Pressable style={styles.button} onPressIn={() => changePassword()}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -123,18 +118,15 @@ export default function ChangePassword(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: `${AppBackgroundColor}`,
   },
   changePasswordFormContainer: {
     marginVertical: '3%',
     marginHorizontal: '5%',
     flex: 1,
     borderRadius: 10,
-    borderWidth: 3,
+    borderColor: 'silver',
+    borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'column',
     justifyContent: 'center',
   },
@@ -147,11 +139,14 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
   },
   infoInput: {
-    borderWidth: 3,
+    backgroundColor: `${AppSecondaryColor}`,
+    borderColor: 'silver',
+    borderWidth: StyleSheet.hairlineWidth,
     flex: 0.15,
     marginBottom: '1%',
     marginHorizontal: '5%',
     textAlign: 'center',
+    color: 'white',
   },
   errorMessage: {
     flex: 0.075,
@@ -163,12 +158,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   button: {
-    borderWidth: 3,
-    flex: 0.1,
-    marginTop: '5%',
-    backgroundColor: 'blue',
+    flex: 0.125,
+    backgroundColor: '#0067da',
     marginHorizontal: '20%',
     justifyContent: 'center',
+    borderRadius: 20,
+    marginVertical: '2%',
   },
   buttonText: {
     color: 'white',

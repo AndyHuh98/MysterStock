@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Animated, StyleSheet, View, Easing} from 'react-native';
+import {Animated, StyleSheet, Easing, ImageBackground} from 'react-native';
+import images from '../../assets/images';
 import Constants from '../Utils/Constants';
 import ReelPanel from './ReelPanel';
 
@@ -92,11 +93,11 @@ export default class Reel extends Component {
 
   render() {
     return (
-      <View style={this.styles.reel}>
+      <ImageBackground source={images.slotContainer} style={this.styles.reel}>
         <Animated.View style={this.styles.scrollingReel}>
           {this.getReelPanels()}
         </Animated.View>
-      </View>
+      </ImageBackground>
     );
   }
 }

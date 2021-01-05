@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useMemo, useState} from 'react';
 
-import {View, StyleSheet, Button, Dimensions} from 'react-native';
+import {View, StyleSheet, Pressable, Text, Dimensions} from 'react-native';
 
 import {
   VictoryChart,
@@ -12,7 +13,11 @@ import {
   VictoryCursorContainer,
   VictoryScatter,
 } from 'victory-native';
-import {api_base_url} from '../Utils/Constants';
+import {
+  api_base_url,
+  AppBackgroundColor,
+  AppSecondaryColor,
+} from '../Utils/Constants';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 // TODO: ParallaxScrollView: https://github.com/i6mi6/react-native-parallax-scroll-view
@@ -109,7 +114,7 @@ export default function CompanyStockChartFromSearch(props) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
-              style={{data: {size: 100}}}
+              style={{data: {size: 100, fill: '#c43a31'}}}
             />
           ) : null;
           return (
@@ -124,6 +129,12 @@ export default function CompanyStockChartFromSearch(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
+                    cursorLabelComponent={
+                      <VictoryLabel
+                        backgroundPadding={10}
+                        backgroundStyle={{fill: 'white'}}
+                      />
+                    }
                     cursorLabel={() =>
                       `${activeData.average} @ ${activeData.minute}`
                     }
@@ -145,8 +156,11 @@ export default function CompanyStockChartFromSearch(props) {
                     }}
                   />
                 }>
-                <VictoryAxis fixLabelOverlap={true} />
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  fixLabelOverlap={true}
+                  style={{grid: {stroke: 'none'}}}
+                />
+                <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
                 <VictoryLine
                   data={props.companyIntradayData.filter(
@@ -184,13 +198,18 @@ export default function CompanyStockChartFromSearch(props) {
                 height={chartHeight}
                 width={props.width}
                 theme={VictoryTheme.material}>
-                <VictoryAxis fixLabelOverlap={true} />
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  fixLabelOverlap={true}
+                  style={{grid: {stroke: 'none'}}}
+                />
+                <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 <VictoryLabel
                   text="No intraday data for company."
                   x={props.width / 2}
-                  y={30}
+                  y={100}
                   textAnchor="middle"
+                  backgroundPadding={10}
+                  backgroundStyle={{fill: 'white'}}
                 />
               </VictoryChart>
             </View>
@@ -290,8 +309,12 @@ export default function CompanyStockChartFromSearch(props) {
                     }
                   />
                 }>
-                <VictoryAxis fixLabelOverlap={true} tickFormat={(x) => ''} />
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  fixLabelOverlap={true}
+                  tickFormat={(x) => ''}
+                  style={{grid: {stroke: 'none'}}}
+                />
+                <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 <VictoryLine
                   data={getHistoricalData()}
                   y={
@@ -326,8 +349,10 @@ export default function CompanyStockChartFromSearch(props) {
                 <VictoryLabel
                   text="No data for company for given window."
                   x={props.width / 2}
-                  y={30}
+                  y={100}
                   textAnchor="middle"
+                  backgroundPadding={10}
+                  backgroundStyle={{fill: 'white'}}
                 />
               </VictoryChart>
             </View>
@@ -340,36 +365,36 @@ export default function CompanyStockChartFromSearch(props) {
       <View style={styles.container}>
         <View style={styles.chartContainer}>{renderChart()}</View>
         <View style={styles.historyButtonsContainer}>
-          <Button
-            onPress={() => adjustHistoryWindow('1d')}
-            style={styles.historyWindowBtn}
-            title="1d"
-          />
-          <Button
+          <Pressable
+            onPressIn={() => adjustHistoryWindow('1d')}
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>1D</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('5d')}
-            style={styles.historyWindowBtn}
-            title="5d"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>5D</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('1m')}
-            style={styles.historyWindowBtn}
-            title="1m"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>1M</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('3m')}
-            style={styles.historyWindowBtn}
-            title="3m"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>3M</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('1y')}
-            style={styles.historyWindowBtn}
-            title="1y"
-          />
-          <Button
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>1Y</Text>
+          </Pressable>
+          <Pressable
             onPress={() => adjustHistoryWindow('5y')}
-            style={styles.historyWindowBtn}
-            title="5y"
-          />
+            style={styles.historyWindowBtn}>
+            <Text style={styles.btnText}>5Y</Text>
+          </Pressable>
         </View>
       </View>
     );
@@ -386,20 +411,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    borderWidth: 3,
     borderRadius: 10,
+    backgroundColor: `${AppBackgroundColor}`,
   },
   chartContainer: {
-    backgroundColor: 'beige',
     flex: 0.7,
+    backgroundColor: `${AppSecondaryColor}`,
+    borderRadius: 20,
   },
   historyButtonsContainer: {
-    backgroundColor: 'pink',
+    marginTop: '2%',
     flex: 0.3,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
   historyWindowBtn: {
+    backgroundColor: `${AppSecondaryColor}`,
     flex: 0.15,
+    borderRadius: 20,
+  },
+  btnText: {
+    color: 'white',
+    alignSelf: 'center',
+    fontWeight: 'bold',
   },
 });

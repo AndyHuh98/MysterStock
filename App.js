@@ -19,6 +19,7 @@ import LoginScreen from './Components/Auth/LoginScreen';
 import SignUpScreen from './Components/Auth/SignUpScreen';
 import ResetPassword from './Components/Auth/ResetPassword';
 import FBAuthProvider from './Contexts/FBAuthProvider';
+import {AppSecondaryColor} from './Components/Utils/Constants';
 
 // TODO: !!! show more text on description !!!
 // TODO: Clean up search code
@@ -29,9 +30,6 @@ import FBAuthProvider from './Contexts/FBAuthProvider';
 // TODO: Add filter for randomizing stocks that meet the filter
 // TODO: Fill out FAQ Screen
 // TODO: Fill out Settings Screen
-// TODO: Fill out profile screen (implement profiles)
-// TODO: Implement favorites tab with percentage increase since favorited
-// for users that are logged in
 // As far as persisting the state and keeping the user logged in, your two options are Redux Persist or AsyncStorage
 // TODO: Possibly find some way to consolidate stock chart from search or at least
 // reuse code within (historical charts, intraday charts).
@@ -63,6 +61,8 @@ const App = () => {
           return 'Explore';
         case 'More':
           return 'Mission Control';
+        case 'Favorites':
+          return 'Mission Favorites Log';
       }
     };
     return (
@@ -75,7 +75,7 @@ const App = () => {
                 initialRouteName="MysterStock"
                 screenOptions={{
                   headerStyle: {
-                    backgroundColor: 'green',
+                    backgroundColor: `${AppSecondaryColor}`,
                   },
                   headerTintColor: 'white',
                 }}>
@@ -119,7 +119,7 @@ const App = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: `${AppSecondaryColor}`,
   },
 });
 

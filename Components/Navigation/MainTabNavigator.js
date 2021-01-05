@@ -5,6 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import RandomStockScreen from '../TabScreens/RandomStockScreen';
 import MoreScreen from '../TabScreens/MoreScreen';
 import SearchScreen from '../TabScreens/SearchScreen';
+import FavoritesScreen from '../TabScreens/FavoritesScreen';
+import {AppSecondaryColor} from '../Utils/Constants';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +28,8 @@ export default function MainTabNavigator(props) {
               : 'ellipsis-horizontal-circle-outline';
           } else if (route.name === 'Search') {
             iconName = focused ? 'search-circle' : 'search-circle-outline';
+          } else if (route.name === 'Favorites') {
+            iconName = focused ? 'heart-circle' : 'heart-circle-outline';
           }
 
           // You can return any component that you like here!
@@ -33,14 +37,18 @@ export default function MainTabNavigator(props) {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'limegreen',
+        activeTintColor: 'green',
         inactiveTintColor: 'white',
-        activeBackgroundColor: 'green',
-        inactiveBackgroundColor: 'green',
+        activeBackgroundColor: `${AppSecondaryColor}`,
+        inactiveBackgroundColor: `${AppSecondaryColor}`,
       }}>
       <Tab.Screen
         name="Stock"
         children={() => <RandomStockScreen navigation={props.navigation} />}
+      />
+      <Tab.Screen
+        name="Favorites"
+        children={() => <FavoritesScreen navigation={props.navigation} />}
       />
       <Tab.Screen
         name="Search"

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TextInput,
   Pressable,
   Keyboard,
@@ -11,9 +10,8 @@ import {
 
 import auth from '@react-native-firebase/auth';
 
-import images from '../../assets/images';
+import {AppBackgroundColor} from '../Utils/Constants';
 
-// TODO: Create auth provider and change the value of user in the auth provider when logging in.
 export default function LoginScreen(props) {
   const [email, setEmail] = useState(undefined);
   const [password, setPassword] = useState(undefined);
@@ -52,46 +50,42 @@ export default function LoginScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        <View style={styles.loginFormContainer}>
-          <Text style={styles.title}>Mission Credentials</Text>
-          <TextInput
-            style={styles.infoInput}
-            placeholder="Email"
-            placeholderTextColor="silver"
-            autoCorrect={false}
-            onChangeText={(text) => setEmail(text)}
-          />
-          <TextInput
-            style={styles.infoInput}
-            placeholder="Password"
-            placeholderTextColor="silver"
-            secureTextEntry={true}
-            autoCorrect={false}
-            onChangeText={(text) => setPassword(text)}
-          />
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
-          <Pressable
-            style={styles.button}
-            onPressIn={() => submitLoginInformation()}>
-            <Text style={styles.buttonText}>Login</Text>
-          </Pressable>
-          <Pressable
-            style={styles.button}
-            onPressIn={() => {
-              props.navigation.navigate('Reset Password');
-            }}>
-            <Text style={styles.buttonText}>Reset Password</Text>
-          </Pressable>
-          <Pressable
-            style={styles.button}
-            onPressIn={() => props.navigation.navigate('Sign Up')}>
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </Pressable>
-        </View>
-      </ImageBackground>
+      <View style={styles.loginFormContainer}>
+        <Text style={styles.title}>Mission Credentials</Text>
+        <TextInput
+          style={styles.infoInput}
+          placeholder="Email"
+          placeholderTextColor="silver"
+          autoCorrect={false}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          style={styles.infoInput}
+          placeholder="Password"
+          placeholderTextColor="silver"
+          secureTextEntry={true}
+          autoCorrect={false}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        <Pressable
+          style={styles.button}
+          onPressIn={() => submitLoginInformation()}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+        <Pressable
+          style={styles.button}
+          onPressIn={() => {
+            props.navigation.navigate('Reset Password');
+          }}>
+          <Text style={styles.buttonText}>Reset Password</Text>
+        </Pressable>
+        <Pressable
+          style={styles.button}
+          onPressIn={() => props.navigation.navigate('Sign Up')}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -99,18 +93,12 @@ export default function LoginScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: `${AppBackgroundColor}`,
     justifyContent: 'center',
   },
   loginFormContainer: {
     marginHorizontal: '5%',
     flex: 0.6,
-    borderRadius: 10,
-    borderWidth: 3,
     flexDirection: 'column',
     justifyContent: 'space-evenly',
   },
@@ -123,11 +111,13 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
   },
   infoInput: {
-    borderWidth: 3,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'grey',
     flex: 0.15,
     marginBottom: '1%',
     marginHorizontal: '5%',
     textAlign: 'center',
+    color: 'white',
   },
   errorMessage: {
     flex: 0.075,
@@ -139,11 +129,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   button: {
-    borderWidth: 3,
     flex: 0.15,
-    backgroundColor: 'blue',
+    backgroundColor: '#0067da',
     marginHorizontal: '20%',
     justifyContent: 'center',
+    borderRadius: 20,
+    marginVertical: '2%',
   },
   buttonText: {
     color: 'white',

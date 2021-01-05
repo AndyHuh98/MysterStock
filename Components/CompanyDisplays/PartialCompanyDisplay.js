@@ -9,7 +9,9 @@ import {
   Text,
   TouchableHighlight,
 } from 'react-native';
+import images from '../../assets/images';
 import IEXContext from '../../Contexts/IEXContext';
+import {AppSecondaryColor} from '../Utils/Constants';
 import LightWeightCompanyStatsTable from './LightWeightStatsTable';
 import LightWeightIntradayStockChart from './LWIntradayStockChart';
 
@@ -36,13 +38,13 @@ export default function PartialCompanyDisplay(props) {
             style={styles.companyNameContainer}
             onPress={() => navigateToCompanyDisplay(props.companySymbol)}>
             <Text style={styles.titleText}>
-              {props.companySymbol} : {iexContext.companyName}
+              {props.companySymbol}: {iexContext.companyName}
             </Text>
           </TouchableHighlight>
           <View style={styles.advStatsContainer}>
             <LightWeightCompanyStatsTable advStats={iexContext.advStats} />
           </View>
-          <View style={styles.chartContainer}>
+          <View source={images.chartContainer} style={styles.chartContainer}>
             <LightWeightIntradayStockChart width={props.width} />
           </View>
         </ScrollView>
@@ -72,9 +74,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'grey',
     borderColor: 'black',
-    borderWidth: 5,
     borderRadius: 10,
     flexDirection: 'column',
   },
@@ -82,11 +82,11 @@ const styles = StyleSheet.create({
     flex: 0.2,
     justifyContent: 'center',
   },
-  advStatsContainer: {
-    backgroundColor: 'cadetblue',
-  },
   chartContainer: {
     flex: 1,
+    backgroundColor: `${AppSecondaryColor}`,
+    borderRadius: 10,
+    marginHorizontal: '3%',
   },
   statsTitle: {
     fontWeight: 'bold',

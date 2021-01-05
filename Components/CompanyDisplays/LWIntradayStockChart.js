@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {
@@ -11,7 +12,7 @@ import {
 } from 'victory-native';
 import IEXContext from '../../Contexts/IEXContext';
 
-const chartHeight = Dimensions.get('screen').height * 0.3;
+const chartHeight = Dimensions.get('screen').height * 0.33;
 // Lightweight, single day stock price chart meant for the main page display.
 // Props passed: width
 export default function LightWeightIntradayStockChart(props) {
@@ -60,9 +61,10 @@ export default function LightWeightIntradayStockChart(props) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
-              style={{data: {size: 100}}}
+              style={{data: {size: 100, fill: '#c43a31'}}}
             />
           ) : null;
+
           return (
             <View style={styles.chartContainer}>
               <VictoryChart
@@ -75,6 +77,12 @@ export default function LightWeightIntradayStockChart(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
+                    cursorLabelComponent={
+                      <VictoryLabel
+                        backgroundPadding={10}
+                        backgroundStyle={{fill: 'white'}}
+                      />
+                    }
                     cursorLabel={() =>
                       `${activeData.average} @ ${activeData.minute}`
                     }
@@ -96,8 +104,11 @@ export default function LightWeightIntradayStockChart(props) {
                     }}
                   />
                 }>
-                <VictoryAxis fixLabelOverlap={true} />
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  fixLabelOverlap={true}
+                  style={{grid: {stroke: 'none'}}}
+                />
+                <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
                 <VictoryLine
                   data={iexContext.companyIntradayData.filter(
@@ -135,13 +146,23 @@ export default function LightWeightIntradayStockChart(props) {
                 height={chartHeight}
                 width={props.width}
                 theme={VictoryTheme.material}>
-                <VictoryAxis fixLabelOverlap={true} />
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  fixLabelOverlap={true}
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
                 <VictoryLabel
                   text="No intraday data for company."
                   x={props.width / 2}
-                  y={30}
+                  y={100}
                   textAnchor="middle"
+                  backgroundPadding={10}
+                  backgroundStyle={{fill: 'white'}}
                 />
               </VictoryChart>
             </View>
@@ -161,12 +182,7 @@ export default function LightWeightIntradayStockChart(props) {
 
 const styles = StyleSheet.create({
   chartContainer: {
-    backgroundColor: 'pink',
     flex: 1,
-    justifyContent: 'center',
-  },
-  priceText: {
-    fontWeight: 'bold',
-    marginLeft: '5%',
+    alignItems: 'center',
   },
 });

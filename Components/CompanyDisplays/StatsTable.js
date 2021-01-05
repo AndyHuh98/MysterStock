@@ -4,7 +4,7 @@ import compactFormat from 'cldr-compact-number';
 import {DataTable, Divider} from 'react-native-paper';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
-import {noDataStatTableString, dataTableCats} from '../Utils/Constants';
+import {noDataStatTableString, dataTableCats, AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 // Props passed in: advStats
 export default function StatsTable(props) {
@@ -43,7 +43,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row style={styles.row}>
+        <DataTable.Row style={styles.alternateRow}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.week52low}</Text>
             <DataTable.Cell numeric>
@@ -94,7 +94,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row style={styles.row}>
+        <DataTable.Row style={styles.alternateRow}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.grossprofit}</Text>
             <DataTable.Cell numeric>
@@ -120,7 +120,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row>
+        <DataTable.Row style={styles.row}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.avg30Volume}</Text>
             <DataTable.Cell numeric>
@@ -156,7 +156,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row>
+        <DataTable.Row style={styles.alternateRow}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.totalCash}</Text>
             <DataTable.Cell numeric>
@@ -172,7 +172,6 @@ export default function StatsTable(props) {
           </View>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.currentDebt}</Text>
-
             <DataTable.Cell numeric>
               <Text style={styles.statsValue}>
                 {props.advStats.currentDebt !== null
@@ -186,7 +185,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row>
+        <DataTable.Row style={styles.row}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.peRatio}</Text>
             <DataTable.Cell numeric>
@@ -209,7 +208,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row>
+        <DataTable.Row style={styles.alternateRow}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>
               {dataTableCats.forwardPERatio}
@@ -234,7 +233,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row>
+        <DataTable.Row style={styles.row}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.putCallRatio}</Text>
             <DataTable.Cell numeric>
@@ -260,7 +259,7 @@ export default function StatsTable(props) {
           </View>
         </DataTable.Row>
 
-        <DataTable.Row>
+        <DataTable.Row style={styles.alternateRow}>
           <View style={styles.cell}>
             <Text style={styles.statsTitle}>{dataTableCats.dividendYield}</Text>
             <DataTable.Cell numeric>
@@ -310,33 +309,39 @@ export default function StatsTable(props) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: 'white',
+    backgroundColor: `${AppBackgroundColor}`,
     borderRadius: 10,
   },
   collapseBtn: {
     height: 30,
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: `${AppSecondaryColor}`,
     borderRadius: 10,
   },
   statsHeader: {
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
     fontSize: 12,
     alignSelf: 'center',
   },
   statsTitle: {
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
     alignSelf: 'center',
   },
   statsValue: {
-    color: 'black',
+    color: 'white',
     alignSelf: 'flex-end',
   },
   row: {
     flex: 1,
     flexDirection: 'row',
+  },
+  alternateRow: {
+    flex: 1,
+    backgroundColor: `${AppSecondaryColor}`,
+    flexDirection: 'row',
+    borderRadius: 10,
   },
   cell: {
     flex: 0.5,

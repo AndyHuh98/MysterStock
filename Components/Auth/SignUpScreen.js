@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TextInput,
   Pressable,
   Keyboard,
@@ -11,7 +10,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 
-import images from '../../assets/images';
+import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function SignUpScreen(props) {
   const [email, setEmail] = useState(undefined);
@@ -93,65 +92,59 @@ export default function SignUpScreen(props) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={images.background}
-        style={styles.imageBackground}>
-        <View style={styles.signupFormContainer}>
-          <Text style={styles.title}>Mission Initiation</Text>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldTitle}>Email</Text>
-            <TextInput
-              style={styles.infoInput}
-              placeholder="Email"
-              placeholderTextColor="silver"
-              autoCorrect={false}
-              onChangeText={(text) => setEmail(text)}
-            />
-            <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
-            <TextInput
-              style={styles.infoInput}
-              placeholder="Verify Email"
-              placeholderTextColor="silver"
-              autoCorrect={false}
-              onChangeText={(text) => setVerifyEmail(text)}
-            />
-            <Text style={styles.errorMessage}>{verifyEmailErrorMessage}</Text>
-          </View>
-          <View style={styles.fieldContainer}>
-            <Text style={styles.fieldTitle}>Password</Text>
-            <TextInput
-              style={styles.infoInput}
-              placeholder="Password"
-              placeholderTextColor="silver"
-              secureTextEntry={true}
-              autoCorrect={false}
-              onChangeText={(text) => setPassword(text)}
-            />
-            <Text style={styles.errorMessage}>{passwordErrorMessage}</Text>
-            <TextInput
-              style={styles.infoInput}
-              placeholder="Verify Password"
-              placeholderTextColor="silver"
-              secureTextEntry={true}
-              autoCorrect={false}
-              onChangeText={(text) => setVerifyPassword(text)}
-            />
-            <Text style={styles.errorMessage}>
-              {verifyPasswordErrorMessage}
-            </Text>
-          </View>
-          <Pressable
-            style={styles.button}
-            onPressIn={() => submitSignUpInformation()}>
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </Pressable>
-          <Pressable
-            style={styles.button}
-            onPressIn={() => props.navigation.navigate('Login')}>
-            <Text style={styles.buttonText}>Login</Text>
-          </Pressable>
+      <View style={styles.signupFormContainer}>
+        <Text style={styles.title}>Mission Initiation</Text>
+        <View style={styles.fieldContainer}>
+          <Text style={styles.fieldTitle}>Email</Text>
+          <TextInput
+            style={styles.infoInput}
+            placeholder="Email"
+            placeholderTextColor="silver"
+            autoCorrect={false}
+            onChangeText={(text) => setEmail(text)}
+          />
+          <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
+          <TextInput
+            style={styles.infoInput}
+            placeholder="Verify Email"
+            placeholderTextColor="silver"
+            autoCorrect={false}
+            onChangeText={(text) => setVerifyEmail(text)}
+          />
+          <Text style={styles.errorMessage}>{verifyEmailErrorMessage}</Text>
         </View>
-      </ImageBackground>
+        <View style={styles.fieldContainer}>
+          <Text style={styles.fieldTitle}>Password</Text>
+          <TextInput
+            style={styles.infoInput}
+            placeholder="Password"
+            placeholderTextColor="silver"
+            secureTextEntry={true}
+            autoCorrect={false}
+            onChangeText={(text) => setPassword(text)}
+          />
+          <Text style={styles.errorMessage}>{passwordErrorMessage}</Text>
+          <TextInput
+            style={styles.infoInput}
+            placeholder="Verify Password"
+            placeholderTextColor="silver"
+            secureTextEntry={true}
+            autoCorrect={false}
+            onChangeText={(text) => setVerifyPassword(text)}
+          />
+          <Text style={styles.errorMessage}>{verifyPasswordErrorMessage}</Text>
+        </View>
+        <Pressable
+          style={styles.button}
+          onPressIn={() => submitSignUpInformation()}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </Pressable>
+        <Pressable
+          style={styles.button}
+          onPressIn={() => props.navigation.navigate('Login')}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -159,11 +152,7 @@ export default function SignUpScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-  },
-  imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: `${AppBackgroundColor}`,
   },
   title: {
     color: 'white',
@@ -182,8 +171,6 @@ const styles = StyleSheet.create({
   },
   signupFormContainer: {
     flex: 1,
-    borderWidth: 3,
-    borderRadius: 10,
     margin: '5%',
     justifyContent: 'space-evenly',
   },
@@ -200,17 +187,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   infoInput: {
-    borderWidth: 3,
+    backgroundColor: `${AppSecondaryColor}`,
     flex: 0.4,
     textAlign: 'center',
     marginVertical: '2%',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'grey',
+    color: 'white',
   },
   button: {
-    borderWidth: 3,
     flex: 0.1,
-    backgroundColor: 'blue',
+    backgroundColor: '#0067da',
     marginHorizontal: '20%',
     justifyContent: 'center',
+    borderRadius: 20,
   },
   buttonText: {
     color: 'white',
