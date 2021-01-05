@@ -251,7 +251,8 @@ const CompanyDisplayFromSearch = (props) => {
       companyAdvStats &&
       companyPreviousDayData &&
       companyIntradayData &&
-      companyAdvStats
+      companyAdvStats &&
+      companyInfo
     ) {
       return (
         <View style={styles.container}>

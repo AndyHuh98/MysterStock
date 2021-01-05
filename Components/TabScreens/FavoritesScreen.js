@@ -27,7 +27,7 @@ export default function FavoritesScreen(props) {
   const renderFavorite = ({item}) => {
     return (
       <Pressable
-        delayLongPress={100}
+        delayLongPress={50}
         onLongPress={() => {
           console.log(`Navigating to ${item.symbol} page`);
           props.navigation.navigate('CompanyDisplayFromSearch', {

@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import auth from '@react-native-firebase/auth';
-
 import FBAuthContext from '../../Contexts/FBAuthContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
@@ -48,7 +46,7 @@ export default function MoreScreen(props) {
               props.navigation.navigate(item.title);
             } else {
               console.log('Signing Out');
-              auth().signOut();
+              authContext.signOut();
             }
           }}
           style={({pressed}) => [

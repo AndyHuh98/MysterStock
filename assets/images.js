@@ -26,9 +26,6 @@ const images = {
   y: require('./images/Y.png'),
   z: require('./images/Z.png'),
   slotContainer: require('./images/SlotContainer.png'),
-  spinButtonBackground: require('./images/SpinButtonBackground.png'),
-  alternateStatRow: require('./images/StatsRowBackgroundLight.png'),
-  chartContainer: require('./images/ChartContainer.png'),
 };
 
 export default images;
