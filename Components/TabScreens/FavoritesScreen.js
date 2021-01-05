@@ -1,32 +1,34 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
+import FBAuthContext from '../../Contexts/FBAuthContext';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function FavoritesScreen(props) {
+  const firebaseContext = useContext(FBAuthContext);
+
   const [favorites, setFavorites] = useState(undefined);
 
-  // move this fetch of favorites (from firebase) into a provider so that in other screens
-  // we can check if a company is favorited already or not.
-  // when storing favorites use UID instead of username / email!!
-
-  // also when adding favorites option to companies: make sure to do both CompanyDisplays
+  // TODO: Add guest blurb for no access.
   useEffect(() => {
-    const favorites_hardcoded = [
-      {symbol: 'AAPL', favoritedPrice: 124.22},
-      {symbol: 'PLTR', favoritedPrice: 13.33},
-      {symbol: 'GME', favoritedPrice: 14.55},
-      {symbol: 'TSLA', favoritedPrice: 450.55},
-      {symbol: 'ABNB', favoritedPrice: 150.55},
-    ];
-    setFavorites(favorites_hardcoded);
-  }, []);
+    let favoritesArray = [];
+
+    for (let favorite in firebaseContext.userFavorites) {
+      favoritesArray.push({
+        symbol: favorite,
+        favoritedPrice: firebaseContext.userFavorites[favorite],
+      });
+    }
+
+    setFavorites(favoritesArray);
+  }, [firebaseContext.userFavorites]);
 
   const renderFavorite = ({item}) => {
     return (
       <Pressable
-        onPressIn={() => {
+        delayLongPress={100}
+        onLongPress={() => {
           console.log(`Navigating to ${item.symbol} page`);
           props.navigation.navigate('CompanyDisplayFromSearch', {
             companySymbol: item.symbol,
@@ -71,11 +73,13 @@ const styles = StyleSheet.create({
   },
   symbolContainer: {
     flex: 0.5,
+    justifyContent: 'center',
   },
   symbolText: {
-    fontSize: 33,
+    fontSize: 25,
     alignSelf: 'center',
     color: 'white',
+    fontWeight: 'bold',
   },
   priceContainer: {
     flex: 0.5,

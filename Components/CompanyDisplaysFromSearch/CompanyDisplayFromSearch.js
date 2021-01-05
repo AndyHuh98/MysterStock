@@ -1,5 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState, useMemo, useLayoutEffect} from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useLayoutEffect,
+  useContext,
+} from 'react';
 
 import {
   View,
@@ -9,19 +15,26 @@ import {
   Dimensions,
   Text,
   Pressable,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import firestore from '@react-native-firebase/firestore';
+import auth, {firebase} from '@react-native-firebase/auth';
 
 import LoadingScreen from '../MiscScreens/LoadingScreen';
 import {api_base_url, AppBackgroundColor} from '../Utils/Constants';
 import CompanyDescriptionFromSearch from './CompanyDescriptionFromSearch';
 import CompanyStockChartFromSearch from './CompanyStockChartFromSearch';
 import StatsTableFromSearch from './StatsTableFromSearch';
+import FBAuthContext from '../../Contexts/FBAuthContext';
 
 const width = Dimensions.get('screen').width * 0.96;
 
 // Props thru route => props.route.params.____ passed: companySymbol
 const CompanyDisplayFromSearch = (props) => {
+  const firebaseContext = useContext(FBAuthContext);
+
   const propsParams = props.route.params;
   const [companyName, setCompanyName] = useState(undefined);
   const [companySymbol, setCompanySymbol] = useState(propsParams.companySymbol);
@@ -108,14 +121,77 @@ const CompanyDisplayFromSearch = (props) => {
   // TODO move favorited array to it's own context and provider and pull from there.
   // When changing this, make sure to change companydisplay.js as well.
   useLayoutEffect(() => {
+    const updateUserFavorites = async () => {
+      const user = auth().currentUser;
+
+      if (user) {
+        const userId = user.uid;
+        const filteredData = companyIntradayData.filter(
+          (data) => data.average !== null,
+        );
+        let lastPrice;
+        if (filteredData.length > 0) {
+          lastPrice = filteredData[filteredData.length - 1].average;
+        } else {
+          lastPrice = 'N/A';
+        }
+
+        console.log(userId);
+
+        const userFavoritesRef = firestore().collection('users').doc(userId);
+
+        if (!isFavorited) {
+          // add to favorites
+          userFavoritesRef
+            .set(
+              {
+                favorites: {
+                  [propsParams.companySymbol]: lastPrice,
+                },
+              },
+              {merge: true},
+            )
+            .then(() => {
+              console.log(
+                `${propsParams.companySymbol} added to users/${userId}`,
+              );
+              setIsFavorited(!isFavorited);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          userFavoritesRef
+            .set(
+              {
+                favorites: {
+                  [propsParams.companySymbol]: firebase.firestore.FieldValue.delete(),
+                },
+              },
+              {merge: true},
+            )
+            .then(() => {
+              console.log(
+                `${propsParams.companySymbol} removed from users/${userId}`,
+              );
+              setIsFavorited(!isFavorited);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      } else {
+        Alert.alert('Not Logged In', 'Must be logged in add to favorites!');
+      }
+    };
+
     const name = isFavorited ? 'heart' : 'heart-outline';
     props.navigation.setOptions({
       headerRight: () => (
         <Pressable
           style={styles.headerRightBtn}
           onPressIn={() => {
-            // get array of favorited from DB, then
-            setIsFavorited(!isFavorited);
+            updateUserFavorites();
           }}>
           <Ionicons
             name={name}
@@ -126,7 +202,12 @@ const CompanyDisplayFromSearch = (props) => {
         </Pressable>
       ),
     });
-  }, [isFavorited, props.navigation]);
+  }, [
+    companyIntradayData,
+    isFavorited,
+    props.navigation,
+    propsParams.companySymbol,
+  ]);
 
   // PROBLEM -- when more pages exist for company display to go back to, this will still change
   // intraday window which may trigger unnecessary fetches
@@ -153,13 +234,16 @@ const CompanyDisplayFromSearch = (props) => {
 
     if (companySymbol !== '') {
       fetchAllData(companySymbol);
+      if (companySymbol in firebaseContext.userFavorites) {
+        setIsFavorited(true);
+      }
     }
 
     return () => {
       console.log('clearing interval set: SEARCH');
       clearInterval(intervalID);
     };
-  }, [companySymbol]);
+  }, [companySymbol, firebaseContext.userFavorites]);
 
   return useMemo(() => {
     if (

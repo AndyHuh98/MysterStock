@@ -37,11 +37,12 @@ export default function MoreScreen(props) {
 
   // If a user is logged in, only show sign out.
   // If a user is not logged in, only show sign up and login.
+  // TODO: Fix bug here on snapshot firestore listener upon logging out
   const renderFlatListItem = ({item}) => {
     if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
       return (
         <Pressable
-          onPressIn={() => {
+          onPressOut={() => {
             if (item.title !== 'Sign Out') {
               console.log(`Navigating to ${item.title} Screen`);
               props.navigation.navigate(item.title);

@@ -8,48 +8,114 @@ import {
   Dimensions,
   Text,
   Pressable,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
+import auth, {firebase} from '@react-native-firebase/auth';
 
 import IEXContext from '../../Contexts/IEXContext';
 import CompanyDescription from './CompanyDescription';
 import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
 import {AppBackgroundColor} from '../Utils/Constants';
+import FBAuthContext from '../../Contexts/FBAuthContext';
 
 const height = Dimensions.get('screen').height * 0.25;
 // Props thru route => props.route.params.____ passed: companySymbol, companyName, width
 const CompanyDisplay = (props) => {
+  const firebaseContext = useContext(FBAuthContext);
   const iexContext = useContext(IEXContext);
+
   const propsParams = props.route.params;
   const [isFavorited, setIsFavorited] = useState(undefined);
 
   // PROBLEM -- when more pages exist for company display to go back to, this will still change
   // intraday window which may trigger unnecessary fetches
   useEffect(() => {
+    if (propsParams.companySymbol in firebaseContext.userFavorites) {
+      setIsFavorited(true);
+    }
+
     return () => {
       iexContext.changeChartHistoryWindow('1d');
     };
-  }, []);
-
-  const updateUserFavorites = () => {
-    if (auth().currentUser && auth().currentUser.uid) {
-      const userCollection = firestore().collection('users');
-    }
-  };
+  }, [firebaseContext.userFavorites, iexContext, propsParams.companySymbol]);
 
   useLayoutEffect(() => {
+    const updateUserFavorites = async () => {
+      const user = auth().currentUser;
+
+      if (user) {
+        const userId = user.uid;
+        const filteredData = iexContext.companyIntradayData.filter(
+          (data) => data.average !== null,
+        );
+        let lastPrice;
+        if (filteredData.length > 0) {
+          lastPrice = filteredData[filteredData.length - 1].average;
+        } else {
+          lastPrice = 'N/A';
+        }
+
+        console.log(userId);
+
+        const userFavoritesRef = firestore().collection('users').doc(userId);
+
+        if (!isFavorited) {
+          // add to favorites
+          userFavoritesRef
+            .set(
+              {
+                favorites: {
+                  [propsParams.companySymbol]: lastPrice,
+                },
+              },
+              {merge: true},
+            )
+            .then(() => {
+              console.log(
+                `${propsParams.companySymbol} added to users/${userId}`,
+              );
+              setIsFavorited(!isFavorited);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          userFavoritesRef
+            .set(
+              {
+                favorites: {
+                  [propsParams.companySymbol]: firebase.firestore.FieldValue.delete(),
+                },
+              },
+              {merge: true},
+            )
+            .then(() => {
+              console.log(
+                `${propsParams.companySymbol} removed from users/${userId}`,
+              );
+              setIsFavorited(!isFavorited);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      } else {
+        Alert.alert('Not Logged In', 'Must be logged in add to favorites!');
+      }
+    };
+
     const name = isFavorited ? 'heart' : 'heart-outline';
     props.navigation.setOptions({
       headerRight: () => (
         <Pressable
           style={styles.headerRightBtn}
           onPressIn={() => {
-            // get array of favorited from DB, then
-            setIsFavorited(!isFavorited);
+            // get array of favorited from DB
+            updateUserFavorites();
           }}>
           <Ionicons
             name={name}
@@ -60,7 +126,13 @@ const CompanyDisplay = (props) => {
         </Pressable>
       ),
     });
-  }, [isFavorited, props.navigation]);
+  }, [
+    isFavorited,
+    props.navigation,
+    propsParams.companySymbol,
+    firebaseContext.userFavorites,
+    iexContext.companyIntradayData,
+  ]);
 
   return (
     <View style={styles.container}>
