@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 
 import FBAuthContext from '../../Contexts/FBAuthContext';
-import {AppBackgroundColor} from '../Utils/Constants';
+import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function MoreScreen(props) {
   const authContext = useContext(FBAuthContext);
@@ -52,7 +52,7 @@ export default function MoreScreen(props) {
           }}
           style={({pressed}) => [
             {
-              backgroundColor: pressed ? 'darkgray' : '#04272e',
+              backgroundColor: pressed ? 'darkgray' : `${AppSecondaryColor}`,
             },
             styles.card,
           ]}>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
 
-import {AppBackgroundColor} from '../Utils/Constants';
+import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function FavoritesScreen(props) {
   const [favorites, setFavorites] = useState(undefined);
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
     flex: 1,
     marginHorizontal: '10%',
-    backgroundColor: '#04272e',
+    backgroundColor: `${AppSecondaryColor}`,
     flexDirection: 'row',
     borderRadius: 10,
   },

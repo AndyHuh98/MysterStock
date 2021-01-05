@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+
 import IEXContext from '../../Contexts/IEXContext';
 import CompanyDescription from './CompanyDescription';
 import CompanyStockChart from './CompanyStockChart';
@@ -33,8 +36,10 @@ const CompanyDisplay = (props) => {
   }, []);
 
   const updateUserFavorites = () => {
-    
-  }
+    if (auth().currentUser && auth().currentUser.uid) {
+      const userCollection = firestore().collection('users');
+    }
+  };
 
   useLayoutEffect(() => {
     const name = isFavorited ? 'heart' : 'heart-outline';

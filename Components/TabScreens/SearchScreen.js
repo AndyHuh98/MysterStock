@@ -11,7 +11,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import IEXContext from '../../Contexts/IEXContext';
-import {AppBackgroundColor} from '../Utils/Constants';
+import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 // TODO: Move search bar into its own component to get practice with this
 // TODO: in backend, change return of stockssupported to include company name as well
@@ -61,7 +61,7 @@ export default function SearchScreen(props) {
           }}
           style={({pressed}) => [
             {
-              backgroundColor: pressed ? 'darkgray' : '#04272e',
+              backgroundColor: pressed ? 'darkgray' : `${AppSecondaryColor}`,
             },
             styles.resultCard,
           ]}

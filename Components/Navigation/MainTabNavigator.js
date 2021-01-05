@@ -6,6 +6,7 @@ import RandomStockScreen from '../TabScreens/RandomStockScreen';
 import MoreScreen from '../TabScreens/MoreScreen';
 import SearchScreen from '../TabScreens/SearchScreen';
 import FavoritesScreen from '../TabScreens/FavoritesScreen';
+import {AppSecondaryColor} from '../Utils/Constants';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,8 +39,8 @@ export default function MainTabNavigator(props) {
       tabBarOptions={{
         activeTintColor: 'green',
         inactiveTintColor: 'white',
-        activeBackgroundColor: '#04272e',
-        inactiveBackgroundColor: '#04272e',
+        activeBackgroundColor: `${AppSecondaryColor}`,
+        inactiveBackgroundColor: `${AppSecondaryColor}`,
       }}>
       <Tab.Screen
         name="Stock"

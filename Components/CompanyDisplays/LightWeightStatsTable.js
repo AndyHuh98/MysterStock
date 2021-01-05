@@ -28,6 +28,7 @@ export default function LightWeightCompanyStatsTable(props) {
     row: {
       flex: 1,
       flexDirection: 'row',
+      marginHorizontal: '3%',
     },
     cell: {
       flex: 0.5,

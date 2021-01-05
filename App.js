@@ -19,6 +19,7 @@ import LoginScreen from './Components/Auth/LoginScreen';
 import SignUpScreen from './Components/Auth/SignUpScreen';
 import ResetPassword from './Components/Auth/ResetPassword';
 import FBAuthProvider from './Contexts/FBAuthProvider';
+import {AppSecondaryColor} from './Components/Utils/Constants';
 
 // TODO: !!! show more text on description !!!
 // TODO: Clean up search code
@@ -77,7 +78,7 @@ const App = () => {
                 initialRouteName="MysterStock"
                 screenOptions={{
                   headerStyle: {
-                    backgroundColor: '#04272e',
+                    backgroundColor: `${AppSecondaryColor}`,
                   },
                   headerTintColor: 'white',
                 }}>
@@ -121,7 +122,7 @@ const App = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#04272e',
+    backgroundColor: `${AppSecondaryColor}`,
   },
 });
 
