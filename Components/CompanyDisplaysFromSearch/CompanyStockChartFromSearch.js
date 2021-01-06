@@ -21,7 +21,6 @@ import {
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
 // TODO: ParallaxScrollView: https://github.com/i6mi6/react-native-parallax-scroll-view
-// TODO: Make cursor adjust label in static position
 
 // props passed: companySymbol, width, companyPreviousDayData, companyIntradayData
 export default function CompanyStockChartFromSearch(props) {
@@ -32,6 +31,10 @@ export default function CompanyStockChartFromSearch(props) {
     average: null,
     cursorValue: null,
   });
+
+  useEffect(() => {
+    setActiveData(null);
+  }, [props.companySymbol]);
 
   // when companySymbol changes or the chart history window changes, we want to
   // refetch
@@ -130,16 +133,6 @@ export default function CompanyStockChartFromSearch(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
-                    cursorLabelComponent={
-                      <VictoryLabel
-                        backgroundPadding={10}
-                        backgroundStyle={{fill: 'white'}}
-                      />
-                    }
-                    cursorLabel={() =>
-                      `${activeData.average} @ ${activeData.minute}`
-                    }
-                    cursorLabelOffset={{x: -60, y: -60}}
                     onCursorChange={(value) => {
                       const filteredData = props.companyIntradayData.filter(
                         (dataPoint) => dataPoint.average !== null,
@@ -188,6 +181,19 @@ export default function CompanyStockChartFromSearch(props) {
                     }}
                   />
                 ) : null}
+                <VictoryLabel
+                  inline
+                  text={activeData ? `$${activeData.average}` : null}
+                  x={50}
+                  y={10}
+                  textAnchor="middle"
+                  backgroundPadding={10}
+                  style={{
+                    fill: 'white',
+                    fontFamily: 'Dosis-Bold',
+                    fontSize: 30,
+                  }}
+                />
               </VictoryChart>
             </View>
           );
@@ -202,8 +208,13 @@ export default function CompanyStockChartFromSearch(props) {
                 <VictoryAxis
                   fixLabelOverlap={true}
                   style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
                 />
-                <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
+                <VictoryAxis
+                  dependentAxis
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
                 <VictoryLabel
                   text="No intraday data for company."
                   x={props.width / 2}
@@ -345,8 +356,16 @@ export default function CompanyStockChartFromSearch(props) {
                 height={chartHeight}
                 width={props.width}
                 theme={VictoryTheme.material}>
-                <VictoryAxis fixLabelOverlap={true} />
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  fixLabelOverlap={true}
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
                 <VictoryLabel
                   text="No data for company for given window."
                   x={props.width / 2}

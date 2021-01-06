@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   VictoryChart,
@@ -22,6 +22,10 @@ export default function LightWeightIntradayStockChart(props) {
     average: null,
     cursorValue: null,
   });
+
+  useEffect(() => {
+    setActiveData(null);
+  }, [iexContext.companySymbol]);
 
   return useMemo(() => {
     const chartDisplay = () => {
@@ -83,10 +87,6 @@ export default function LightWeightIntradayStockChart(props) {
                         backgroundStyle={{fill: 'white'}}
                       />
                     }
-                    cursorLabel={() =>
-                      `${activeData.average} @ ${activeData.minute}`
-                    }
-                    cursorLabelOffset={{x: -60, y: -60}}
                     onCursorChange={(value) => {
                       const filteredData = iexContext.companyIntradayData.filter(
                         (dataPoint) => dataPoint.average !== null,
@@ -135,6 +135,19 @@ export default function LightWeightIntradayStockChart(props) {
                     }}
                   />
                 ) : null}
+                <VictoryLabel
+                  inline
+                  text={activeData ? `$${activeData.average}` : null}
+                  x={50}
+                  y={10}
+                  textAnchor="middle"
+                  backgroundPadding={10}
+                  style={{
+                    fill: 'white',
+                    fontFamily: 'Dosis-Bold',
+                    fontSize: 30,
+                  }}
+                />
               </VictoryChart>
             </View>
           );

@@ -11,8 +11,6 @@ import Collapsible from 'react-native-collapsible';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AppBackgroundColor} from '../Utils/Constants';
 
-// TODO: Line up the core features and what is random stock text
-
 export default function AboutScreen(props) {
   const appName = 'Random Stock';
   const [descriptionCollapsed, setDescriptionCollapsed] = useState(true);
@@ -116,10 +114,9 @@ export default function AboutScreen(props) {
         </View>
         <Collapsible collapsed={coreFeaturesCollapsed}>
           <View style={styles.headerBody}>
-            <Text style={styles.body}>{appName} offers features such as:</Text>
-            <Text style={styles.numberedItem}>- Generating random stocks</Text>
+            <Text style={styles.numberedItem}>- Generate random stocks</Text>
             <Text style={styles.numberedItem}>
-              - Stock ticker search on all tickers supported
+              - Search for specific stocks over all tickers supported
             </Text>
             <Text style={styles.numberedItem}>
               - Historical and intraday price charts for each ticker
@@ -177,7 +174,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Dosis-Medium',
   },
   numberedItem: {
-    marginLeft: '10%',
     fontSize: 13,
     color: 'silver',
     fontStyle: 'italic',
