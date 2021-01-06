@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
 import FirebaseContext from '../../Contexts/FirebaseContext';
+import GuestView from '../Auth/GuestView';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
@@ -10,7 +11,6 @@ export default function FavoritesScreen(props) {
 
   const [favorites, setFavorites] = useState(undefined);
 
-  // TODO: Add guest blurb for no access.
   useEffect(() => {
     let favoritesArray = [];
 
@@ -47,15 +47,19 @@ export default function FavoritesScreen(props) {
     );
   };
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={favorites}
-        renderItem={renderFavorite}
-        keyExtractor={(item) => item.symbol}
-      />
-    </View>
-  );
+  if (firebaseContext.loggedIn) {
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={favorites}
+          renderItem={renderFavorite}
+          keyExtractor={(item) => item.symbol}
+        />
+      </View>
+    );
+  } else {
+    return <GuestView navigation={props.navigation} />;
+  }
 }
 
 const styles = StyleSheet.create({

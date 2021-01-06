@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   loginFormContainer: {
     marginHorizontal: '5%',
-    flex: 0.7,
+    flex: 0.8,
     flexDirection: 'column',
   },
   title: {
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    marginVertical: '2%',
   },
   infoInput: {
     alignSelf: 'center',

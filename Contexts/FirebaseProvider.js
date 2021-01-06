@@ -3,7 +3,6 @@ import FirebaseContext from './FirebaseContext';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-// TODO: Change name of context to FirebaseContext
 export default function FirebaseProvider({children}) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(undefined);

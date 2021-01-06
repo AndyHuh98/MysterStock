@@ -5,6 +5,7 @@ import {View, Text, StyleSheet, Modal} from 'react-native';
 import FirebaseContext from '../../Contexts/FirebaseContext';
 import ChangeEmail from '../Auth/ChangeEmail';
 import ChangePassword from '../Auth/ChangePassword';
+import GuestView from '../Auth/GuestView';
 import LoginScreen from '../Auth/LoginScreen';
 import CustomPressable from '../CustomComponents/CustomPressable';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
@@ -53,15 +54,7 @@ export default function ProfileScreen(props) {
 
     // TODO: Possibly move this into it's own component
     const renderGuestView = () => {
-      return (
-        <View style={styles.container}>
-          <LoginScreen navigation={props.navigation} />
-          <Text style={styles.guestText}>
-            Thank you for using the application. To enjoy additional features
-            such as this one, consider signing up or logging in.
-          </Text>
-        </View>
-      );
+      return <GuestView navigation={props.navigation} />;
     };
     return (
       <View style={styles.container}>
@@ -128,11 +121,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: `${AppBackgroundColor}`,
-  },
-  guestText: {
-    alignSelf: 'center',
-    color: 'white',
-    fontStyle: 'italic',
   },
   profileInformation: {
     marginTop: '30%',
