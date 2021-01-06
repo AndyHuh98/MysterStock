@@ -1,21 +1,22 @@
 import React, {useState, useContext, useMemo} from 'react';
 import {useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, Modal} from 'react-native';
+import {View, Text, StyleSheet, Modal} from 'react-native';
 
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 import ChangeEmail from '../Auth/ChangeEmail';
 import ChangePassword from '../Auth/ChangePassword';
 import LoginScreen from '../Auth/LoginScreen';
+import CustomPressable from '../CustomComponents/CustomPressable';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function ProfileScreen(props) {
-  const authContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const [changePWModalVisible, setChangePWModalVisible] = useState(false);
   const [changeEmailModalVisible, setChangeEmailModalVisible] = useState(false);
 
   useEffect(() => {
     return () => setChangePWModalVisible(false);
-  }, [authContext.user]);
+  }, [firebaseContext.user]);
 
   return useMemo(() => {
     const togglePWModalVisible = () => {
@@ -32,19 +33,19 @@ export default function ProfileScreen(props) {
       return (
         <View style={styles.activateModalsContainer}>
           <View style={styles.buttonsContainer}>
-            <Pressable
+            <CustomPressable
               style={styles.button}
-              onPressIn={() => toggleEmailModalVisible()}>
-              <Text style={styles.buttonText}>Change Email</Text>
-            </Pressable>
-            <Pressable
+              onPressIn={() => toggleEmailModalVisible()}
+              text="Change Email"
+            />
+            <CustomPressable
               style={styles.button}
               onPressIn={() => {
                 console.log('Activating Modal For Change PW');
                 togglePWModalVisible();
-              }}>
-              <Text style={styles.buttonText}>Change Password</Text>
-            </Pressable>
+              }}
+              text="Change Password"
+            />
           </View>
         </View>
       );
@@ -56,8 +57,8 @@ export default function ProfileScreen(props) {
         <View style={styles.container}>
           <LoginScreen navigation={props.navigation} />
           <Text style={styles.guestText}>
-            Thank you for using the application. To enjoy additional features,
-            consider signing up or log in.
+            Thank you for using the application. To enjoy additional features
+            such as this one, consider signing up or logging in.
           </Text>
         </View>
       );
@@ -72,13 +73,13 @@ export default function ProfileScreen(props) {
           <View style={styles.modalContainer}>
             <View style={styles.centeredModalContainer}>
               <ChangePassword navigation={props.navigation} />
-              <Pressable
+              <CustomPressable
                 style={styles.modalButton}
                 onPressIn={() => {
                   togglePWModalVisible();
-                }}>
-                <Text style={styles.buttonText}>Close Modal</Text>
-              </Pressable>
+                }}
+                text="Close Modal"
+              />
             </View>
           </View>
         </Modal>
@@ -90,33 +91,33 @@ export default function ProfileScreen(props) {
           <View style={styles.modalContainer}>
             <View style={styles.centeredModalContainer}>
               <ChangeEmail navigation={props.navigation} />
-              <Pressable
+              <CustomPressable
                 style={styles.modalButton}
                 onPressIn={() => {
                   toggleEmailModalVisible();
-                }}>
-                <Text style={styles.buttonText}>Close Modal</Text>
-              </Pressable>
+                }}
+                text="Close Modal"
+              />
             </View>
           </View>
         </Modal>
-        {authContext.loggedIn && authContext.user.metadata ? (
+        {firebaseContext.loggedIn && firebaseContext.user.metadata ? (
           <View style={styles.profileInformation}>
             <Text style={styles.profileHeader}>First Take-Off Date</Text>
             <Text style={styles.profileText}>
               Member since{' '}
-              {authContext.user.metadata.creationTime.split('T')[0]}
+              {firebaseContext.user.metadata.creationTime.split('T')[0]}
             </Text>
             <Text style={styles.profileHeader}>Registered Email</Text>
-            <Text style={styles.profileText}>{authContext.user.email}</Text>
+            <Text style={styles.profileText}>{firebaseContext.user.email}</Text>
           </View>
         ) : null}
-        {authContext.loggedIn ? renderButtonsView() : renderGuestView()}
+        {firebaseContext.loggedIn ? renderButtonsView() : renderGuestView()}
       </View>
     );
   }, [
-    authContext.loggedIn,
-    authContext.user,
+    firebaseContext.loggedIn,
+    firebaseContext.user,
     changeEmailModalVisible,
     changePWModalVisible,
     props.navigation,
@@ -160,15 +161,12 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   modalContainer: {
-    flex: 1,
+    flex: 0.95,
     justifyContent: 'center',
   },
   modalButton: {
-    borderWidth: 3,
-    height: 40,
-    backgroundColor: 'blue',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
+    backgroundColor: 'green',
+    alignSelf: 'center',
   },
   centeredModalContainer: {
     marginHorizontal: '10%',
@@ -176,19 +174,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonsContainer: {
-    flex: 0.5,
+    flex: 0.6,
     justifyContent: 'space-evenly',
   },
   button: {
-    flex: 0.45,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-    marginVertical: '2%',
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
   },
 });

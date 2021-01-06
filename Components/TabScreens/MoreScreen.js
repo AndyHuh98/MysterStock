@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function MoreScreen(props) {
-  const authContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const [searchText, setSearchText] = useState('');
 
-  const FLATLIST_SECTIONS = authContext.loggedIn
+  const FLATLIST_SECTIONS = firebaseContext.loggedIn
     ? [
         {id: 'about', title: 'About'},
         {id: 'faq', title: 'FAQ'},
@@ -35,7 +35,6 @@ export default function MoreScreen(props) {
 
   // If a user is logged in, only show sign out.
   // If a user is not logged in, only show sign up and login.
-  // TODO: Fix bug here on snapshot firestore listener upon logging out
   const renderFlatListItem = ({item}) => {
     if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
       return (
@@ -46,7 +45,7 @@ export default function MoreScreen(props) {
               props.navigation.navigate(item.title);
             } else {
               console.log('Signing Out');
-              authContext.signOut();
+              firebaseContext.signOut();
             }
           }}
           style={({pressed}) => [

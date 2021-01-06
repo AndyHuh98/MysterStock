@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Alert, Keyboard} from 'react-native';
+import {View, Text, StyleSheet, Alert, Keyboard} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
 export default function ResetPassword(props) {
   const [email, setEmail] = useState(undefined);
@@ -45,9 +46,11 @@ export default function ResetPassword(props) {
           onChangeText={(text) => setEmail(text)}
         />
         <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
-        <Pressable style={styles.button} onPressIn={() => resetPassword()}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </Pressable>
+        <CustomPressable
+          style={styles.button}
+          onPressIn={() => resetPassword()}
+          text="Submit"
+        />
       </View>
     </View>
   );
@@ -61,7 +64,6 @@ const styles = StyleSheet.create({
   },
   changePasswordFormContainer: {
     backgroundColor: `${AppSecondaryColor}`,
-    marginVertical: '3%',
     marginHorizontal: '5%',
     flex: 0.6,
     borderRadius: 20,
@@ -80,24 +82,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   errorMessage: {
-    flex: 0.075,
+    flex: 0.1,
     marginLeft: '5%',
-    marginTop: '-1%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
   },
   button: {
-    flex: 0.15,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-    marginVertical: '2%',
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
   },
 });

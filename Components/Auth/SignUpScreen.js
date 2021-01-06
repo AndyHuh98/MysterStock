@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
+import {View, Text, StyleSheet, Keyboard} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
 export default function SignUpScreen(props) {
   const [email, setEmail] = useState(undefined);
@@ -126,16 +127,16 @@ export default function SignUpScreen(props) {
           />
           <Text style={styles.errorMessage}>{verifyPasswordErrorMessage}</Text>
         </View>
-        <Pressable
+        <CustomPressable
           style={styles.button}
-          onPressIn={() => submitSignUpInformation()}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
-        <Pressable
+          onPressIn={() => submitSignUpInformation()}
+          text="Sign Up"
+        />
+        <CustomPressable
           style={styles.button}
-          onPressIn={() => props.navigation.navigate('Login')}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
+          onPressIn={() => props.navigation.navigate('Login')}
+          text="Login"
+        />
       </View>
     </View>
   );
@@ -153,9 +154,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   errorMessage: {
-    flex: 0.15,
+    flex: 0.2,
     marginLeft: '5%',
-    marginTop: '-4%',
+    marginTop: '-6%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
@@ -164,13 +165,12 @@ const styles = StyleSheet.create({
   signupFormContainer: {
     flex: 1,
     margin: '5%',
-    justifyContent: 'space-evenly',
   },
   fieldContainer: {
-    marginVertical: '2%',
+    flex: 0.45,
     marginHorizontal: '2%',
-    flex: 0.3,
     flexDirection: 'column',
+    justifyContent: 'space-evenly',
   },
   fieldTitle: {
     color: 'white',
@@ -179,20 +179,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   infoInput: {
-    flex: 0.425,
     backgroundColor: `${AppSecondaryColor}`,
     alignSelf: 'center',
-    marginBottom: '5%',
+    marginBottom: '4%',
   },
   button: {
-    flex: 0.1,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
+    marginBottom: '3%',
   },
 });

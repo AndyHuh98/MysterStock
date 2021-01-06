@@ -1,16 +1,15 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
+import {View, Text, StyleSheet, Keyboard} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
-// TODO: Extract all text inputs into a single component with standardized styling.
-// TODO: Extract all Pressables in forms into a single component with standardized styling.
 export default function ChangePassword(props) {
-  const authContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const [currentPassword, setCurrentPassword] = useState(undefined);
   const [newPassword, setNewPassword] = useState(undefined);
   const [verifyNewPassword, setVerifyNewPassword] = useState(undefined);
@@ -43,7 +42,7 @@ export default function ChangePassword(props) {
       }
 
       const credential = firebase.auth.EmailAuthProvider.credential(
-        authContext.user.email,
+        firebaseContext.user.email,
         currentPassword,
       );
 
@@ -98,9 +97,11 @@ export default function ChangePassword(props) {
           autoCapitalize="none"
           onChangeText={(text) => setVerifyNewPassword(text)}
         />
-        <Pressable style={styles.button} onPressIn={() => changePassword()}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </Pressable>
+        <CustomPressable
+          style={styles.button}
+          onPressIn={() => changePassword()}
+          text="Submit"
+        />
       </View>
     </View>
   );
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   title: {
-    flex: 0.15,
+    flex: 0.2,
     alignSelf: 'center',
     fontSize: 20,
     fontWeight: 'bold',
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   errorMessage: {
-    flex: 0.075,
+    flex: 0.1,
     marginLeft: '5%',
     marginTop: '-4%',
     color: '#cc0000',
@@ -142,14 +143,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   button: {
-    flex: 0.125,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
   },
 });

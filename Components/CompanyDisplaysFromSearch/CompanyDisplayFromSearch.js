@@ -27,13 +27,13 @@ import {api_base_url, AppBackgroundColor} from '../Utils/Constants';
 import CompanyDescriptionFromSearch from './CompanyDescriptionFromSearch';
 import CompanyStockChartFromSearch from './CompanyStockChartFromSearch';
 import StatsTableFromSearch from './StatsTableFromSearch';
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 
 const width = Dimensions.get('screen').width * 0.96;
 
 // Props thru route => props.route.params.____ passed: companySymbol
 const CompanyDisplayFromSearch = (props) => {
-  const firebaseContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
 
   const propsParams = props.route.params;
   const [companyName, setCompanyName] = useState(undefined);
@@ -118,8 +118,6 @@ const CompanyDisplayFromSearch = (props) => {
     }
   }
 
-  // TODO move favorited array to it's own context and provider and pull from there.
-  // When changing this, make sure to change companydisplay.js as well.
   useLayoutEffect(() => {
     const updateUserFavorites = async () => {
       const user = auth().currentUser;

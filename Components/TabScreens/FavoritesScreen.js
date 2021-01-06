@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
 import {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function FavoritesScreen(props) {
-  const firebaseContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
 
   const [favorites, setFavorites] = useState(undefined);
 

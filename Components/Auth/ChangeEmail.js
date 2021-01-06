@@ -1,14 +1,15 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
+import {View, Text, StyleSheet, Keyboard} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
 export default function ChangeEmail(props) {
-  const authContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const [currentPassword, setCurrentPassword] = useState(undefined);
   const [newEmail, setNewEmail] = useState(undefined);
   const [verifyNewEmail, setVerifyNewEmail] = useState(undefined);
@@ -43,7 +44,7 @@ export default function ChangeEmail(props) {
       }
 
       const credential = firebase.auth.EmailAuthProvider.credential(
-        authContext.user.email,
+        firebaseContext.user.email,
         currentPassword,
       );
 
@@ -53,7 +54,7 @@ export default function ChangeEmail(props) {
           auth()
             .currentUser.updateEmail(newEmail)
             .then(() => {
-              authContext.setEmail(newEmail);
+              firebaseContext.setEmail(newEmail);
               props.navigation.navigate('More');
             })
             .catch((error) => {
@@ -101,9 +102,11 @@ export default function ChangeEmail(props) {
           onChangeText={(text) => setVerifyNewEmail(text)}
         />
         <Text style={styles.errorMessage}>{verifyEmailErrorMessage}</Text>
-        <Pressable style={styles.button} onPressIn={() => changeEmail()}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </Pressable>
+        <CustomPressable
+          style={styles.button}
+          onPressIn={() => changeEmail()}
+          text="Submit"
+        />
       </View>
     </View>
   );
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   errorMessage: {
-    flex: 0.075,
+    flex: 0.1,
     marginLeft: '5%',
     marginTop: '-2%',
     color: '#cc0000',
@@ -143,14 +146,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   button: {
-    flex: 0.125,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
   },
 });

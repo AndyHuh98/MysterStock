@@ -18,7 +18,7 @@ import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/Com
 import LoginScreen from './Components/Auth/LoginScreen';
 import SignUpScreen from './Components/Auth/SignUpScreen';
 import ResetPassword from './Components/Auth/ResetPassword';
-import FBAuthProvider from './Contexts/FBAuthProvider';
+import FirebaseProvider from './Contexts/FirebaseProvider';
 import {AppSecondaryColor} from './Components/Utils/Constants';
 
 // TODO: Clean up search code
@@ -67,7 +67,7 @@ const App = () => {
       }
     };
     return (
-      <FBAuthProvider>
+      <FirebaseProvider>
         <SafeAreaView style={styles.safeArea}>
           <NavigationContainer>
             <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
@@ -112,7 +112,7 @@ const App = () => {
             </IEXProvider>
           </NavigationContainer>
         </SafeAreaView>
-      </FBAuthProvider>
+      </FirebaseProvider>
     );
   }, []);
 };
