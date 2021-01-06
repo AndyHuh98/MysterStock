@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     borderColor: 'silver',
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   title: {
     flex: 0.15,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     flex: 0.075,
     marginLeft: '5%',
-    marginTop: '-2%',
+    marginTop: '-4%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
@@ -147,7 +147,6 @@ const styles = StyleSheet.create({
     marginHorizontal: '20%',
     justifyContent: 'center',
     borderRadius: 20,
-    marginVertical: '2%',
   },
   buttonText: {
     color: 'white',

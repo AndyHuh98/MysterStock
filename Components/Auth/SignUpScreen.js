@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     flex: 0.15,
     marginLeft: '5%',
-    marginTop: '-2%',
+    marginTop: '-4%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   infoInput: {
+    flex: 0.425,
     backgroundColor: `${AppSecondaryColor}`,
     alignSelf: 'center',
     marginBottom: '5%',

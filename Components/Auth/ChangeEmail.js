@@ -115,13 +115,12 @@ const styles = StyleSheet.create({
     backgroundColor: `${AppBackgroundColor}`,
   },
   changePasswordFormContainer: {
-    marginVertical: '3%',
     flex: 1,
     borderRadius: 10,
     borderColor: 'silver',
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   title: {
     flex: 0.15,
@@ -129,7 +128,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    marginVertical: '2%',
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
@@ -150,7 +148,6 @@ const styles = StyleSheet.create({
     marginHorizontal: '20%',
     justifyContent: 'center',
     borderRadius: 20,
-    marginVertical: '2%',
   },
   buttonText: {
     color: 'white',
