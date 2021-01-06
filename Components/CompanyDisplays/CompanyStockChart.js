@@ -188,7 +188,7 @@ export default function CompanyStockChart(props) {
                     : (datum) => datum.date
                 }
                 style={{
-                  data: {stroke: '#c43a31'},
+                  data: {stroke: '#0067da'},
                   parent: {border: '1px solid #ccc'},
                 }}
                 labelComponent={<VictoryLabel text={''} />}
@@ -306,13 +306,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   selectedWindowBtn: {
-    backgroundColor: 'limegreen',
+    backgroundColor: '#0067da',
     flex: 0.15,
     borderRadius: 20,
   },
   btnText: {
     color: 'white',
     alignSelf: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
   },
 });

@@ -34,6 +34,7 @@ import {AppSecondaryColor} from './Components/Utils/Constants';
 // TODO: Possibly find some way to consolidate stock chart from search or at least
 // reuse code within (historical charts, intraday charts).
 // TODO: Alert user on successful change password and email, and sign up.
+// TODO: Add donation reminders
 
 /* TODO: Potential Name Bases (make more unique):
   - Lighthouse
@@ -63,7 +64,7 @@ const App = () => {
         case 'More':
           return 'Mission Control';
         case 'Favorites':
-          return 'Mission Favorites Log';
+          return 'Favorites Log';
       }
     };
     return (
@@ -77,6 +78,9 @@ const App = () => {
                 screenOptions={{
                   headerStyle: {
                     backgroundColor: `${AppSecondaryColor}`,
+                  },
+                  headerTitleStyle: {
+                    fontFamily: 'Dosis-Bold',
                   },
                   headerTintColor: 'white',
                 }}>

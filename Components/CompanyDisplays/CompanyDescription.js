@@ -39,17 +39,18 @@ const styles = StyleSheet.create({
   titleText: {
     color: 'white',
     fontSize: 20,
-    fontWeight: 'bold',
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   descriptionText: {
     lineHeight: 21,
     color: 'white',
+    fontFamily: 'Dosis-Medium',
   },
   showMoreText: {
     lineHeight: 21,
     marginTop: 10,
-    color: 'green',
-    fontWeight: 'bold',
+    color: '#0067da',
+    fontFamily: 'Dosis-Bold',
   },
 });

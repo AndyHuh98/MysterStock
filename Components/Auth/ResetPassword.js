@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
     color: 'white',
     marginVertical: '2%',
+    fontFamily: 'Dosis-Bold',
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
+    fontFamily: 'Dosis-Medium',
   },
   button: {
     alignSelf: 'center',

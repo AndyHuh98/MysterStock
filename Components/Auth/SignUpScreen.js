@@ -3,7 +3,11 @@ import {View, Text, StyleSheet, Keyboard} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
-import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import {
+  AppBackgroundColor,
+  AppSecondaryColor,
+  PASSWORD_LENGTH,
+} from '../Utils/Constants';
 import CustomTextInput from '../CustomComponents/CustomTextInput';
 import CustomPressable from '../CustomComponents/CustomPressable';
 
@@ -59,11 +63,11 @@ export default function SignUpScreen(props) {
     }
 
     // third verifications -- make sure password is the correct length
-    if (password.length < 8) {
+    if (password.length < PASSWORD_LENGTH) {
       setPasswordErrorMessage('Password must have a length of at least 8.');
     }
 
-    if (verifyPassword.length < 8) {
+    if (verifyPassword.length < PASSWORD_LENGTH) {
       setVerifyPasswordErrorMessage(
         'Password must have a length of at least 8.',
       );
@@ -150,8 +154,8 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 20,
-    fontWeight: 'bold',
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   errorMessage: {
     flex: 0.2,
@@ -161,6 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
+    fontFamily: 'Dosis-Medium',
   },
   signupFormContainer: {
     flex: 1,
@@ -174,9 +179,9 @@ const styles = StyleSheet.create({
   },
   fieldTitle: {
     color: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 17.5,
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,

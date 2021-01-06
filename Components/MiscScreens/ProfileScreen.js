@@ -6,7 +6,6 @@ import FirebaseContext from '../../Contexts/FirebaseContext';
 import ChangeEmail from '../Auth/ChangeEmail';
 import ChangePassword from '../Auth/ChangePassword';
 import GuestView from '../Auth/GuestView';
-import LoginScreen from '../Auth/LoginScreen';
 import CustomPressable from '../CustomComponents/CustomPressable';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
@@ -134,11 +133,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'white',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
   },
   profileText: {
     alignSelf: 'center',
     color: 'silver',
+    fontFamily: 'Dosis-Medium',
   },
   activateModalsContainer: {
     backgroundColor: `${AppSecondaryColor}`,
@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalButton: {
+    marginTop: '5%',
     backgroundColor: 'green',
     alignSelf: 'center',
   },

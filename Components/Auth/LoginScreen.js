@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+    fontFamily: 'Dosis-Medium',
   },
   infoInput: {
     alignSelf: 'center',
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     alignSelf: 'flex-start',
     marginBottom: '2%',
+    fontFamily: 'Dosis-Medium',
   },
   button: {
     alignSelf: 'center',

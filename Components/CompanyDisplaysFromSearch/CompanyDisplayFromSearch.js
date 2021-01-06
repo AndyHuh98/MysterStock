@@ -311,8 +311,8 @@ const styles = StyleSheet.create({
   companyName: {
     color: 'white',
     alignSelf: 'center',
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 17.5,
+    fontFamily: 'Dosis-Bold',
   },
   chartContainer: {
     flex: 0.5,

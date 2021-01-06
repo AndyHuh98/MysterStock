@@ -17,13 +17,14 @@ import {
 export default function LightWeightCompanyStatsTable(props) {
   const styles = StyleSheet.create({
     statsTitle: {
-      fontWeight: 'bold',
       color: 'white',
       alignSelf: 'center',
+      fontFamily: 'Dosis-Bold',
     },
     statsValue: {
       color: 'white',
       alignSelf: 'flex-end',
+      fontFamily: 'Dosis-Medium',
     },
     row: {
       flex: 1,

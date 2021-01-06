@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     alignSelf: 'center',
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
   },
   priceContainer: {
     flex: 0.5,
@@ -94,10 +94,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontSize: 20,
     color: 'white',
+    fontFamily: 'Dosis-Medium',
   },
   miniHeader: {
     fontSize: 10,
     alignSelf: 'flex-end',
     color: 'white',
+    fontFamily: 'Dosis-Medium',
   },
 });

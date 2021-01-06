@@ -126,9 +126,9 @@ const styles = StyleSheet.create({
   },
   titleBtnText: {
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   container: {
     flex: 1,

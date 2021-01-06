@@ -115,7 +115,7 @@ export default function CompanyStockChartFromSearch(props) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
-              style={{data: {size: 100, fill: '#c43a31'}}}
+              style={{data: {size: 100, fill: '#0067da'}}}
             />
           ) : null;
           return (
@@ -170,7 +170,7 @@ export default function CompanyStockChartFromSearch(props) {
                   y={(datum) => datum.average}
                   x={(datum) => datum.minute}
                   style={{
-                    data: {stroke: 'limegreen'},
+                    data: {stroke: '#0067da'},
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
@@ -329,7 +329,7 @@ export default function CompanyStockChartFromSearch(props) {
                       : (datum) => datum.date
                   }
                   style={{
-                    data: {stroke: '#c43a31'},
+                    data: {stroke: '#0067da'},
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
@@ -456,13 +456,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   selectedWindowBtn: {
-    backgroundColor: 'limegreen',
+    backgroundColor: '#0067da',
     flex: 0.15,
     borderRadius: 20,
   },
   btnText: {
     color: 'white',
     alignSelf: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
   },
 });

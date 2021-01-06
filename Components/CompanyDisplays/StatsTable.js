@@ -4,7 +4,12 @@ import compactFormat from 'cldr-compact-number';
 import {DataTable, Divider} from 'react-native-paper';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
-import {noDataStatTableString, dataTableCats, AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import {
+  noDataStatTableString,
+  dataTableCats,
+  AppBackgroundColor,
+  AppSecondaryColor,
+} from '../Utils/Constants';
 
 // Props passed in: advStats
 export default function StatsTable(props) {
@@ -319,19 +324,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   statsHeader: {
-    fontWeight: 'bold',
     color: 'white',
-    fontSize: 12,
+    fontSize: 16,
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   statsTitle: {
-    fontWeight: 'bold',
     color: 'white',
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   statsValue: {
     color: 'white',
     alignSelf: 'flex-end',
+    fontFamily: 'Dosis-Medium',
   },
   row: {
     flex: 1,

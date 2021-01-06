@@ -5,7 +5,7 @@ import {AppBackgroundColor} from '../Utils/Constants';
 export default function FAQScreen(props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>FAQ Screen</Text>
+      <Text style={styles.titleText}>FAQ Screen</Text>
     </View>
   );
 }
@@ -15,7 +15,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: `${AppBackgroundColor}`,
   },
-  text: {
+  titleText: {
+    alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
+    fontSize: 20,
     color: 'white',
   },
 });

@@ -25,5 +25,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'white',
     fontStyle: 'italic',
+    fontFamily: 'Dosis-Medium',
   },
 });

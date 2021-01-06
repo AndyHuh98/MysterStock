@@ -13,6 +13,7 @@ export default function CustomTextInput(props) {
       textAlign: 'center',
       height: props.height,
       width: props.width,
+      fontFamily: 'Dosis-Medium',
     },
   });
 

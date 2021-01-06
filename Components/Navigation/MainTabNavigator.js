@@ -37,7 +37,7 @@ export default function MainTabNavigator(props) {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'green',
+        activeTintColor: '#0067da',
         inactiveTintColor: 'white',
         activeBackgroundColor: `${AppSecondaryColor}`,
         inactiveBackgroundColor: `${AppSecondaryColor}`,

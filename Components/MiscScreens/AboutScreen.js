@@ -100,7 +100,7 @@ export default function AboutScreen(props) {
           <Pressable
             onPressIn={() => toggleCoreFeaturesCollapsed()}
             hitSlop={40}>
-            <Text style={styles.title}>Core Features</Text>
+            <Text style={styles.title}>Features</Text>
           </Pressable>
           <View style={styles.iconContainer}>
             <Ionicons
@@ -119,7 +119,7 @@ export default function AboutScreen(props) {
             <Text style={styles.body}>{appName} offers features such as:</Text>
             <Text style={styles.numberedItem}>- Generating random stocks</Text>
             <Text style={styles.numberedItem}>
-              - Stock ticker search for all tickers supported
+              - Stock ticker search on all tickers supported
             </Text>
             <Text style={styles.numberedItem}>
               - Historical and intraday price charts for each ticker
@@ -129,6 +129,10 @@ export default function AboutScreen(props) {
             </Text>
             <Text style={styles.numberedItem}>
               - Support for over 100,000 stock tickers
+            </Text>
+            <Text style={styles.numberedItem}>
+              - Ability to add stocks to a list of favorites, with the price at
+              time of favoriting logged for future reference.
             </Text>
             <Text style={styles.numberedItem}>
               - And more features coming on the way!
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
     fontSize: 20,
     color: 'white',
   },
@@ -170,17 +174,20 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'silver',
     alignSelf: 'center',
+    fontFamily: 'Dosis-Medium',
   },
   numberedItem: {
     marginLeft: '10%',
     fontSize: 13,
     color: 'silver',
     fontStyle: 'italic',
+    fontFamily: 'Dosis-Medium',
   },
   bodyLink: {
     fontSize: 13,
-    color: 'blue',
+    color: 'lightblue',
     alignSelf: 'center',
     textDecorationLine: 'underline',
+    fontFamily: 'Dosis-Medium',
   },
 });

@@ -61,7 +61,7 @@ export default function LightWeightIntradayStockChart(props) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
-              style={{data: {size: 100, fill: '#c43a31'}}}
+              style={{data: {size: 100, fill: '#0067da'}}}
             />
           ) : null;
 
@@ -117,7 +117,7 @@ export default function LightWeightIntradayStockChart(props) {
                   y={(datum) => datum.average}
                   x={(datum) => datum.minute}
                   style={{
-                    data: {stroke: '#c43a31'},
+                    data: {stroke: '#0067da'},
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}

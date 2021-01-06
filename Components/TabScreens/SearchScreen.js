@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 0.9,
+    fontFamily: 'Dosis-Medium',
   },
   resultsContainer: {
     flex: 0.9,
@@ -145,5 +146,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
 });

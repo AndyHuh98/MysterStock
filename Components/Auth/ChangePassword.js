@@ -4,7 +4,11 @@ import {View, Text, StyleSheet, Keyboard} from 'react-native';
 import auth, {firebase} from '@react-native-firebase/auth';
 
 import FirebaseContext from '../../Contexts/FirebaseContext';
-import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import {
+  AppBackgroundColor,
+  AppSecondaryColor,
+  PASSWORD_LENGTH,
+} from '../Utils/Constants';
 import CustomTextInput from '../CustomComponents/CustomTextInput';
 import CustomPressable from '../CustomComponents/CustomPressable';
 
@@ -30,8 +34,7 @@ export default function ChangePassword(props) {
       setNewPasswordErrorMessage('Please input values for fields.');
       return;
     } else {
-      // TODO: change this to constants.passwordLength
-      if (newPassword.length < 8) {
+      if (newPassword.length < PASSWORD_LENGTH) {
         setNewPasswordErrorMessage('password too short (min. 8)');
         return;
       }
@@ -128,19 +131,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginVertical: '2%',
+    fontFamily: 'Dosis-Bold',
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
     alignSelf: 'center',
   },
   errorMessage: {
-    flex: 0.1,
+    flex: 0.12,
     marginLeft: '5%',
     marginTop: '-4%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
+    fontFamily: 'Dosis-Medium',
   },
   button: {
     alignSelf: 'center',

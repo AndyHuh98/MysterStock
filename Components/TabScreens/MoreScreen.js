@@ -112,12 +112,14 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 0.9,
+    fontFamily: 'Dosis-Medium',
   },
   itemTitle: {
     alignSelf: 'center',
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
+    fontFamily: 'Dosis-Medium',
   },
   card: {
     height: 50,
@@ -125,17 +127,5 @@ const styles = StyleSheet.create({
     marginHorizontal: '1%',
     justifyContent: 'center',
     borderRadius: 10,
-  },
-  welcomeUser: {
-    flex: 0.3,
-    borderRadius: 10,
-    borderWidth: 3,
-    justifyContent: 'center',
-  },
-  welcomeText: {
-    color: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
-    alignSelf: 'center',
   },
 });

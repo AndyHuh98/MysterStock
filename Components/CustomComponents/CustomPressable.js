@@ -16,6 +16,7 @@ export default function CustomPressable(props) {
     buttonText: {
       alignSelf: 'center',
       color: 'white',
+      fontFamily: 'Dosis-Bold',
     },
   });
 
