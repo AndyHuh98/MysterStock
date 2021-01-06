@@ -1,16 +1,10 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
 import {AppBackgroundColor} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
 
 export default function LoginScreen(props) {
   const [email, setEmail] = useState(undefined);
@@ -52,19 +46,18 @@ export default function LoginScreen(props) {
     <View style={styles.container}>
       <View style={styles.loginFormContainer}>
         <Text style={styles.title}>Mission Credentials</Text>
-        <TextInput
-          style={styles.infoInput}
+        <CustomTextInput
           placeholder="Email"
-          placeholderTextColor="silver"
-          autoCorrect={false}
+          inputTextColor="white"
+          secureTextEntry={false}
           onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
           style={styles.infoInput}
+        />
+        <CustomTextInput
+          style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           onChangeText={(text) => setPassword(text)}
         />
         <Text style={styles.errorMessage}>{errorMessage}</Text>
@@ -111,13 +104,7 @@ const styles = StyleSheet.create({
     marginVertical: '2%',
   },
   infoInput: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'grey',
-    flex: 0.15,
-    marginBottom: '1%',
-    marginHorizontal: '5%',
-    textAlign: 'center',
-    color: 'white',
+    alignSelf: 'center',
   },
   errorMessage: {
     flex: 0.075,

@@ -1,17 +1,10 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Alert,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Alert, Keyboard} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
 
 export default function ResetPassword(props) {
   const [email, setEmail] = useState(undefined);
@@ -44,12 +37,11 @@ export default function ResetPassword(props) {
     <View style={styles.container}>
       <View style={styles.changePasswordFormContainer}>
         <Text style={styles.title}>Reset Password</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Email"
-          placeholderTextColor="silver"
           autoCorrect={false}
-          autoCapitalize="none"
           onChangeText={(text) => setEmail(text)}
         />
         <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
@@ -85,13 +77,7 @@ const styles = StyleSheet.create({
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
-    borderColor: 'silver',
-    borderWidth: StyleSheet.hairlineWidth,
-    flex: 0.2,
-    marginBottom: '1%',
-    marginHorizontal: '5%',
-    textAlign: 'center',
-    color: 'white',
+    alignSelf: 'center',
   },
   errorMessage: {
     flex: 0.075,

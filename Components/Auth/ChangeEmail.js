@@ -1,19 +1,12 @@
 import React, {useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
 import FBAuthContext from '../../Contexts/FBAuthContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
 
-// TODO: fix bug where text in profile doesn't update when email changes.
 export default function ChangeEmail(props) {
   const authContext = useContext(FBAuthContext);
   const [currentPassword, setCurrentPassword] = useState(undefined);
@@ -83,30 +76,27 @@ export default function ChangeEmail(props) {
     <View style={styles.container}>
       <View style={styles.changePasswordFormContainer}>
         <Text style={styles.title}>Change Email</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
           placeholder="Current Password"
-          placeholderTextColor="silver"
+          inputTextColor="white"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setCurrentPassword(text)}
         />
         <Text style={styles.errorMessage}>{currentPasswordErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="New Email"
-          placeholderTextColor="silver"
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setNewEmail(text)}
         />
         <Text style={styles.errorMessage}>{newEmailErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Verify New Email"
-          placeholderTextColor="silver"
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setVerifyNewEmail(text)}
         />
@@ -126,7 +116,6 @@ const styles = StyleSheet.create({
   },
   changePasswordFormContainer: {
     marginVertical: '3%',
-    marginHorizontal: '5%',
     flex: 1,
     borderRadius: 10,
     borderColor: 'silver',
@@ -144,13 +133,7 @@ const styles = StyleSheet.create({
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
-    borderColor: 'silver',
-    borderWidth: StyleSheet.hairlineWidth,
-    flex: 0.15,
-    marginBottom: '1%',
-    marginHorizontal: '5%',
-    textAlign: 'center',
-    color: 'white',
+    alignSelf: 'center',
   },
   errorMessage: {
     flex: 0.075,

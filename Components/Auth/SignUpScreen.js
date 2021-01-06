@@ -1,16 +1,10 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
 
 export default function SignUpScreen(props) {
   const [email, setEmail] = useState(undefined);
@@ -96,40 +90,38 @@ export default function SignUpScreen(props) {
         <Text style={styles.title}>Mission Initiation</Text>
         <View style={styles.fieldContainer}>
           <Text style={styles.fieldTitle}>Email</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
             placeholder="Email"
-            placeholderTextColor="silver"
-            autoCorrect={false}
+            inputTextColor="white"
+            secureTextEntry={false}
             onChangeText={(text) => setEmail(text)}
           />
           <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
             placeholder="Verify Email"
-            placeholderTextColor="silver"
-            autoCorrect={false}
+            inputTextColor="white"
+            secureTextEntry={false}
             onChangeText={(text) => setVerifyEmail(text)}
           />
           <Text style={styles.errorMessage}>{verifyEmailErrorMessage}</Text>
         </View>
         <View style={styles.fieldContainer}>
           <Text style={styles.fieldTitle}>Password</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
+            inputTextColor="white"
             placeholder="Password"
-            placeholderTextColor="silver"
             secureTextEntry={true}
-            autoCorrect={false}
             onChangeText={(text) => setPassword(text)}
           />
           <Text style={styles.errorMessage}>{passwordErrorMessage}</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
+            inputTextColor="white"
             placeholder="Verify Password"
-            placeholderTextColor="silver"
             secureTextEntry={true}
-            autoCorrect={false}
             onChangeText={(text) => setVerifyPassword(text)}
           />
           <Text style={styles.errorMessage}>{verifyPasswordErrorMessage}</Text>
@@ -188,12 +180,8 @@ const styles = StyleSheet.create({
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
-    flex: 0.4,
-    textAlign: 'center',
-    marginVertical: '2%',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'grey',
-    color: 'white',
+    alignSelf: 'center',
+    marginBottom: '5%',
   },
   button: {
     flex: 0.1,

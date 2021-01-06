@@ -1,17 +1,11 @@
 import React, {useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Keyboard} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
 import FBAuthContext from '../../Contexts/FBAuthContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
 
 // TODO: Extract all text inputs into a single component with standardized styling.
 // TODO: Extract all Pressables in forms into a single component with standardized styling.
@@ -78,32 +72,29 @@ export default function ChangePassword(props) {
     <View style={styles.container}>
       <View style={styles.changePasswordFormContainer}>
         <Text style={styles.title}>Change Credentials</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Current Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setCurrentPassword(text)}
         />
         <Text style={styles.errorMessage}>{currentPasswordErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="New Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setNewPassword(text)}
         />
         <Text style={styles.errorMessage}>{newPasswordErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Verify New Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setVerifyNewPassword(text)}
         />
@@ -122,7 +113,6 @@ const styles = StyleSheet.create({
   },
   changePasswordFormContainer: {
     marginVertical: '3%',
-    marginHorizontal: '5%',
     flex: 1,
     borderRadius: 10,
     borderColor: 'silver',
@@ -140,13 +130,7 @@ const styles = StyleSheet.create({
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
-    borderColor: 'silver',
-    borderWidth: StyleSheet.hairlineWidth,
-    flex: 0.15,
-    marginBottom: '1%',
-    marginHorizontal: '5%',
-    textAlign: 'center',
-    color: 'white',
+    alignSelf: 'center',
   },
   errorMessage: {
     flex: 0.075,
