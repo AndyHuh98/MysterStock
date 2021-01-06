@@ -368,32 +368,56 @@ export default function CompanyStockChartFromSearch(props) {
         <View style={styles.historyButtonsContainer}>
           <Pressable
             onPressIn={() => adjustHistoryWindow('1d')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '1d'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>1D</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('5d')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '5d'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>5D</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('1m')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '1m'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>1M</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('3m')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '3m'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>3M</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('1y')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '1y'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>1Y</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('5y')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '5y'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>5Y</Text>
           </Pressable>
         </View>
@@ -428,6 +452,11 @@ const styles = StyleSheet.create({
   },
   historyWindowBtn: {
     backgroundColor: `${AppSecondaryColor}`,
+    flex: 0.15,
+    borderRadius: 20,
+  },
+  selectedWindowBtn: {
+    backgroundColor: 'limegreen',
     flex: 0.15,
     borderRadius: 20,
   },

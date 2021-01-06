@@ -4,8 +4,6 @@ import {Pressable, StyleSheet, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import Constants from '../Utils/Constants';
 
-// TODO: Extract all Pressables in forms into a single component with standardized styling.
-// pass button text, onPressIn, and potentially styles, height, and width
 export default function CustomPressable(props) {
   const styles = StyleSheet.create({
     button: {

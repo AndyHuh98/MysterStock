@@ -52,10 +52,10 @@ export default function ProfileScreen(props) {
       );
     };
 
-    // TODO: Possibly move this into it's own component
     const renderGuestView = () => {
       return <GuestView navigation={props.navigation} />;
     };
+
     return (
       <View style={styles.container}>
         <Modal
