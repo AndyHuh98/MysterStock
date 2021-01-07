@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, StyleSheet, Keyboard} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, Alert} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
@@ -55,6 +55,7 @@ export default function ChangeEmail(props) {
             .currentUser.updateEmail(newEmail)
             .then(() => {
               firebaseContext.setEmail(newEmail);
+              Alert.alert('Email Changed', 'Email Changed Successfully.');
               props.navigation.navigate('More');
             })
             .catch((error) => {

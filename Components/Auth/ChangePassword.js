@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, StyleSheet, Keyboard} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, Alert} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
@@ -54,7 +54,10 @@ export default function ChangePassword(props) {
         .then(() => {
           auth()
             .currentUser.updatePassword(newPassword)
-            .then(() => props.navigation.navigate('More'))
+            .then(() => {
+              Alert.alert('Password Changed', 'Password Changed Successfully.');
+              props.navigation.navigate('More');
+            })
             .catch((error) => {
               if (error.code === 'auth/weak-password') {
                 setNewPasswordErrorMessage('password too short (min. 8)');

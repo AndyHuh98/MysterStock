@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Keyboard} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, Alert} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
@@ -78,7 +78,10 @@ export default function SignUpScreen(props) {
       await auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          console.log('created user');
+          Alert.alert(
+            'Account Created',
+            "Account Created Successfully, navigating to 'More' tab.",
+          );
           props.navigation.navigate('More');
         })
         .catch((error) => {

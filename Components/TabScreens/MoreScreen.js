@@ -6,6 +6,7 @@ import {
   FlatList,
   Pressable,
   TextInput,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -45,6 +46,10 @@ export default function MoreScreen(props) {
               props.navigation.navigate(item.title);
             } else {
               console.log('Signing Out');
+              Alert.alert(
+                'Signed Out',
+                'You have been signed out successfully.',
+              );
               firebaseContext.signOut();
             }
           }}
