@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
 import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
@@ -9,6 +10,7 @@ import {
   VictoryTheme,
   VictoryAxis,
   VictoryLabel,
+  VictoryCursorContainer,
 } from 'victory-native';
 import IEXContext from '../../Contexts/IEXContext';
 import {
@@ -26,9 +28,6 @@ const chartHeight = Dimensions.get('screen').height * 0.3;
 // TODO: Make horizontal line connect until actual data is served (if IPO / listed
 // more recently than 5y, for example)
 
-// TODO: play around filtering to the points for 5y and 1y
-// TODO: add the cursor container to historical and 5d intraday charts
-
 // TODO: for intraday and historical stock charts, play around with SVG styling:
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 
@@ -40,6 +39,35 @@ export default function CompanyStockChart(props) {
   // consider loading all historical data at once for seamless transitioning
   const [chartHistoryWindow, setChartHistoryWindow] = useState('1d');
   const [companyHistoricalData, setCompanyHistoricalData] = useState([]);
+  const [activeData5d, setActiveData5d] = useState({
+    date: null,
+    time: null,
+    average: null,
+  });
+  const [activeData1m, setActiveData1m] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData3m, setActiveData3m] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData1y, setActiveData1y] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData5y, setActiveData5y] = useState({
+    date: null,
+    high: null,
+  });
+
+  useEffect(() => {
+    setActiveData1m(null);
+    setActiveData1y(null);
+    setActiveData3m(null);
+    setActiveData5d(null);
+    setActiveData5y(null);
+  }, [props.companySymbol]);
 
   useEffect(() => {
     async function fetchNewHistoricalData(window) {
@@ -69,6 +97,46 @@ export default function CompanyStockChart(props) {
   }, [chartHistoryWindow, props.companySymbol]);
 
   return useMemo(() => {
+    const setAnActiveData = (data) => {
+      switch (chartHistoryWindow) {
+        case '5d':
+          setActiveData5d({
+            date: data.date,
+            time: data.label,
+            average: data.average,
+          });
+          break;
+        case '1m':
+          setActiveData1m({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '3m':
+          setActiveData3m({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '1y':
+          setActiveData1y({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '5y':
+          setActiveData5y({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+      }
+    };
+
     function adjustHistoryWindow(newWindow) {
       console.log('adjusting history window to: ' + newWindow);
       setChartHistoryWindow(newWindow);
@@ -161,12 +229,17 @@ export default function CompanyStockChart(props) {
               minDomain={{y: getRange()[0]}}
               domain={companyHistoricalData.length > 0 ? null : {y: getRange()}}
               containerComponent={
-                <VictoryVoronoiContainer
-                  labels={
-                    chartHistoryWindow === '5d'
-                      ? ({datum}) => `${datum.average} @ ${datum.label}`
-                      : ({datum}) => `${datum.high} @ ${datum.date}`
-                  }
+                <VictoryCursorContainer
+                  cursorDimension="x"
+                  onCursorChange={(value) => {
+                    const filteredData = getHistoricalData();
+                    const cursorValue =
+                      value !== undefined && value !== null
+                        ? Math.round(value)
+                        : filteredData.length;
+                    const dataPoint = filteredData[cursorValue - 1];
+                    setAnActiveData(dataPoint);
+                  }}
                 />
               }>
               <VictoryAxis
@@ -192,6 +265,57 @@ export default function CompanyStockChart(props) {
                   parent: {border: '1px solid #ccc'},
                 }}
                 labelComponent={<VictoryLabel text={''} />}
+              />
+              <VictoryLabel
+                inline
+                text={() => {
+                  switch (chartHistoryWindow) {
+                    case '5d':
+                      if (activeData5d) {
+                        const time = activeData5d.time;
+                        return `$${activeData5d.average.toFixed(2)} at ${time}`;
+                      } else {
+                        return '';
+                      }
+                    case '1m':
+                      if (activeData1m) {
+                        const date = activeData1m.date;
+                        return `$${activeData1m.high.toFixed(2)} at ${date}`;
+                      } else {
+                        return '';
+                      }
+                    case '3m':
+                      if (activeData3m) {
+                        const date = activeData3m.date;
+                        return `$${activeData3m.high.toFixed(2)} at ${date}`;
+                      } else {
+                        return '';
+                      }
+                    case '1y':
+                      if (activeData1y) {
+                        const date = activeData1y.date;
+                        return `$${activeData1y.high.toFixed(2)} at ${date}`;
+                      } else {
+                        return '';
+                      }
+                    case '5y':
+                      if (activeData5y) {
+                        const date = activeData5y.date;
+                        return `$${activeData5y.high.toFixed(2)} at ${date}`;
+                      } else {
+                        return '';
+                      }
+                  }
+                }}
+                x={100}
+                y={10}
+                textAnchor="middle"
+                backgroundPadding={10}
+                style={{
+                  fill: 'white',
+                  fontFamily: 'Dosis-Bold',
+                  fontSize: 20,
+                }}
               />
             </VictoryChart>
           </View>
@@ -279,7 +403,16 @@ export default function CompanyStockChart(props) {
         </View>
       </View>
     );
-  }, [companyHistoricalData, props.companySymbol, props.width, iexContext]);
+  }, [
+    iexContext,
+    props.width,
+    companyHistoricalData,
+    activeData5d,
+    activeData1m,
+    activeData3m,
+    activeData1y,
+    activeData5y,
+  ]);
 }
 
 const styles = StyleSheet.create({

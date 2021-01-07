@@ -6,7 +6,6 @@ import {View, StyleSheet, Pressable, Text, Dimensions} from 'react-native';
 import {
   VictoryChart,
   VictoryLine,
-  VictoryVoronoiContainer,
   VictoryTheme,
   VictoryAxis,
   VictoryLabel,
@@ -20,7 +19,6 @@ import {
 } from '../Utils/Constants';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
-// TODO: ParallaxScrollView: https://github.com/i6mi6/react-native-parallax-scroll-view
 
 // props passed: companySymbol, width, companyPreviousDayData, companyIntradayData
 export default function CompanyStockChartFromSearch(props) {
@@ -31,9 +29,35 @@ export default function CompanyStockChartFromSearch(props) {
     average: null,
     cursorValue: null,
   });
+  const [activeData5d, setActiveData5d] = useState({
+    date: null,
+    time: null,
+    average: null,
+  });
+  const [activeData1m, setActiveData1m] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData3m, setActiveData3m] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData1y, setActiveData1y] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData5y, setActiveData5y] = useState({
+    date: null,
+    high: null,
+  });
 
   useEffect(() => {
     setActiveData(null);
+    setActiveData1m(null);
+    setActiveData1y(null);
+    setActiveData3m(null);
+    setActiveData5d(null);
+    setActiveData5y(null);
   }, [props.companySymbol]);
 
   // when companySymbol changes or the chart history window changes, we want to
@@ -67,6 +91,46 @@ export default function CompanyStockChartFromSearch(props) {
 
   // rendering the charts
   return useMemo(() => {
+    const setAnActiveData = (data) => {
+      switch (chartHistoryWindow) {
+        case '5d':
+          setActiveData5d({
+            date: data.date,
+            time: data.label,
+            average: data.average,
+          });
+          break;
+        case '1m':
+          setActiveData1m({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '3m':
+          setActiveData3m({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '1y':
+          setActiveData1y({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '5y':
+          setActiveData5y({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+      }
+    };
+
     function adjustHistoryWindow(newWindow) {
       console.log('adjusting history window to: ' + newWindow);
       setChartHistoryWindow(newWindow);
@@ -183,8 +247,12 @@ export default function CompanyStockChartFromSearch(props) {
                 ) : null}
                 <VictoryLabel
                   inline
-                  text={activeData ? `$${activeData.average}` : null}
-                  x={50}
+                  text={
+                    activeData && activeData.average
+                      ? `$${activeData.average.toFixed(2)}`
+                      : null
+                  }
+                  x={60}
                   y={10}
                   textAnchor="middle"
                   backgroundPadding={10}
@@ -230,6 +298,9 @@ export default function CompanyStockChartFromSearch(props) {
       }
     };
 
+    // TODO: Split up 5d, 1m, 3m, 1y and 5y charts into individual components,
+    // Make sure code is a lot more readable here because it's TOUGH figuring out
+    // what goes what and I wrote it myself.
     const renderHistoricalStockChart = () => {
       console.log(
         'CompanyStockChartFromSearch(): rendering historical chart for: ' +
@@ -313,12 +384,17 @@ export default function CompanyStockChartFromSearch(props) {
                   companyHistoricalData.length > 0 ? null : {y: getRange()}
                 }
                 containerComponent={
-                  <VictoryVoronoiContainer
-                    labels={
-                      chartHistoryWindow === '5d'
-                        ? ({datum}) => `${datum.average} @ ${datum.label}`
-                        : ({datum}) => `${datum.high} @ ${datum.date}`
-                    }
+                  <VictoryCursorContainer
+                    cursorDimension="x"
+                    onCursorChange={(value) => {
+                      const filteredData = getHistoricalData();
+                      const cursorValue =
+                        value !== undefined && value !== null
+                          ? Math.round(value)
+                          : filteredData.length;
+                      const dataPoint = filteredData[cursorValue - 1];
+                      setAnActiveData(dataPoint);
+                    }}
                   />
                 }>
                 <VictoryAxis
@@ -344,6 +420,59 @@ export default function CompanyStockChartFromSearch(props) {
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
+                />
+                <VictoryLabel
+                  inline
+                  text={() => {
+                    switch (chartHistoryWindow) {
+                      case '5d':
+                        if (activeData5d) {
+                          const time = activeData5d.time;
+                          return `$${activeData5d.average.toFixed(
+                            2,
+                          )} at ${time}`;
+                        } else {
+                          return '';
+                        }
+                      case '1m':
+                        if (activeData1m) {
+                          const date = activeData1m.date;
+                          return `$${activeData1m.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                      case '3m':
+                        if (activeData3m) {
+                          const date = activeData3m.date;
+                          return `$${activeData3m.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                      case '1y':
+                        if (activeData1y) {
+                          const date = activeData1y.date;
+                          return `$${activeData1y.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                      case '5y':
+                        if (activeData5y) {
+                          const date = activeData5y.date;
+                          return `$${activeData5y.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                    }
+                  }}
+                  x={100}
+                  y={10}
+                  textAnchor="middle"
+                  backgroundPadding={10}
+                  style={{
+                    fill: 'white',
+                    fontFamily: 'Dosis-Bold',
+                    fontSize: 20,
+                  }}
                 />
               </VictoryChart>
             </View>
@@ -444,9 +573,14 @@ export default function CompanyStockChartFromSearch(props) {
     );
   }, [
     activeData,
+    activeData1m,
+    activeData1y,
+    activeData3m,
+    activeData5d,
+    activeData5y,
     companyHistoricalData,
     props.companyIntradayData,
-    props.companyPreviousDayData,
+    props.companyPreviousDayData.close,
     props.width,
   ]);
 }

@@ -137,7 +137,11 @@ export default function LightWeightIntradayStockChart(props) {
                 ) : null}
                 <VictoryLabel
                   inline
-                  text={activeData ? `$${activeData.average}` : null}
+                  text={
+                    activeData && activeData.average
+                      ? `$${activeData.average.toFixed(2)}`
+                      : null
+                  }
                   x={50}
                   y={10}
                   textAnchor="middle"
@@ -176,6 +180,9 @@ export default function LightWeightIntradayStockChart(props) {
                   textAnchor="middle"
                   backgroundPadding={10}
                   backgroundStyle={{fill: 'white'}}
+                  style={{
+                    fontFamily: 'Dosis-Bold',
+                  }}
                 />
               </VictoryChart>
             </View>
