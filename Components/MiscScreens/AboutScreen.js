@@ -56,6 +56,7 @@ export default function AboutScreen(props) {
         <View style={styles.headerBody}>
           <Text style={styles.body}>React Native</Text>
           <Text style={styles.body}>Victory Native Charts</Text>
+          <Text style={styles.body}>IEX Cloud API</Text>
         </View>
         <View style={styles.divider} />
 

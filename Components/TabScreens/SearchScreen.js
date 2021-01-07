@@ -13,8 +13,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import IEXContext from '../../Contexts/IEXContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
-// TODO: in backend, change return of stockssupported to include company name as well
-
 // pass in iexContext and search array of stocks supported
 export default function SearchScreen(props) {
   const iexContext = useContext(IEXContext);

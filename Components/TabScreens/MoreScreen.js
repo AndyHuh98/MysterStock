@@ -42,7 +42,6 @@ export default function MoreScreen(props) {
         <Pressable
           onPressOut={() => {
             if (item.title !== 'Sign Out') {
-              console.log(`Navigating to ${item.title} Screen`);
               props.navigation.navigate(item.title);
             } else {
               console.log('Signing Out');

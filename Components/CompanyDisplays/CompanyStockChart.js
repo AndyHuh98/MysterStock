@@ -6,7 +6,6 @@ import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
 import {
   VictoryChart,
   VictoryLine,
-  VictoryVoronoiContainer,
   VictoryTheme,
   VictoryAxis,
   VictoryLabel,
@@ -27,9 +26,6 @@ const chartHeight = Dimensions.get('screen').height * 0.3;
 
 // TODO: Make horizontal line connect until actual data is served (if IPO / listed
 // more recently than 5y, for example)
-
-// TODO: for intraday and historical stock charts, play around with SVG styling:
-// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute
 
 // props passed: companySymbol, width
 export default function CompanyStockChart(props) {

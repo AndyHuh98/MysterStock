@@ -34,6 +34,7 @@ import {AppSecondaryColor} from './Components/Utils/Constants';
 // TODO: Possibly find some way to consolidate stock chart from search or at least
 // reuse code within (historical charts, intraday charts).
 // TODO: Add donation reminders
+// TODO: Add potentially cool text inputs
 
 /* TODO: Potential Name Bases (make more unique):
   - Lighthouse
@@ -42,6 +43,9 @@ import {AppSecondaryColor} from './Components/Utils/Constants';
   - Random
   - Rocket
   - Launch
+  - Azimuth
+  - Aphelion
+  - BlastOff
 */
 
 const Stack = createStackNavigator();
