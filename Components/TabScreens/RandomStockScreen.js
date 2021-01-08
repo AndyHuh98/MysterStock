@@ -20,6 +20,9 @@ export default function RandomStockScreen(props) {
   const [companyDisplayFadeAnim] = useState(new Animated.Value(0));
   const [companySymbol, setCompanySymbol] = useState('');
   const [stockBtnDisable, setStockBtnDisable] = useState(false);
+
+  // TODO: Use this to ensure that animation finishes before launching application in the first view.
+  const [animationFinished, setAnimationFinished] = useState(false);
   const iexContext = useContext(IEXContext);
 
   useEffect(() => {}, [iexContext.stocksSupported, companySymbol]);
