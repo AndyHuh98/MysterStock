@@ -324,8 +324,11 @@ export default function CompanyStockChart(props) {
               height={chartHeight}
               width={props.width}
               theme={VictoryTheme.material}>
-              <VictoryAxis fixLabelOverlap={true} />
-              <VictoryAxis dependentAxis />
+              <VictoryAxis
+                fixLabelOverlap={true}
+                style={{grid: {stroke: 'none'}}}
+              />
+              <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
               <VictoryLabel
                 text="No data for company for given window."
                 x={props.width / 2}
