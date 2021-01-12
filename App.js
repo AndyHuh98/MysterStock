@@ -34,6 +34,7 @@ import {AppSecondaryColor} from './Components/Utils/Constants';
 // reuse code within (historical charts, intraday charts).
 // TODO: Add donation reminders
 // TODO: Add potentially cool text inputs
+// TODO: If a user is logged in and has no favorites, show a little blurb with tutorial on how to add to favorites.
 
 /* TODO: Potential Name Bases (make more unique):
   - Lighthouse

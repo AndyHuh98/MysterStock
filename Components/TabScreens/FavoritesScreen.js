@@ -48,15 +48,29 @@ export default function FavoritesScreen(props) {
   };
 
   if (firebaseContext.loggedIn) {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={favorites}
-          renderItem={renderFavorite}
-          keyExtractor={(item) => item.symbol}
-        />
-      </View>
-    );
+    if (favorites.length > 0) {
+      return (
+        <View style={styles.container}>
+          <FlatList
+            data={favorites}
+            renderItem={renderFavorite}
+            keyExtractor={(item) => item.symbol}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.noFavoritesContainer}>
+          <View style={styles.noFavTextContainer}>
+            <Text style={styles.noFavText}>
+              You currently have no favorites added! To add a favorite to this
+              list, search for or generate a new stock and navigate to the top
+              right of its detailed stock view.
+            </Text>
+          </View>
+        </View>
+      );
+    }
   } else {
     return <GuestView navigation={props.navigation} />;
   }
@@ -66,6 +80,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: `${AppBackgroundColor}`,
+  },
+  noFavoritesContainer: {
+    backgroundColor: `${AppBackgroundColor}`,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  noFavTextContainer: {
+    marginHorizontal: '5%',
+    backgroundColor: `${AppSecondaryColor}`,
+    flex: 0.7,
+    borderRadius: 20,
+    justifyContent: 'center',
+  },
+  noFavText: {
+    fontSize: 25,
+    alignSelf: 'center',
+    color: 'white',
+    fontFamily: 'Dosis-Bold',
+    textAlign: 'center',
   },
   favoriteCard: {
     marginVertical: '2%',
