@@ -10,7 +10,6 @@ import {
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import IEXContext from '../../Contexts/IEXContext';
-import LoadingScreen from '../MiscScreens/LoadingScreen';
 import {AppBackgroundColor} from '../Utils/Constants';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
@@ -20,6 +19,9 @@ export default function RandomStockScreen(props) {
   const [companyDisplayFadeAnim] = useState(new Animated.Value(0));
   const [companySymbol, setCompanySymbol] = useState('');
   const [stockBtnDisable, setStockBtnDisable] = useState(false);
+
+  // TODO: Use this to ensure that animation finishes before launching application in the first view.
+  const [animationFinished, setAnimationFinished] = useState(false);
   const iexContext = useContext(IEXContext);
 
   useEffect(() => {}, [iexContext.stocksSupported, companySymbol]);
@@ -103,7 +105,6 @@ export default function RandomStockScreen(props) {
     } else {
       return (
         <View style={styles.container}>
-          <LoadingScreen />
         </View>
       );
     }
@@ -126,9 +127,9 @@ const styles = StyleSheet.create({
   },
   titleBtnText: {
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   container: {
     flex: 1,

@@ -1,16 +1,11 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Keyboard} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
 import {AppBackgroundColor} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
 export default function LoginScreen(props) {
   const [email, setEmail] = useState(undefined);
@@ -52,39 +47,38 @@ export default function LoginScreen(props) {
     <View style={styles.container}>
       <View style={styles.loginFormContainer}>
         <Text style={styles.title}>Mission Credentials</Text>
-        <TextInput
-          style={styles.infoInput}
+        <CustomTextInput
           placeholder="Email"
-          placeholderTextColor="silver"
-          autoCorrect={false}
+          inputTextColor="white"
+          secureTextEntry={false}
           onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
           style={styles.infoInput}
+        />
+        <CustomTextInput
+          style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           onChangeText={(text) => setPassword(text)}
         />
         <Text style={styles.errorMessage}>{errorMessage}</Text>
-        <Pressable
+        <CustomPressable
           style={styles.button}
-          onPressIn={() => submitLoginInformation()}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
-        <Pressable
+          onPressIn={() => submitLoginInformation()}
+          text="Login"
+        />
+        <CustomPressable
           style={styles.button}
           onPressIn={() => {
             props.navigation.navigate('Reset Password');
-          }}>
-          <Text style={styles.buttonText}>Reset Password</Text>
-        </Pressable>
-        <Pressable
+          }}
+          text="Reset Password"
+        />
+        <CustomPressable
           style={styles.button}
-          onPressIn={() => props.navigation.navigate('Sign Up')}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
+          onPressIn={() => props.navigation.navigate('Sign Up')}
+          text="Sign Up"
+        />
       </View>
     </View>
   );
@@ -98,46 +92,34 @@ const styles = StyleSheet.create({
   },
   loginFormContainer: {
     marginHorizontal: '5%',
-    flex: 0.6,
+    flex: 0.8,
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
   },
   title: {
-    flex: 0.15,
+    flex: 0.25,
     alignSelf: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    marginVertical: '2%',
+    fontFamily: 'Dosis-Medium',
   },
   infoInput: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'grey',
-    flex: 0.15,
-    marginBottom: '1%',
-    marginHorizontal: '5%',
-    textAlign: 'center',
-    color: 'white',
+    alignSelf: 'center',
+    marginVertical: '2%',
   },
   errorMessage: {
-    flex: 0.075,
+    flex: 0.15,
     marginLeft: '5%',
     marginTop: '-2%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
+    marginBottom: '2%',
+    fontFamily: 'Dosis-Medium',
   },
   button: {
-    flex: 0.15,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-    marginVertical: '2%',
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
+    marginVertical: '2%',
   },
 });

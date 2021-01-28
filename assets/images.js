@@ -6,7 +6,7 @@ const images = {
   e: require('./images/E.png'),
   f: require('./images/F.png'),
   g: require('./images/G.png'),
-  h: require('./images/G.png'),
+  h: require('./images/H.png'),
   i: require('./images/I.png'),
   j: require('./images/J.png'),
   k: require('./images/K.png'),

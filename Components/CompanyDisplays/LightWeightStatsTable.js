@@ -9,7 +9,6 @@ import {
   noDataStatTableString,
 } from '../Utils/Constants';
 
-// TODO: Replace 52 Wk Low and High with high and low from quote / intraday array
 // TODO: Design custom data table component
 
 // Lightweight stats table with only 8 advanced stats, more like a preview for main stock page.
@@ -17,13 +16,14 @@ import {
 export default function LightWeightCompanyStatsTable(props) {
   const styles = StyleSheet.create({
     statsTitle: {
-      fontWeight: 'bold',
       color: 'white',
       alignSelf: 'center',
+      fontFamily: 'Dosis-Bold',
     },
     statsValue: {
       color: 'white',
       alignSelf: 'flex-end',
+      fontFamily: 'Dosis-Medium',
     },
     row: {
       flex: 1,

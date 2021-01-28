@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, Alert} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
-import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import {
+  AppBackgroundColor,
+  AppSecondaryColor,
+  PASSWORD_LENGTH,
+} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
 export default function SignUpScreen(props) {
   const [email, setEmail] = useState(undefined);
@@ -64,11 +63,11 @@ export default function SignUpScreen(props) {
     }
 
     // third verifications -- make sure password is the correct length
-    if (password.length < 8) {
+    if (password.length < PASSWORD_LENGTH) {
       setPasswordErrorMessage('Password must have a length of at least 8.');
     }
 
-    if (verifyPassword.length < 8) {
+    if (verifyPassword.length < PASSWORD_LENGTH) {
       setVerifyPasswordErrorMessage(
         'Password must have a length of at least 8.',
       );
@@ -79,7 +78,10 @@ export default function SignUpScreen(props) {
       await auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          console.log('created user');
+          Alert.alert(
+            'Account Created',
+            "Account Created Successfully, navigating to 'More' tab.",
+          );
           props.navigation.navigate('More');
         })
         .catch((error) => {
@@ -96,54 +98,52 @@ export default function SignUpScreen(props) {
         <Text style={styles.title}>Mission Initiation</Text>
         <View style={styles.fieldContainer}>
           <Text style={styles.fieldTitle}>Email</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
             placeholder="Email"
-            placeholderTextColor="silver"
-            autoCorrect={false}
+            inputTextColor="white"
+            secureTextEntry={false}
             onChangeText={(text) => setEmail(text)}
           />
           <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
             placeholder="Verify Email"
-            placeholderTextColor="silver"
-            autoCorrect={false}
+            inputTextColor="white"
+            secureTextEntry={false}
             onChangeText={(text) => setVerifyEmail(text)}
           />
           <Text style={styles.errorMessage}>{verifyEmailErrorMessage}</Text>
         </View>
         <View style={styles.fieldContainer}>
           <Text style={styles.fieldTitle}>Password</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
+            inputTextColor="white"
             placeholder="Password"
-            placeholderTextColor="silver"
             secureTextEntry={true}
-            autoCorrect={false}
             onChangeText={(text) => setPassword(text)}
           />
           <Text style={styles.errorMessage}>{passwordErrorMessage}</Text>
-          <TextInput
+          <CustomTextInput
             style={styles.infoInput}
+            inputTextColor="white"
             placeholder="Verify Password"
-            placeholderTextColor="silver"
             secureTextEntry={true}
-            autoCorrect={false}
             onChangeText={(text) => setVerifyPassword(text)}
           />
           <Text style={styles.errorMessage}>{verifyPasswordErrorMessage}</Text>
         </View>
-        <Pressable
+        <CustomPressable
           style={styles.button}
-          onPressIn={() => submitSignUpInformation()}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
-        <Pressable
+          onPressIn={() => submitSignUpInformation()}
+          text="Sign Up"
+        />
+        <CustomPressable
           style={styles.button}
-          onPressIn={() => props.navigation.navigate('Login')}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
+          onPressIn={() => props.navigation.navigate('Login')}
+          text="Login"
+        />
       </View>
     </View>
   );
@@ -157,53 +157,42 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 20,
-    fontWeight: 'bold',
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   errorMessage: {
-    flex: 0.15,
+    flex: 0.2,
     marginLeft: '5%',
-    marginTop: '-2%',
+    marginTop: '-6%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
+    fontFamily: 'Dosis-Medium',
   },
   signupFormContainer: {
     flex: 1,
     margin: '5%',
-    justifyContent: 'space-evenly',
   },
   fieldContainer: {
-    marginVertical: '2%',
+    flex: 0.45,
     marginHorizontal: '2%',
-    flex: 0.3,
     flexDirection: 'column',
+    justifyContent: 'space-evenly',
   },
   fieldTitle: {
     color: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 17.5,
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
-    flex: 0.4,
-    textAlign: 'center',
-    marginVertical: '2%',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'grey',
-    color: 'white',
+    alignSelf: 'center',
+    marginBottom: '4%',
   },
   button: {
-    flex: 0.1,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
+    marginBottom: '3%',
   },
 });

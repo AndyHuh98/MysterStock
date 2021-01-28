@@ -40,3 +40,5 @@ export const dataTableCats = {
 
 export const AppBackgroundColor = '#051e23';
 export const AppSecondaryColor = '#04272e';
+export const PASSWORD_LENGTH = 8;
+export const APP_NAME = 'BlastOff';

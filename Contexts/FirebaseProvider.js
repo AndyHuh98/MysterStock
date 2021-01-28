@@ -1,10 +1,9 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import FBAuthContext from './FBAuthContext';
+import FirebaseContext from './FirebaseContext';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-// TODO: Change name of context to FirebaseContext
-export default function FBAuthProvider({children}) {
+export default function FirebaseProvider({children}) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(undefined);
   const [userFavorites, setUserFavorites] = useState(new Map());
@@ -24,7 +23,7 @@ export default function FBAuthProvider({children}) {
     auth().onAuthStateChanged((usr) => {
       console.log('user auth state changed');
       if (usr) {
-        console.log('FBAuthProvider: User Valid');
+        console.log('FirebaseProvider: User Valid');
         setLoggedIn(true);
         setUser(usr);
       } else {
@@ -33,7 +32,7 @@ export default function FBAuthProvider({children}) {
     });
 
     if (user) {
-      console.log('FBAuthProvider: User Valid, setting favorites listener');
+      console.log('FirebaseProvider: User Valid, setting favorites listener');
       unsub = firestore()
         .collection('users')
         .doc(user.uid)
@@ -55,7 +54,7 @@ export default function FBAuthProvider({children}) {
     };
 
     return (
-      <FBAuthContext.Provider
+      <FirebaseContext.Provider
         value={{
           loggedIn: loggedIn,
           user: user,
@@ -64,7 +63,7 @@ export default function FBAuthProvider({children}) {
           signOut: signOut,
         }}>
         {children}
-      </FBAuthContext.Provider>
+      </FirebaseContext.Provider>
     );
   }, [children, loggedIn, unsubscribe, user, userFavorites]);
 }

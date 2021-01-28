@@ -13,9 +13,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import IEXContext from '../../Contexts/IEXContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
-// TODO: Move search bar into its own component to get practice with this
-// TODO: in backend, change return of stockssupported to include company name as well
-
 // pass in iexContext and search array of stocks supported
 export default function SearchScreen(props) {
   const iexContext = useContext(IEXContext);
@@ -128,6 +125,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 0.9,
+    fontFamily: 'Dosis-Medium',
   },
   resultsContainer: {
     flex: 0.9,
@@ -146,5 +144,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     alignSelf: 'center',
+    fontFamily: 'Dosis-Bold',
   },
 });

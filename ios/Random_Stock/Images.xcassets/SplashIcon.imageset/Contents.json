@@ -1,18 +1,30 @@
 {
   "images" : [
     {
-      "filename" : "PlaceholderSplash.png",
+      "filename" : "BlastOffLogo1024.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "PlaceholderSplash@2x.png",
+      "filename" : "BlastOffLogo1024-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "PlaceholderSplash@3x.png",
+      "filename" : "BlastOffLogo1024-2.png",
       "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "idiom" : "iphone",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "iphone",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "iphone",
       "scale" : "3x"
     }
   ],

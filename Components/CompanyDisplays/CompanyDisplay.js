@@ -20,12 +20,12 @@ import CompanyDescription from './CompanyDescription';
 import CompanyStockChart from './CompanyStockChart';
 import StatsTable from './StatsTable';
 import {AppBackgroundColor} from '../Utils/Constants';
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 
 const height = Dimensions.get('screen').height * 0.25;
 // Props thru route => props.route.params.____ passed: companySymbol, companyName, width
 const CompanyDisplay = (props) => {
-  const firebaseContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const iexContext = useContext(IEXContext);
 
   const propsParams = props.route.params;
@@ -41,7 +41,7 @@ const CompanyDisplay = (props) => {
     return () => {
       iexContext.changeChartHistoryWindow('1d');
     };
-  }, [firebaseContext.userFavorites, iexContext, propsParams.companySymbol]);
+  }, [iexContext, propsParams.companySymbol]);
 
   useLayoutEffect(() => {
     const updateUserFavorites = async () => {
@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
   companyName: {
     color: 'white',
     alignSelf: 'center',
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 17.5,
+    fontFamily: 'Dosis-Bold',
   },
   chartContainer: {
     flex: 0.5,

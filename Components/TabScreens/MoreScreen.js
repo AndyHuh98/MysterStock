@@ -6,17 +6,18 @@ import {
   FlatList,
   Pressable,
   TextInput,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function MoreScreen(props) {
-  const authContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const [searchText, setSearchText] = useState('');
 
-  const FLATLIST_SECTIONS = authContext.loggedIn
+  const FLATLIST_SECTIONS = firebaseContext.loggedIn
     ? [
         {id: 'about', title: 'About'},
         {id: 'faq', title: 'FAQ'},
@@ -35,18 +36,20 @@ export default function MoreScreen(props) {
 
   // If a user is logged in, only show sign out.
   // If a user is not logged in, only show sign up and login.
-  // TODO: Fix bug here on snapshot firestore listener upon logging out
   const renderFlatListItem = ({item}) => {
     if (item.title.toLowerCase().includes(searchText.toLowerCase())) {
       return (
         <Pressable
           onPressOut={() => {
             if (item.title !== 'Sign Out') {
-              console.log(`Navigating to ${item.title} Screen`);
               props.navigation.navigate(item.title);
             } else {
               console.log('Signing Out');
-              authContext.signOut();
+              Alert.alert(
+                'Signed Out',
+                'You have been signed out successfully.',
+              );
+              firebaseContext.signOut();
             }
           }}
           style={({pressed}) => [
@@ -76,7 +79,6 @@ export default function MoreScreen(props) {
           placeholder="Search..."
           placeholderTextColor="silver"
           onChangeText={(text) => setSearchText(text)}
-          autoCorrect={false}
           clearButtonMode="always"
           fontSize={20}
           color="white"
@@ -115,12 +117,14 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 0.9,
+    fontFamily: 'Dosis-Medium',
   },
   itemTitle: {
     alignSelf: 'center',
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
+    fontFamily: 'Dosis-Medium',
   },
   card: {
     height: 50,
@@ -128,17 +132,5 @@ const styles = StyleSheet.create({
     marginHorizontal: '1%',
     justifyContent: 'center',
     borderRadius: 10,
-  },
-  welcomeUser: {
-    flex: 0.3,
-    borderRadius: 10,
-    borderWidth: 3,
-    justifyContent: 'center',
-  },
-  welcomeText: {
-    color: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
-    alignSelf: 'center',
   },
 });

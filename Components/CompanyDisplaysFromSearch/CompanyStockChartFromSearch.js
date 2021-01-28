@@ -6,12 +6,12 @@ import {View, StyleSheet, Pressable, Text, Dimensions} from 'react-native';
 import {
   VictoryChart,
   VictoryLine,
-  VictoryVoronoiContainer,
   VictoryTheme,
   VictoryAxis,
   VictoryLabel,
   VictoryCursorContainer,
   VictoryScatter,
+  LineSegment,
 } from 'victory-native';
 import {
   api_base_url,
@@ -20,7 +20,6 @@ import {
 } from '../Utils/Constants';
 
 const chartHeight = Dimensions.get('screen').height * 0.3;
-// TODO: ParallaxScrollView: https://github.com/i6mi6/react-native-parallax-scroll-view
 
 // props passed: companySymbol, width, companyPreviousDayData, companyIntradayData
 export default function CompanyStockChartFromSearch(props) {
@@ -31,6 +30,36 @@ export default function CompanyStockChartFromSearch(props) {
     average: null,
     cursorValue: null,
   });
+  const [activeData5d, setActiveData5d] = useState({
+    date: null,
+    time: null,
+    average: null,
+  });
+  const [activeData1m, setActiveData1m] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData3m, setActiveData3m] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData1y, setActiveData1y] = useState({
+    date: null,
+    high: null,
+  });
+  const [activeData5y, setActiveData5y] = useState({
+    date: null,
+    high: null,
+  });
+
+  useEffect(() => {
+    setActiveData(null);
+    setActiveData1m(null);
+    setActiveData1y(null);
+    setActiveData3m(null);
+    setActiveData5d(null);
+    setActiveData5y(null);
+  }, [props.companySymbol]);
 
   // when companySymbol changes or the chart history window changes, we want to
   // refetch
@@ -63,6 +92,46 @@ export default function CompanyStockChartFromSearch(props) {
 
   // rendering the charts
   return useMemo(() => {
+    const setAnActiveData = (data) => {
+      switch (chartHistoryWindow) {
+        case '5d':
+          setActiveData5d({
+            date: data.date,
+            time: data.label,
+            average: data.average,
+          });
+          break;
+        case '1m':
+          setActiveData1m({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '3m':
+          setActiveData3m({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '1y':
+          setActiveData1y({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+        case '5y':
+          setActiveData5y({
+            date: data.date,
+            time: data.label,
+            high: data.high,
+          });
+          break;
+      }
+    };
+
     function adjustHistoryWindow(newWindow) {
       console.log('adjusting history window to: ' + newWindow);
       setChartHistoryWindow(newWindow);
@@ -114,7 +183,7 @@ export default function CompanyStockChartFromSearch(props) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
-              style={{data: {size: 100, fill: '#c43a31'}}}
+              style={{data: {size: 100, fill: '#0067da'}}}
             />
           ) : null;
           return (
@@ -129,16 +198,9 @@ export default function CompanyStockChartFromSearch(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
-                    cursorLabelComponent={
-                      <VictoryLabel
-                        backgroundPadding={10}
-                        backgroundStyle={{fill: 'white'}}
-                      />
+                    cursorComponent={
+                      <LineSegment style={{stroke: 'white', width: '5px'}} />
                     }
-                    cursorLabel={() =>
-                      `${activeData.average} @ ${activeData.minute}`
-                    }
-                    cursorLabelOffset={{x: -60, y: -60}}
                     onCursorChange={(value) => {
                       const filteredData = props.companyIntradayData.filter(
                         (dataPoint) => dataPoint.average !== null,
@@ -159,6 +221,7 @@ export default function CompanyStockChartFromSearch(props) {
                 <VictoryAxis
                   fixLabelOverlap={true}
                   style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
                 />
                 <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
@@ -169,7 +232,7 @@ export default function CompanyStockChartFromSearch(props) {
                   y={(datum) => datum.average}
                   x={(datum) => datum.minute}
                   style={{
-                    data: {stroke: '#c43a31'},
+                    data: {stroke: '#0067da'},
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
@@ -187,6 +250,25 @@ export default function CompanyStockChartFromSearch(props) {
                     }}
                   />
                 ) : null}
+                <VictoryLabel
+                  inline
+                  text={
+                    activeData && activeData.average
+                      ? `$${activeData.average.toFixed(2)} at ${
+                          activeData.minute
+                        }`
+                      : null
+                  }
+                  x={100}
+                  y={10}
+                  textAnchor="middle"
+                  backgroundPadding={10}
+                  style={{
+                    fill: 'white',
+                    fontFamily: 'Dosis-Bold',
+                    fontSize: 30,
+                  }}
+                />
               </VictoryChart>
             </View>
           );
@@ -201,8 +283,13 @@ export default function CompanyStockChartFromSearch(props) {
                 <VictoryAxis
                   fixLabelOverlap={true}
                   style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
                 />
-                <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
+                <VictoryAxis
+                  dependentAxis
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
                 <VictoryLabel
                   text="No intraday data for company."
                   x={props.width / 2}
@@ -218,6 +305,9 @@ export default function CompanyStockChartFromSearch(props) {
       }
     };
 
+    // TODO: Split up 5d, 1m, 3m, 1y and 5y charts into individual components,
+    // Make sure code is a lot more readable here because it's TOUGH figuring out
+    // what goes what and I wrote it myself.
     const renderHistoricalStockChart = () => {
       console.log(
         'CompanyStockChartFromSearch(): rendering historical chart for: ' +
@@ -301,12 +391,20 @@ export default function CompanyStockChartFromSearch(props) {
                   companyHistoricalData.length > 0 ? null : {y: getRange()}
                 }
                 containerComponent={
-                  <VictoryVoronoiContainer
-                    labels={
-                      chartHistoryWindow === '5d'
-                        ? ({datum}) => `${datum.average} @ ${datum.label}`
-                        : ({datum}) => `${datum.high} @ ${datum.date}`
+                  <VictoryCursorContainer
+                    cursorDimension="x"
+                    cursorComponent={
+                      <LineSegment style={{stroke: 'white', width: '5px'}} />
                     }
+                    onCursorChange={(value) => {
+                      const filteredData = getHistoricalData();
+                      const cursorValue =
+                        value !== undefined && value !== null
+                          ? Math.round(value)
+                          : filteredData.length;
+                      const dataPoint = filteredData[cursorValue - 1];
+                      setAnActiveData(dataPoint);
+                    }}
                   />
                 }>
                 <VictoryAxis
@@ -328,10 +426,63 @@ export default function CompanyStockChartFromSearch(props) {
                       : (datum) => datum.date
                   }
                   style={{
-                    data: {stroke: '#c43a31'},
+                    data: {stroke: '#0067da'},
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
+                />
+                <VictoryLabel
+                  inline
+                  text={() => {
+                    switch (chartHistoryWindow) {
+                      case '5d':
+                        if (activeData5d) {
+                          const time = activeData5d.time;
+                          return `$${activeData5d.average.toFixed(
+                            2,
+                          )} at ${time}`;
+                        } else {
+                          return '';
+                        }
+                      case '1m':
+                        if (activeData1m) {
+                          const date = activeData1m.date;
+                          return `$${activeData1m.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                      case '3m':
+                        if (activeData3m) {
+                          const date = activeData3m.date;
+                          return `$${activeData3m.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                      case '1y':
+                        if (activeData1y) {
+                          const date = activeData1y.date;
+                          return `$${activeData1y.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                      case '5y':
+                        if (activeData5y) {
+                          const date = activeData5y.date;
+                          return `$${activeData5y.high.toFixed(2)} at ${date}`;
+                        } else {
+                          return '';
+                        }
+                    }
+                  }}
+                  x={100}
+                  y={10}
+                  textAnchor="middle"
+                  backgroundPadding={10}
+                  style={{
+                    fill: 'white',
+                    fontFamily: 'Dosis-Bold',
+                    fontSize: 20,
+                  }}
                 />
               </VictoryChart>
             </View>
@@ -344,8 +495,16 @@ export default function CompanyStockChartFromSearch(props) {
                 height={chartHeight}
                 width={props.width}
                 theme={VictoryTheme.material}>
-                <VictoryAxis fixLabelOverlap={true} />
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  fixLabelOverlap={true}
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
+                />
                 <VictoryLabel
                   text="No data for company for given window."
                   x={props.width / 2}
@@ -367,32 +526,56 @@ export default function CompanyStockChartFromSearch(props) {
         <View style={styles.historyButtonsContainer}>
           <Pressable
             onPressIn={() => adjustHistoryWindow('1d')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '1d'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>1D</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('5d')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '5d'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>5D</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('1m')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '1m'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>1M</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('3m')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '3m'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>3M</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('1y')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '1y'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>1Y</Text>
           </Pressable>
           <Pressable
             onPress={() => adjustHistoryWindow('5y')}
-            style={styles.historyWindowBtn}>
+            style={
+              chartHistoryWindow === '5y'
+                ? styles.selectedWindowBtn
+                : styles.historyWindowBtn
+            }>
             <Text style={styles.btnText}>5Y</Text>
           </Pressable>
         </View>
@@ -400,9 +583,14 @@ export default function CompanyStockChartFromSearch(props) {
     );
   }, [
     activeData,
+    activeData1m,
+    activeData1y,
+    activeData3m,
+    activeData5d,
+    activeData5y,
     companyHistoricalData,
     props.companyIntradayData,
-    props.companyPreviousDayData,
+    props.companyPreviousDayData.close,
     props.width,
   ]);
 }
@@ -430,9 +618,14 @@ const styles = StyleSheet.create({
     flex: 0.15,
     borderRadius: 20,
   },
+  selectedWindowBtn: {
+    backgroundColor: '#0067da',
+    flex: 0.15,
+    borderRadius: 20,
+  },
   btnText: {
     color: 'white',
     alignSelf: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
   },
 });

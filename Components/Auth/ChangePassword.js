@@ -1,22 +1,19 @@
 import React, {useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, Alert} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
-import FBAuthContext from '../../Contexts/FBAuthContext';
-import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import FirebaseContext from '../../Contexts/FirebaseContext';
+import {
+  AppBackgroundColor,
+  AppSecondaryColor,
+  PASSWORD_LENGTH,
+} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
-// TODO: Extract all text inputs into a single component with standardized styling.
-// TODO: Extract all Pressables in forms into a single component with standardized styling.
 export default function ChangePassword(props) {
-  const authContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const [currentPassword, setCurrentPassword] = useState(undefined);
   const [newPassword, setNewPassword] = useState(undefined);
   const [verifyNewPassword, setVerifyNewPassword] = useState(undefined);
@@ -37,8 +34,7 @@ export default function ChangePassword(props) {
       setNewPasswordErrorMessage('Please input values for fields.');
       return;
     } else {
-      // TODO: change this to constants.passwordLength
-      if (newPassword.length < 8) {
+      if (newPassword.length < PASSWORD_LENGTH) {
         setNewPasswordErrorMessage('password too short (min. 8)');
         return;
       }
@@ -49,7 +45,7 @@ export default function ChangePassword(props) {
       }
 
       const credential = firebase.auth.EmailAuthProvider.credential(
-        authContext.user.email,
+        firebaseContext.user.email,
         currentPassword,
       );
 
@@ -58,7 +54,10 @@ export default function ChangePassword(props) {
         .then(() => {
           auth()
             .currentUser.updatePassword(newPassword)
-            .then(() => props.navigation.navigate('More'))
+            .then(() => {
+              Alert.alert('Password Changed', 'Password Changed Successfully.');
+              props.navigation.navigate('More');
+            })
             .catch((error) => {
               if (error.code === 'auth/weak-password') {
                 setNewPasswordErrorMessage('password too short (min. 8)');
@@ -78,38 +77,37 @@ export default function ChangePassword(props) {
     <View style={styles.container}>
       <View style={styles.changePasswordFormContainer}>
         <Text style={styles.title}>Change Credentials</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Current Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setCurrentPassword(text)}
         />
         <Text style={styles.errorMessage}>{currentPasswordErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="New Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setNewPassword(text)}
         />
         <Text style={styles.errorMessage}>{newPasswordErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Verify New Password"
-          placeholderTextColor="silver"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setVerifyNewPassword(text)}
         />
-        <Pressable style={styles.button} onPressIn={() => changePassword()}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </Pressable>
+        <CustomPressable
+          style={styles.button}
+          onPressIn={() => changePassword()}
+          text="Submit"
+        />
       </View>
     </View>
   );
@@ -122,51 +120,37 @@ const styles = StyleSheet.create({
   },
   changePasswordFormContainer: {
     marginVertical: '3%',
-    marginHorizontal: '5%',
     flex: 1,
     borderRadius: 10,
     borderColor: 'silver',
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   title: {
-    flex: 0.15,
+    flex: 0.2,
     alignSelf: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginVertical: '2%',
+    fontFamily: 'Dosis-Bold',
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
-    borderColor: 'silver',
-    borderWidth: StyleSheet.hairlineWidth,
-    flex: 0.15,
-    marginBottom: '1%',
-    marginHorizontal: '5%',
-    textAlign: 'center',
-    color: 'white',
+    alignSelf: 'center',
   },
   errorMessage: {
-    flex: 0.075,
+    flex: 0.12,
     marginLeft: '5%',
-    marginTop: '-2%',
+    marginTop: '-4%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
+    fontFamily: 'Dosis-Medium',
   },
   button: {
-    flex: 0.125,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-    marginVertical: '2%',
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
   },
 });

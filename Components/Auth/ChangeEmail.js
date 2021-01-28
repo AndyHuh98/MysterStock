@@ -1,21 +1,15 @@
 import React, {useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, Text, StyleSheet, Keyboard, Alert} from 'react-native';
 
 import auth, {firebase} from '@react-native-firebase/auth';
 
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
+import CustomTextInput from '../CustomComponents/CustomTextInput';
+import CustomPressable from '../CustomComponents/CustomPressable';
 
-// TODO: fix bug where text in profile doesn't update when email changes.
 export default function ChangeEmail(props) {
-  const authContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
   const [currentPassword, setCurrentPassword] = useState(undefined);
   const [newEmail, setNewEmail] = useState(undefined);
   const [verifyNewEmail, setVerifyNewEmail] = useState(undefined);
@@ -50,7 +44,7 @@ export default function ChangeEmail(props) {
       }
 
       const credential = firebase.auth.EmailAuthProvider.credential(
-        authContext.user.email,
+        firebaseContext.user.email,
         currentPassword,
       );
 
@@ -60,7 +54,8 @@ export default function ChangeEmail(props) {
           auth()
             .currentUser.updateEmail(newEmail)
             .then(() => {
-              authContext.setEmail(newEmail);
+              firebaseContext.setEmail(newEmail);
+              Alert.alert('Email Changed', 'Email Changed Successfully.');
               props.navigation.navigate('More');
             })
             .catch((error) => {
@@ -83,37 +78,36 @@ export default function ChangeEmail(props) {
     <View style={styles.container}>
       <View style={styles.changePasswordFormContainer}>
         <Text style={styles.title}>Change Email</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
           placeholder="Current Password"
-          placeholderTextColor="silver"
+          inputTextColor="white"
           secureTextEntry={true}
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setCurrentPassword(text)}
         />
         <Text style={styles.errorMessage}>{currentPasswordErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="New Email"
-          placeholderTextColor="silver"
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setNewEmail(text)}
         />
         <Text style={styles.errorMessage}>{newEmailErrorMessage}</Text>
-        <TextInput
+        <CustomTextInput
           style={styles.infoInput}
+          inputTextColor="white"
           placeholder="Verify New Email"
-          placeholderTextColor="silver"
-          autoCorrect={false}
           autoCapitalize="none"
           onChangeText={(text) => setVerifyNewEmail(text)}
         />
         <Text style={styles.errorMessage}>{verifyEmailErrorMessage}</Text>
-        <Pressable style={styles.button} onPressIn={() => changeEmail()}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </Pressable>
+        <CustomPressable
+          style={styles.button}
+          onPressIn={() => changeEmail()}
+          text="Submit"
+        />
       </View>
     </View>
   );
@@ -125,52 +119,36 @@ const styles = StyleSheet.create({
     backgroundColor: `${AppBackgroundColor}`,
   },
   changePasswordFormContainer: {
-    marginVertical: '3%',
-    marginHorizontal: '5%',
     flex: 1,
     borderRadius: 10,
     borderColor: 'silver',
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   title: {
-    flex: 0.15,
+    flex: 0.175,
     alignSelf: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    marginVertical: '2%',
+    fontFamily: 'Dosis-Bold',
   },
   infoInput: {
     backgroundColor: `${AppSecondaryColor}`,
-    borderColor: 'silver',
-    borderWidth: StyleSheet.hairlineWidth,
-    flex: 0.15,
-    marginBottom: '1%',
-    marginHorizontal: '5%',
-    textAlign: 'center',
-    color: 'white',
+    alignSelf: 'center',
   },
   errorMessage: {
-    flex: 0.075,
+    flex: 0.1,
     marginLeft: '5%',
     marginTop: '-2%',
     color: '#cc0000',
     fontSize: 11,
     fontWeight: '400',
     alignSelf: 'flex-start',
+    fontFamily: 'Dosis-Medium',
   },
   button: {
-    flex: 0.125,
-    backgroundColor: '#0067da',
-    marginHorizontal: '20%',
-    justifyContent: 'center',
-    borderRadius: 20,
-    marginVertical: '2%',
-  },
-  buttonText: {
-    color: 'white',
     alignSelf: 'center',
   },
 });

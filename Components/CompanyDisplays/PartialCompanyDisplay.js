@@ -47,6 +47,10 @@ export default function PartialCompanyDisplay(props) {
           <View source={images.chartContainer} style={styles.chartContainer}>
             <LightWeightIntradayStockChart width={props.width} />
           </View>
+          <Text style={styles.hintText}>
+            Press the company name to access a more detailed page for the
+            generated stock!
+          </Text>
         </ScrollView>
       );
     } else {
@@ -69,8 +73,8 @@ const styles = StyleSheet.create({
   titleText: {
     color: 'white',
     fontSize: 20,
-    fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'Dosis-Bold',
   },
   container: {
     flex: 1,
@@ -81,6 +85,9 @@ const styles = StyleSheet.create({
   companyNameContainer: {
     flex: 0.2,
     justifyContent: 'center',
+    backgroundColor: `${AppSecondaryColor}`,
+    marginHorizontal: '3%',
+    borderRadius: 10,
   },
   chartContainer: {
     flex: 1,
@@ -88,7 +95,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: '3%',
   },
-  statsTitle: {
-    fontWeight: 'bold',
+  hintText: {
+    marginTop: '5%',
+    color: 'white',
+    fontFamily: 'Dosis-Medium',
+    marginHorizontal: '3%',
+    alignSelf: 'center',
   },
 });

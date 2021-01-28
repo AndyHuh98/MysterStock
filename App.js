@@ -18,30 +18,19 @@ import CompanyDisplayFromSearch from './Components/CompanyDisplaysFromSearch/Com
 import LoginScreen from './Components/Auth/LoginScreen';
 import SignUpScreen from './Components/Auth/SignUpScreen';
 import ResetPassword from './Components/Auth/ResetPassword';
-import FBAuthProvider from './Contexts/FBAuthProvider';
+import FirebaseProvider from './Contexts/FirebaseProvider';
 import {AppSecondaryColor} from './Components/Utils/Constants';
 
-// TODO: !!! show more text on description !!!
 // TODO: Clean up search code
+// TODO: Clean up favorites code
 // TODO: fix react-native-paper require cycle warning
-// TODO: add nginx load balancing / routing or whatever it is
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
 // TODO: Add filter for randomizing stocks that meet the filter
-// TODO: Fill out FAQ Screen
 // TODO: Fill out Settings Screen
-// As far as persisting the state and keeping the user logged in, your two options are Redux Persist or AsyncStorage
 // TODO: Possibly find some way to consolidate stock chart from search or at least
 // reuse code within (historical charts, intraday charts).
-
-/* TODO: Potential Name Bases (make more unique):
-  - Lighthouse
-  - Oracle
-  - Mystery
-  - Random
-  - Rocket
-  - Launch
-*/
+// TODO: Add donation reminders
 
 const Stack = createStackNavigator();
 
@@ -62,11 +51,11 @@ const App = () => {
         case 'More':
           return 'Mission Control';
         case 'Favorites':
-          return 'Mission Favorites Log';
+          return 'Favorites Log';
       }
     };
     return (
-      <FBAuthProvider>
+      <FirebaseProvider>
         <SafeAreaView style={styles.safeArea}>
           <NavigationContainer>
             <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
@@ -76,6 +65,9 @@ const App = () => {
                 screenOptions={{
                   headerStyle: {
                     backgroundColor: `${AppSecondaryColor}`,
+                  },
+                  headerTitleStyle: {
+                    fontFamily: 'Dosis-Bold',
                   },
                   headerTintColor: 'white',
                 }}>
@@ -111,7 +103,7 @@ const App = () => {
             </IEXProvider>
           </NavigationContainer>
         </SafeAreaView>
-      </FBAuthProvider>
+      </FirebaseProvider>
     );
   }, []);
 };

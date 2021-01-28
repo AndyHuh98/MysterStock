@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, Dimensions} from 'react-native';
 import {
   VictoryChart,
@@ -9,6 +9,7 @@ import {
   VictoryAxis,
   VictoryLabel,
   VictoryCursorContainer,
+  LineSegment,
 } from 'victory-native';
 import IEXContext from '../../Contexts/IEXContext';
 
@@ -23,6 +24,10 @@ export default function LightWeightIntradayStockChart(props) {
     cursorValue: null,
   });
 
+  useEffect(() => {
+    setActiveData(null);
+  }, [iexContext.companySymbol]);
+
   return useMemo(() => {
     const chartDisplay = () => {
       const getDomain = () => {
@@ -30,7 +35,10 @@ export default function LightWeightIntradayStockChart(props) {
           .map((dataPoint) => dataPoint.average)
           .filter((average) => average != null);
 
-        if (iexContext.companyPreviousDayData.close !== null) {
+        if (
+          iexContext.companyPreviousDayData &&
+          iexContext.companyPreviousDayData.close !== null
+        ) {
           const previousDayClose = iexContext.companyPreviousDayData.close;
           const minimum = Math.min(
             previousDayClose,
@@ -61,7 +69,7 @@ export default function LightWeightIntradayStockChart(props) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
-              style={{data: {size: 100, fill: '#c43a31'}}}
+              style={{data: {size: 100, fill: '#0067da'}}}
             />
           ) : null;
 
@@ -77,16 +85,15 @@ export default function LightWeightIntradayStockChart(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
+                    cursorComponent={
+                      <LineSegment style={{stroke: 'white', width: '5px'}} />
+                    }
                     cursorLabelComponent={
                       <VictoryLabel
                         backgroundPadding={10}
                         backgroundStyle={{fill: 'white'}}
                       />
                     }
-                    cursorLabel={() =>
-                      `${activeData.average} @ ${activeData.minute}`
-                    }
-                    cursorLabelOffset={{x: -60, y: -60}}
                     onCursorChange={(value) => {
                       const filteredData = iexContext.companyIntradayData.filter(
                         (dataPoint) => dataPoint.average !== null,
@@ -107,6 +114,7 @@ export default function LightWeightIntradayStockChart(props) {
                 <VictoryAxis
                   fixLabelOverlap={true}
                   style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
                 />
                 <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
@@ -117,7 +125,7 @@ export default function LightWeightIntradayStockChart(props) {
                   y={(datum) => datum.average}
                   x={(datum) => datum.minute}
                   style={{
-                    data: {stroke: '#c43a31'},
+                    data: {stroke: '#0067da'},
                     parent: {border: '1px solid #ccc'},
                   }}
                   labelComponent={<VictoryLabel text={''} />}
@@ -135,6 +143,25 @@ export default function LightWeightIntradayStockChart(props) {
                     }}
                   />
                 ) : null}
+                <VictoryLabel
+                  inline
+                  text={
+                    activeData && activeData.average
+                      ? `$${activeData.average.toFixed(2)} at ${
+                          activeData.minute
+                        }`
+                      : null
+                  }
+                  x={100}
+                  y={10}
+                  textAnchor="middle"
+                  backgroundPadding={10}
+                  style={{
+                    fill: 'white',
+                    fontFamily: 'Dosis-Bold',
+                    fontSize: 30,
+                  }}
+                />
               </VictoryChart>
             </View>
           );
@@ -163,6 +190,9 @@ export default function LightWeightIntradayStockChart(props) {
                   textAnchor="middle"
                   backgroundPadding={10}
                   backgroundStyle={{fill: 'white'}}
+                  style={{
+                    fontFamily: 'Dosis-Bold',
+                  }}
                 />
               </VictoryChart>
             </View>

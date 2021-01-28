@@ -1,31 +1,8 @@
-import React, {useState} from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  Linking,
-  Pressable,
-} from 'react-native';
-import Collapsible from 'react-native-collapsible';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React from 'react';
+import {View, ScrollView, Text, StyleSheet, Linking} from 'react-native';
 import {AppBackgroundColor} from '../Utils/Constants';
 
-// TODO: Line up the core features and what is random stock text
-
 export default function AboutScreen(props) {
-  const appName = 'Random Stock';
-  const [descriptionCollapsed, setDescriptionCollapsed] = useState(true);
-  const [coreFeaturesCollapsed, setCoreFeaturesCollapsed] = useState(true);
-
-  const toggleDescriptionCollapsed = () => {
-    setDescriptionCollapsed(!descriptionCollapsed);
-  };
-
-  const toggleCoreFeaturesCollapsed = () => {
-    setCoreFeaturesCollapsed(!coreFeaturesCollapsed);
-  };
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -34,7 +11,6 @@ export default function AboutScreen(props) {
         </View>
         <View style={styles.headerBody}>
           <Text style={styles.body}>Developed by: Andrew He</Text>
-          <Text style={styles.body}>Art by: Kohinoor</Text>
         </View>
         <View style={styles.divider} />
 
@@ -58,84 +34,29 @@ export default function AboutScreen(props) {
         <View style={styles.headerBody}>
           <Text style={styles.body}>React Native</Text>
           <Text style={styles.body}>Victory Native Charts</Text>
+          <Text style={styles.body}>IEX Cloud API</Text>
         </View>
         <View style={styles.divider} />
 
         <View style={styles.header}>
-          <Pressable
-            onPressIn={() => toggleDescriptionCollapsed()}
-            hitSlop={40}>
-            <Text style={styles.title}>What is {appName}?</Text>
-          </Pressable>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name={
-                descriptionCollapsed
-                  ? 'chevron-down-circle-outline'
-                  : 'chevron-up-circle-outline'
-              }
-              size={20}
-              color="white"
-            />
-          </View>
+          <Text style={styles.title}>How to Help:</Text>
         </View>
-        <Collapsible collapsed={descriptionCollapsed}>
-          <View style={styles.headerBody}>
-            <Text style={styles.body}>
-              {appName} is a tool that allows users to discover new stocks using
-              what is equivalent to a random generator. One of the biggest
-              hindrances for investors today is not knowing where to look within
-              the maze of resources available online. {appName} is a solution
-              that problem, by helping people discover areas and stocks that
-              they may not have even dreamt of before. By offering a supply of
-              randomly generated stocks, the hope is that this tool can find a
-              single stock, sector, or strategy to utilize as a as a part of
-              their investing tactics.
+        <View style={styles.headerBody}>
+          <Text style={styles.body}>
+            - Support API and server hosting costs by donating here:{' '}
+            <Text
+              style={styles.bodyLink}
+              onPress={() =>
+                Linking.openURL('https://www.buymeacoffee.com/anduru')
+              }>
+              BuyMeACoffee
             </Text>
-          </View>
-        </Collapsible>
-        <View style={styles.divider} />
-
-        <View style={styles.header}>
-          <Pressable
-            onPressIn={() => toggleCoreFeaturesCollapsed()}
-            hitSlop={40}>
-            <Text style={styles.title}>Core Features</Text>
-          </Pressable>
-          <View style={styles.iconContainer}>
-            <Ionicons
-              name={
-                coreFeaturesCollapsed
-                  ? 'chevron-down-circle-outline'
-                  : 'chevron-up-circle-outline'
-              }
-              size={20}
-              color="white"
-            />
-          </View>
+          </Text>
+          <Text style={styles.body}>
+            - Submit bug reports and check source code at the Github Repository
+            linked above!
+          </Text>
         </View>
-        <Collapsible collapsed={coreFeaturesCollapsed}>
-          <View style={styles.headerBody}>
-            <Text style={styles.body}>{appName} offers features such as:</Text>
-            <Text style={styles.numberedItem}>- Generating random stocks</Text>
-            <Text style={styles.numberedItem}>
-              - Stock ticker search for all tickers supported
-            </Text>
-            <Text style={styles.numberedItem}>
-              - Historical and intraday price charts for each ticker
-            </Text>
-            <Text style={styles.numberedItem}>
-              - Draggable charts to view specific points on each chart
-            </Text>
-            <Text style={styles.numberedItem}>
-              - Support for over 100,000 stock tickers
-            </Text>
-            <Text style={styles.numberedItem}>
-              - And more features coming on the way!
-            </Text>
-          </View>
-        </Collapsible>
-        <View style={styles.divider} />
       </ScrollView>
     </View>
   );
@@ -147,17 +68,14 @@ const styles = StyleSheet.create({
     backgroundColor: `${AppBackgroundColor}`,
   },
   header: {
-    marginTop: '5%',
+    marginTop: '2%',
     flexDirection: 'row',
     justifyContent: 'center',
   },
   title: {
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
     fontSize: 20,
     color: 'white',
-  },
-  iconContainer: {
-    justifyContent: 'center',
   },
   headerBody: {
     marginHorizontal: '4%',
@@ -170,17 +88,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'silver',
     alignSelf: 'center',
-  },
-  numberedItem: {
-    marginLeft: '10%',
-    fontSize: 13,
-    color: 'silver',
-    fontStyle: 'italic',
+    fontFamily: 'Dosis-Medium',
   },
   bodyLink: {
     fontSize: 13,
-    color: 'blue',
+    color: 'lightblue',
     alignSelf: 'center',
     textDecorationLine: 'underline',
+    fontFamily: 'Dosis-Medium',
   },
 });

@@ -1,16 +1,16 @@
 import React, {useContext, useState} from 'react';
 import {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
-import FBAuthContext from '../../Contexts/FBAuthContext';
+import FirebaseContext from '../../Contexts/FirebaseContext';
+import GuestView from '../Auth/GuestView';
 
 import {AppBackgroundColor, AppSecondaryColor} from '../Utils/Constants';
 
 export default function FavoritesScreen(props) {
-  const firebaseContext = useContext(FBAuthContext);
+  const firebaseContext = useContext(FirebaseContext);
 
   const [favorites, setFavorites] = useState(undefined);
 
-  // TODO: Add guest blurb for no access.
   useEffect(() => {
     let favoritesArray = [];
 
@@ -47,21 +47,58 @@ export default function FavoritesScreen(props) {
     );
   };
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={favorites}
-        renderItem={renderFavorite}
-        keyExtractor={(item) => item.symbol}
-      />
-    </View>
-  );
+  if (firebaseContext.loggedIn && favorites) {
+    if (favorites.length > 0) {
+      return (
+        <View style={styles.container}>
+          <FlatList
+            data={favorites}
+            renderItem={renderFavorite}
+            keyExtractor={(item) => item.symbol}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.noFavoritesContainer}>
+          <View style={styles.noFavTextContainer}>
+            <Text style={styles.noFavText}>
+              You currently have no favorites added! To add a favorite to this
+              list, search for or generate a new stock and navigate to the top
+              right of its detailed stock view.
+            </Text>
+          </View>
+        </View>
+      );
+    }
+  } else {
+    return <GuestView navigation={props.navigation} />;
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: `${AppBackgroundColor}`,
+  },
+  noFavoritesContainer: {
+    backgroundColor: `${AppBackgroundColor}`,
+    flex: 1,
+    justifyContent: 'center',
+  },
+  noFavTextContainer: {
+    marginHorizontal: '5%',
+    backgroundColor: `${AppSecondaryColor}`,
+    flex: 0.7,
+    borderRadius: 20,
+    justifyContent: 'center',
+  },
+  noFavText: {
+    fontSize: 25,
+    alignSelf: 'center',
+    color: 'white',
+    fontFamily: 'Dosis-Bold',
+    textAlign: 'center',
   },
   favoriteCard: {
     marginVertical: '2%',
@@ -79,7 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     alignSelf: 'center',
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Dosis-Bold',
   },
   priceContainer: {
     flex: 0.5,
@@ -90,10 +127,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontSize: 20,
     color: 'white',
+    fontFamily: 'Dosis-Medium',
   },
   miniHeader: {
     fontSize: 10,
     alignSelf: 'flex-end',
     color: 'white',
+    fontFamily: 'Dosis-Medium',
   },
 });

@@ -1,4 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {api_base_url} from '../Components/Utils/Constants';
 import IEXContext from './IEXContext';
 
@@ -26,17 +28,52 @@ export default function IEXProvider({children}) {
   };
 
   async function fetchStocksSupported() {
-    const stocksSupportedURL = `${api_base_url}/stockssupported`;
-    console.log('IEXProvider() : ' + stocksSupportedURL);
+    const iexFetch = async () => {
+      const stocksSupportedURL = `${api_base_url}/stockssupported`;
+      console.log('IEXProvider() : ' + stocksSupportedURL);
+
+      try {
+        await fetch(stocksSupportedURL)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            setStocksSupported(responseJson);
+            setStocksSupportedFetched(true);
+            const time = new Date().getTime().toString();
+            const JSONValue = JSON.stringify(responseJson);
+            AsyncStorage.setItem('@stockssupported', JSONValue);
+            AsyncStorage.setItem('@lastStocksSupportedFetchTime', time);
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
     try {
-      await fetch(stocksSupportedURL)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          setStocksSupported(responseJson);
-        });
+      const value = await AsyncStorage.getItem('@stockssupported');
+      const lastStocksSupportedFetchTime = await AsyncStorage.getItem(
+        '@lastStocksSupportedFetchTime',
+      );
+
+      if (value && lastStocksSupportedFetchTime) {
+        console.log('Pulling from ASYNC Storage');
+        const currentDateTime = new Date().getTime();
+        const fetchTime = parseInt(lastStocksSupportedFetchTime, 10);
+        const fullDay = 60 * 60 * 24 * 1000;
+
+        if (currentDateTime - fetchTime <= fullDay) {
+          setStocksSupported(JSON.parse(value));
+          setStocksSupportedFetched(true);
+          return;
+        } else {
+          iexFetch();
+          return;
+        }
+      } else {
+        iexFetch();
+        return;
+      }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 
@@ -64,7 +101,6 @@ export default function IEXProvider({children}) {
       await fetch(advStatsFetchURL)
         .then((response) => response.json())
         .then((responseJson) => {
-          setStocksSupportedFetched(true);
           advStats = responseJson;
           setCompanyName(advStats.companyName);
           setCompanyAdvStats(advStats);
@@ -153,7 +189,6 @@ export default function IEXProvider({children}) {
   }, [chartHistoryWindow, companySymbol]);
 
   // The first time we load into the app, we want to make sure the list of stocks is updated
-  // TODO: put this in local storage and refresh only once every day (each time the app is booted up again)
   useEffect(() => {
     if (!stocksSupportedFetched) {
       fetchStocksSupported();
