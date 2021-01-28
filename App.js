@@ -24,29 +24,13 @@ import {AppSecondaryColor} from './Components/Utils/Constants';
 // TODO: Clean up search code
 // TODO: Clean up favorites code
 // TODO: fix react-native-paper require cycle warning
-// TODO: add nginx load balancing / routing or whatever it is
 // TODO: Make app try to reload every x intervals if network request is bad.
 // Might have to do this in backend. Google it.
 // TODO: Add filter for randomizing stocks that meet the filter
 // TODO: Fill out Settings Screen
-// As far as persisting the state and keeping the user logged in, your two options are Redux Persist or AsyncStorage
 // TODO: Possibly find some way to consolidate stock chart from search or at least
 // reuse code within (historical charts, intraday charts).
 // TODO: Add donation reminders
-// TODO: Add potentially cool text inputs
-// TODO: If a user is logged in and has no favorites, show a little blurb with tutorial on how to add to favorites.
-
-/* TODO: Potential Name Bases (make more unique):
-  - Lighthouse
-  - Oracle
-  - Mystery
-  - Random
-  - Rocket
-  - Launch
-  - Azimuth
-  - Aphelion
-  - BlastOff
-*/
 
 const Stack = createStackNavigator();
 

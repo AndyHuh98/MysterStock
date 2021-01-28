@@ -11,6 +11,7 @@ import {
   VictoryLabel,
   VictoryCursorContainer,
   VictoryScatter,
+  LineSegment,
 } from 'victory-native';
 import {
   api_base_url,
@@ -197,6 +198,9 @@ export default function CompanyStockChartFromSearch(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
+                    cursorComponent={
+                      <LineSegment style={{stroke: 'white', width: '5px'}} />
+                    }
                     onCursorChange={(value) => {
                       const filteredData = props.companyIntradayData.filter(
                         (dataPoint) => dataPoint.average !== null,
@@ -217,6 +221,7 @@ export default function CompanyStockChartFromSearch(props) {
                 <VictoryAxis
                   fixLabelOverlap={true}
                   style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
                 />
                 <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
@@ -249,10 +254,12 @@ export default function CompanyStockChartFromSearch(props) {
                   inline
                   text={
                     activeData && activeData.average
-                      ? `$${activeData.average.toFixed(2)}`
+                      ? `$${activeData.average.toFixed(2)} at ${
+                          activeData.minute
+                        }`
                       : null
                   }
-                  x={60}
+                  x={100}
                   y={10}
                   textAnchor="middle"
                   backgroundPadding={10}
@@ -386,6 +393,9 @@ export default function CompanyStockChartFromSearch(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
+                    cursorComponent={
+                      <LineSegment style={{stroke: 'white', width: '5px'}} />
+                    }
                     onCursorChange={(value) => {
                       const filteredData = getHistoricalData();
                       const cursorValue =

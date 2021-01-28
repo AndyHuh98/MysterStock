@@ -37,6 +37,26 @@ export default function AboutScreen(props) {
           <Text style={styles.body}>IEX Cloud API</Text>
         </View>
         <View style={styles.divider} />
+
+        <View style={styles.header}>
+          <Text style={styles.title}>How to Help:</Text>
+        </View>
+        <View style={styles.headerBody}>
+          <Text style={styles.body}>
+            - Support API and server hosting costs by donating here:{' '}
+            <Text
+              style={styles.bodyLink}
+              onPress={() =>
+                Linking.openURL('https://www.buymeacoffee.com/anduru')
+              }>
+              BuyMeACoffee
+            </Text>
+          </Text>
+          <Text style={styles.body}>
+            - Submit bug reports and check source code at the Github Repository
+            linked above!
+          </Text>
+        </View>
       </ScrollView>
     </View>
   );
@@ -48,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: `${AppBackgroundColor}`,
   },
   header: {
-    marginTop: '5%',
+    marginTop: '2%',
     flexDirection: 'row',
     justifyContent: 'center',
   },

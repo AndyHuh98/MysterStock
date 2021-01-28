@@ -2,6 +2,7 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
+#import <React/RCTDevLoadingView.h>
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <Firebase.h>
@@ -40,6 +41,10 @@ static void InitializeFlipper(UIApplication *application) {
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Random_Stock"
                                             initialProperties:nil];
+#if RCT_DEV
+  [bridge moduleForClass:[RCTDevLoadingView class]];
+#endif
+
 
   rootView.backgroundColor = [UIColor blackColor];
 

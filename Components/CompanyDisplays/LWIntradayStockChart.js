@@ -9,6 +9,7 @@ import {
   VictoryAxis,
   VictoryLabel,
   VictoryCursorContainer,
+  LineSegment,
 } from 'victory-native';
 import IEXContext from '../../Contexts/IEXContext';
 
@@ -34,7 +35,10 @@ export default function LightWeightIntradayStockChart(props) {
           .map((dataPoint) => dataPoint.average)
           .filter((average) => average != null);
 
-        if (iexContext.companyPreviousDayData.close !== null) {
+        if (
+          iexContext.companyPreviousDayData &&
+          iexContext.companyPreviousDayData.close !== null
+        ) {
           const previousDayClose = iexContext.companyPreviousDayData.close;
           const minimum = Math.min(
             previousDayClose,
@@ -81,6 +85,9 @@ export default function LightWeightIntradayStockChart(props) {
                 containerComponent={
                   <VictoryCursorContainer
                     cursorDimension="x"
+                    cursorComponent={
+                      <LineSegment style={{stroke: 'white', width: '5px'}} />
+                    }
                     cursorLabelComponent={
                       <VictoryLabel
                         backgroundPadding={10}
@@ -107,6 +114,7 @@ export default function LightWeightIntradayStockChart(props) {
                 <VictoryAxis
                   fixLabelOverlap={true}
                   style={{grid: {stroke: 'none'}}}
+                  tickFormat={() => ''}
                 />
                 <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
@@ -139,10 +147,12 @@ export default function LightWeightIntradayStockChart(props) {
                   inline
                   text={
                     activeData && activeData.average
-                      ? `$${activeData.average.toFixed(2)}`
+                      ? `$${activeData.average.toFixed(2)} at ${
+                          activeData.minute
+                        }`
                       : null
                   }
-                  x={50}
+                  x={100}
                   y={10}
                   textAnchor="middle"
                   backgroundPadding={10}

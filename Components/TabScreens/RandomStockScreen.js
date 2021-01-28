@@ -10,7 +10,6 @@ import {
 import ReelGroup from '../Slots/ReelGroup';
 import PartialCompanyDisplay from '../CompanyDisplays/PartialCompanyDisplay';
 import IEXContext from '../../Contexts/IEXContext';
-import LoadingScreen from '../MiscScreens/LoadingScreen';
 import {AppBackgroundColor} from '../Utils/Constants';
 
 const screenWidth = Dimensions.get('screen').width * 0.96;
@@ -106,7 +105,6 @@ export default function RandomStockScreen(props) {
     } else {
       return (
         <View style={styles.container}>
-          <LoadingScreen />
         </View>
       );
     }

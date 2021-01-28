@@ -77,6 +77,7 @@ export default function MoreScreen(props) {
         </View>
         <TextInput
           placeholder="Search..."
+          placeholderTextColor="silver"
           onChangeText={(text) => setSearchText(text)}
           clearButtonMode="always"
           fontSize={20}

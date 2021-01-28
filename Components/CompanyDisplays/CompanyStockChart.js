@@ -10,6 +10,7 @@ import {
   VictoryAxis,
   VictoryLabel,
   VictoryCursorContainer,
+  LineSegment,
 } from 'victory-native';
 import IEXContext from '../../Contexts/IEXContext';
 import {
@@ -227,6 +228,9 @@ export default function CompanyStockChart(props) {
               containerComponent={
                 <VictoryCursorContainer
                   cursorDimension="x"
+                  cursorComponent={
+                    <LineSegment style={{stroke: 'white', width: '5px'}} />
+                  }
                   onCursorChange={(value) => {
                     const filteredData = getHistoricalData();
                     const cursorValue =
@@ -327,13 +331,23 @@ export default function CompanyStockChart(props) {
               <VictoryAxis
                 fixLabelOverlap={true}
                 style={{grid: {stroke: 'none'}}}
+                tickFormat={() => ''}
               />
-              <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
+              <VictoryAxis
+                dependentAxis
+                style={{grid: {stroke: 'none'}}}
+                tickFormat={() => ''}
+              />
               <VictoryLabel
-                text="No data for company for given window."
+                text="No intraday data for company."
                 x={props.width / 2}
-                y={30}
+                y={100}
                 textAnchor="middle"
+                backgroundPadding={10}
+                backgroundStyle={{fill: 'white'}}
+                style={{
+                  fontFamily: 'Dosis-Bold',
+                }}
               />
             </VictoryChart>
           </View>

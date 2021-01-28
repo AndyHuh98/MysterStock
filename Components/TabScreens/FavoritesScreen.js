@@ -47,7 +47,7 @@ export default function FavoritesScreen(props) {
     );
   };
 
-  if (firebaseContext.loggedIn) {
+  if (firebaseContext.loggedIn && favorites) {
     if (favorites.length > 0) {
       return (
         <View style={styles.container}>

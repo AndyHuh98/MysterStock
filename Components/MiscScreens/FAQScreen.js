@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, ScrollView, Text, StyleSheet, Pressable} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  Pressable,
+  Linking,
+} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AppBackgroundColor, APP_NAME} from '../Utils/Constants';
@@ -8,6 +15,7 @@ export default function FAQScreen(props) {
   const appName = APP_NAME;
   const [descriptionCollapsed, setDescriptionCollapsed] = useState(true);
   const [coreFeaturesCollapsed, setCoreFeaturesCollapsed] = useState(true);
+  const [howToHelpCollapsed, setHowToHelpCollapsed] = useState(true);
 
   const toggleDescriptionCollapsed = () => {
     setDescriptionCollapsed(!descriptionCollapsed);
@@ -17,13 +25,50 @@ export default function FAQScreen(props) {
     setCoreFeaturesCollapsed(!coreFeaturesCollapsed);
   };
 
+  const toggleHowToHelpCollapsed = () => {
+    setHowToHelpCollapsed(!howToHelpCollapsed);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
-          <Pressable
-            onPressIn={() => toggleDescriptionCollapsed()}
-            hitSlop={40}>
+          <Pressable onPressIn={() => toggleHowToHelpCollapsed()}>
+            <Text style={styles.title}>How To Help</Text>
+          </Pressable>
+          <View style={styles.iconContainer}>
+            <Ionicons
+              name={
+                howToHelpCollapsed
+                  ? 'chevron-down-circle-outline'
+                  : 'chevron-up-circle-outline'
+              }
+              size={20}
+              color="white"
+            />
+          </View>
+        </View>
+        <Collapsible collapsed={howToHelpCollapsed}>
+          <View style={styles.headerBody}>
+            <Text style={styles.body}>
+              BlastOff is supported and hosted by a one person team, trying to
+              keep the service free of charge for all retail investors, for all
+              time. Please help keep this dream alive and support BlastOff's API
+              and server hosting costs by donating here:{' '}
+            </Text>
+            <Text
+              style={styles.bodyLink}
+              onPress={() =>
+                Linking.openURL('https://www.buymeacoffee.com/anduru')
+              }>
+              BuyMeACoffee
+            </Text>
+          </View>
+        </Collapsible>
+        <View style={styles.divider} />
+
+        <View style={styles.header}>
+          <Pressable onPressIn={() => toggleDescriptionCollapsed()}>
             <Text style={styles.title}>What is {appName}?</Text>
           </Pressable>
           <View style={styles.iconContainer}>
@@ -56,9 +101,7 @@ export default function FAQScreen(props) {
         <View style={styles.divider} />
 
         <View style={styles.header}>
-          <Pressable
-            onPressIn={() => toggleCoreFeaturesCollapsed()}
-            hitSlop={40}>
+          <Pressable onPressIn={() => toggleCoreFeaturesCollapsed()}>
             <Text style={styles.title}>Features</Text>
           </Pressable>
           <View style={styles.iconContainer}>
@@ -125,26 +168,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerBody: {
-    marginHorizontal: '4%',
+    marginHorizontal: '1%',
   },
   divider: {
     borderBottomColor: 'grey',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   body: {
-    fontSize: 13,
+    fontSize: 15,
     color: 'silver',
     alignSelf: 'center',
     fontFamily: 'Dosis-Medium',
   },
   numberedItem: {
-    fontSize: 13,
+    fontSize: 15,
     color: 'silver',
     fontStyle: 'italic',
     fontFamily: 'Dosis-Medium',
   },
   bodyLink: {
-    fontSize: 13,
+    fontSize: 15,
     color: 'lightblue',
     alignSelf: 'center',
     textDecorationLine: 'underline',
