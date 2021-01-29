@@ -1,6 +1,15 @@
 import React, {useContext, useState} from 'react';
 import {useEffect} from 'react';
-import {FlatList, StyleSheet, Text, View, Pressable} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  TextInput,
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import FirebaseContext from '../../Contexts/FirebaseContext';
 import GuestView from '../Auth/GuestView';
 
@@ -10,6 +19,7 @@ export default function FavoritesScreen(props) {
   const firebaseContext = useContext(FirebaseContext);
 
   const [favorites, setFavorites] = useState(undefined);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     let favoritesArray = [];
@@ -25,32 +35,54 @@ export default function FavoritesScreen(props) {
   }, [firebaseContext.userFavorites]);
 
   const renderFavorite = ({item}) => {
-    return (
-      <Pressable
-        delayLongPress={50}
-        onLongPress={() => {
-          console.log(`Navigating to ${item.symbol} page`);
-          props.navigation.navigate('CompanyDisplayFromSearch', {
-            companySymbol: item.symbol,
-          });
-        }}>
-        <View style={styles.favoriteCard}>
-          <View style={styles.symbolContainer}>
-            <Text style={styles.symbolText}>{item.symbol}</Text>
+    if (item.symbol.toLowerCase().includes(searchText.toLowerCase())) {
+      return (
+        <Pressable
+          delayLongPress={50}
+          onLongPress={() => {
+            console.log(`Navigating to ${item.symbol} page`);
+            props.navigation.navigate('CompanyDisplayFromSearch', {
+              companySymbol: item.symbol,
+            });
+          }}>
+          <View style={styles.favoriteCard}>
+            <View style={styles.symbolContainer}>
+              <Text style={styles.symbolText}>{item.symbol}</Text>
+            </View>
+            <View style={styles.priceContainer}>
+              <Text style={styles.miniHeader}>Price When Added</Text>
+              <Text style={styles.priceText}>{item.favoritedPrice}</Text>
+            </View>
           </View>
-          <View style={styles.priceContainer}>
-            <Text style={styles.miniHeader}>Price When Added</Text>
-            <Text style={styles.priceText}>{item.favoritedPrice}</Text>
-          </View>
-        </View>
-      </Pressable>
-    );
+        </Pressable>
+      );
+    }
   };
 
   if (firebaseContext.loggedIn && favorites) {
     if (favorites.length > 0) {
       return (
         <View style={styles.container}>
+          <View style={styles.searchBarContainer}>
+            <View style={styles.iconContainer}>
+              <Ionicons
+                style={styles.searchIcon}
+                size={20}
+                name="search-outline"
+                color="white"
+              />
+            </View>
+            <TextInput
+              placeholder="Search..."
+              placeholderTextColor="silver"
+              onChangeText={(text) => setSearchText(text)}
+              clearButtonMode="always"
+              autoCapitalize="characters"
+              fontSize={20}
+              color="white"
+              style={styles.searchInput}
+            />
+          </View>
           <FlatList
             data={favorites}
             renderItem={renderFavorite}
@@ -99,6 +131,26 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Dosis-Bold',
     textAlign: 'center',
+  },
+  searchBarContainer: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'grey',
+    borderRadius: 20,
+    marginHorizontal: '10%',
+    marginVertical: '5%',
+    flexDirection: 'row',
+    alignContent: 'center',
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    flex: 0.1,
+  },
+  searchIcon: {
+    alignSelf: 'center',
+  },
+  searchInput: {
+    flex: 0.9,
+    fontFamily: 'Dosis-Medium',
   },
   favoriteCard: {
     marginVertical: '2%',

@@ -61,6 +61,21 @@ export default function CompanyStockChartFromSearch(props) {
     setActiveData5y(null);
   }, [props.companySymbol]);
 
+  // when companyIntradayData changes, update activeData to the latest value
+  useEffect(() => {
+    if (props.companyIntradayData) {
+      const lastDataPoint =
+        props.companyIntradayData[props.companyIntradayData.length - 1];
+      if (lastDataPoint && lastDataPoint.minute && lastDataPoint.average) {
+        setActiveData({
+          minute: lastDataPoint.minute,
+          average: lastDataPoint.average,
+          cursorValue: props.companyIntradayData.length,
+        });
+      }
+    }
+  }, [props.companyIntradayData]);
+
   // when companySymbol changes or the chart history window changes, we want to
   // refetch
   useEffect(() => {
@@ -148,9 +163,9 @@ export default function CompanyStockChartFromSearch(props) {
     const renderIntradayStockChart = () => {
       console.log('CompanyStockChartFromSearch(): rendering intraday chart');
       const getDomain = () => {
-        const averagePrices = props.companyIntradayData
-          .map((dataPoint) => dataPoint.average)
-          .filter((average) => average != null);
+        const averagePrices = props.companyIntradayData.map(
+          (dataPoint) => dataPoint.average,
+        );
 
         if (props.companyPreviousDayData.close !== null) {
           const previousDayClose = props.companyPreviousDayData.close;
@@ -175,11 +190,7 @@ export default function CompanyStockChartFromSearch(props) {
       };
 
       if (props.companyIntradayData) {
-        if (
-          props.companyIntradayData.filter(
-            (dataPoint) => dataPoint.average !== null,
-          ).length > 1
-        ) {
+        if (props.companyIntradayData.length > 1) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
@@ -202,9 +213,7 @@ export default function CompanyStockChartFromSearch(props) {
                       <LineSegment style={{stroke: 'white', width: '5px'}} />
                     }
                     onCursorChange={(value) => {
-                      const filteredData = props.companyIntradayData.filter(
-                        (dataPoint) => dataPoint.average !== null,
-                      );
+                      const filteredData = props.companyIntradayData;
                       const cursorValue =
                         value !== undefined && value !== null
                           ? Math.round(value)
@@ -226,9 +235,7 @@ export default function CompanyStockChartFromSearch(props) {
                 <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
                 <VictoryLine
-                  data={props.companyIntradayData.filter(
-                    (dataPoint) => dataPoint.average != null,
-                  )}
+                  data={props.companyIntradayData}
                   y={(datum) => datum.average}
                   x={(datum) => datum.minute}
                   style={{

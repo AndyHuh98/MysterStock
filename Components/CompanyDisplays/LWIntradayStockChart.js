@@ -25,15 +25,28 @@ export default function LightWeightIntradayStockChart(props) {
   });
 
   useEffect(() => {
-    setActiveData(null);
-  }, [iexContext.companySymbol]);
+    if (iexContext.companyIntradayData) {
+      const lastDataPoint =
+        iexContext.companyIntradayData[
+          iexContext.companyIntradayData.length - 1
+        ];
+
+      if (lastDataPoint && lastDataPoint.minute && lastDataPoint.average) {
+        setActiveData({
+          minute: lastDataPoint.minute,
+          average: lastDataPoint.average,
+          cursorValue: iexContext.companyIntradayData.length,
+        });
+      }
+    }
+  }, [iexContext.companyIntradayData]);
 
   return useMemo(() => {
     const chartDisplay = () => {
       const getDomain = () => {
-        const averagePrices = iexContext.companyIntradayData
-          .map((dataPoint) => dataPoint.average)
-          .filter((average) => average != null);
+        const averagePrices = iexContext.companyIntradayData.map(
+          (dataPoint) => dataPoint.average,
+        );
 
         if (
           iexContext.companyPreviousDayData &&
@@ -61,11 +74,7 @@ export default function LightWeightIntradayStockChart(props) {
       };
 
       if (iexContext.companyIntradayData !== undefined) {
-        if (
-          iexContext.companyIntradayData.filter(
-            (dataPoint) => dataPoint.average !== null,
-          ).length > 1
-        ) {
+        if (iexContext.companyIntradayData.length > 1) {
           const point = activeData ? (
             <VictoryScatter
               data={[{x: activeData.cursorValue, y: activeData.average}]}
@@ -95,9 +104,7 @@ export default function LightWeightIntradayStockChart(props) {
                       />
                     }
                     onCursorChange={(value) => {
-                      const filteredData = iexContext.companyIntradayData.filter(
-                        (dataPoint) => dataPoint.average !== null,
-                      );
+                      const filteredData = iexContext.companyIntradayData;
                       const cursorValue =
                         value !== undefined && value !== null
                           ? Math.round(value)
@@ -119,9 +126,7 @@ export default function LightWeightIntradayStockChart(props) {
                 <VictoryAxis dependentAxis style={{grid: {stroke: 'none'}}} />
                 {point}
                 <VictoryLine
-                  data={iexContext.companyIntradayData.filter(
-                    (dataPoint) => dataPoint.average != null,
-                  )}
+                  data={iexContext.companyIntradayData}
                   y={(datum) => datum.average}
                   x={(datum) => datum.minute}
                   style={{
