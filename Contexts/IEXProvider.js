@@ -123,7 +123,7 @@ export default function IEXProvider({children}) {
             let minutes = parseInt(dataPoint.minute.split(':')[1], 10);
             // can make graph more detailed by changing the modulo here
             return (
-              (minutes % 4 === 0 || minutes % 5 === 0) &&
+              // (minutes % 4 === 0 || minutes % 5 === 0) &&
               dataPoint.average !== null
             );
           });

@@ -13,7 +13,7 @@ import {
 
 // Props passed in: advStats
 export default function StatsTable(props) {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleTableCollapsed = () => {
     setIsCollapsed(!isCollapsed);

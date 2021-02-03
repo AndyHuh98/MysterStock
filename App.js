@@ -30,7 +30,7 @@ import {AppSecondaryColor} from './Components/Utils/Constants';
 // TODO: Fill out Settings Screen
 // TODO: Possibly find some way to consolidate stock chart from search or at least
 // reuse code within (historical charts, intraday charts).
-// TODO: Add donation reminders
+// TODO: Add donation reminders - popup after a certain time using app (and happens only once)
 
 const Stack = createStackNavigator();
 
