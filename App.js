@@ -21,6 +21,12 @@ import ResetPassword from './Components/Auth/ResetPassword';
 import FirebaseProvider from './Contexts/FirebaseProvider';
 import {AppSecondaryColor} from './Components/Utils/Constants';
 
+// IMPORTANT BELOW
+// TODO: ADD CLOUD CACHING FOR IEX CLOUD DATA!!!!! Will reduce major endpoint load by a significant amount (potentially)
+// TODO: ADD TEXT VISIBILITY TOGGLE FOR PASSWORD INPUT
+// TODO: ADD APP CLIP FOR GENERATING NEW STOCK!!!
+
+// OPTIONAL
 // TODO: Clean up search code
 // TODO: Clean up favorites code
 // TODO: fix react-native-paper require cycle warning

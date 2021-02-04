@@ -45,7 +45,9 @@ export default function FAQScreen(props) {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.header}>
-          <Pressable onPressIn={() => toggleHowToHelpCollapsed()}>
+          <Pressable
+            delayLongPress={75}
+            onLongPress={() => toggleHowToHelpCollapsed()}>
             <Text style={styles.title}>How To Help</Text>
           </Pressable>
           <View style={styles.iconContainer}>
@@ -80,7 +82,9 @@ export default function FAQScreen(props) {
         <View style={styles.divider} />
 
         <View style={styles.header}>
-          <Pressable onPressIn={() => toggleDescriptionCollapsed()}>
+          <Pressable
+            delayLongPress={75}
+            onLongPress={() => toggleDescriptionCollapsed()}>
             <Text style={styles.title}>What is {appName}?</Text>
           </Pressable>
           <View style={styles.iconContainer}>
@@ -113,7 +117,9 @@ export default function FAQScreen(props) {
         <View style={styles.divider} />
 
         <View style={styles.header}>
-          <Pressable onPressIn={() => toggleCoreFeaturesCollapsed()}>
+          <Pressable
+            delayLongPress={75}
+            onLongPress={() => toggleCoreFeaturesCollapsed()}>
             <Text style={styles.title}>Features</Text>
           </Pressable>
           <View style={styles.iconContainer}>
@@ -158,7 +164,9 @@ export default function FAQScreen(props) {
         <View style={styles.divider} />
 
         <View style={styles.header}>
-          <Pressable onPressIn={() => toggleDataDiscrepancyCollapsed()}>
+          <Pressable
+            delayLongPress={75}
+            onLongPress={() => toggleDataDiscrepancyCollapsed()}>
             <Text style={styles.title}>Data Discrepancy Disclaimer</Text>
           </Pressable>
           <View style={styles.iconContainer}>
@@ -189,7 +197,9 @@ export default function FAQScreen(props) {
         <View style={styles.divider} />
 
         <View style={styles.header}>
-          <Pressable onPressIn={() => toggleLiveUpdateCollapsed()}>
+          <Pressable
+            delayLongPress={75}
+            onLongPress={() => toggleLiveUpdateCollapsed()}>
             <Text style={styles.title}>
               Does Data Update Live Without Refreshing?
             </Text>
@@ -250,7 +260,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerBody: {
-    marginHorizontal: '1%',
+    flex: 1,
+    flexWrap: 'wrap',
   },
   divider: {
     borderBottomColor: 'grey',
@@ -266,6 +277,7 @@ const styles = StyleSheet.create({
   numberedItem: {
     fontSize: 15,
     color: 'silver',
+    alignSelf: 'flex-start',
     fontStyle: 'italic',
     fontFamily: 'Dosis-Medium',
   },
